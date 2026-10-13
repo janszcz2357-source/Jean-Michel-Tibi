@@ -1,19 +1,21 @@
-/* Layout: one long reel. A dark camera viewfinder opens the page, set into a cool-paper "camera report";
-   every section below is ruled like a report sheet, with one inverted panel for the shots he refuses to take. */
+/* Layout: one long reel. A camera viewfinder opens the page, set into a dark "camera report";
+   every section below is ruled like a report sheet, with one inverted panel for the shots he refuses to take.
+   The site has a single, dark look. */
 :root {
-  --paper: #EDEFEE;
-  --panel: #E2E6E5;
-  --ink: #15191B;
-  --muted: #56606A;
-  --rule: #C4CBCD;
-  --accent: #8A4F00;
-  --accent-inv: #F0B23A;
-  --tally: #C8231B;
-  /* The viewfinder is a device: it stays dark in both themes */
-  --screen: #0E1113;
+  color-scheme: dark;
+  --paper: #0F1214;
+  --panel: #161A1D;
+  --ink: #E6E9E7;
+  --muted: #8F999F;
+  --rule: #2A3034;
+  --accent: #F0B23A;
+  --accent-inv: #8A4F00;
+  --tally: #FF4A3D;
+  /* The viewfinder, map and monitors are devices: slightly darker than the page */
+  --screen: #060809;
   --screen-ink: #EEF0EE;
   --screen-muted: #9AA4AA;
-  --screen-rule: #2A3135;
+  --screen-rule: #252B2F;
   --frame: #F0B23A;
   --rec: #FF4A3D;
 
@@ -31,35 +33,6 @@
   /* front-loaded ease: most of the change happens in the first fifth of the time */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0F1214;
-    --panel: #161A1D;
-    --ink: #E6E9E7;
-    --muted: #8F999F;
-    --rule: #2A3034;
-    --accent: #F0B23A;
-    --accent-inv: #8A4F00;
-    --tally: #FF4A3D;
-    --screen: #060809;
-    --screen-rule: #252B2F;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #0F1214;
-  --panel: #161A1D;
-  --ink: #E6E9E7;
-  --muted: #8F999F;
-  --rule: #2A3034;
-  --accent: #F0B23A;
-  --accent-inv: #8A4F00;
-  --tally: #FF4A3D;
-  --screen: #060809;
-  --screen-rule: #252B2F;
-  color-scheme: dark;
-}
-
 /* ---------- language switching: both languages ship in the page, one is hidden ---------- */
 :root:not([data-lang="fr"]) .t[lang="fr"],
 :root[data-lang="fr"] .t[lang="en"] { display: none !important; }

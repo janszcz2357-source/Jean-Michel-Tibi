@@ -39,7 +39,7 @@ This is an unofficial profile compiled from public sources. It is not affiliated
 | Path | What it is |
 | --- | --- |
 | `index.html` | The page. Both languages are in the markup; CSS hides the one not selected. |
-| `assets/style.css` | All styles. Colour tokens at the top, light and dark themes. |
+| `assets/style.css` | All styles. Colour tokens at the top; the site has one dark look. |
 | `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind, background lights), shot map (land data embedded as compact bit grids), scroll reveals, replay diagram, frame-rate demo, video players, phone menu, sharing, career playhead, section highlighting. |
 | `assets/favicon.svg` | Tab icon. |
 | `404.html` | "No signal" page with broadcast colour bars, shown for any address that doesn't exist. |
@@ -56,7 +56,7 @@ The site is deployed on Vercel (project `jean-michel-tibi`), linked to this GitH
 
 To view it locally, open `index.html` in a browser.
 
-The language follows the visitor's browser (French browsers get French). Visitors can switch with the EN / FR buttons, and links ending in `#fr` or `#en` open in that language. The page follows the system light or dark setting.
+The language follows the visitor's browser (French browsers get French). Visitors can switch with the EN / FR buttons, and links ending in `#fr` or `#en` open in that language. The site is dark only, whatever the system setting.
 
 To regenerate the link-preview image after editing `tools/og-card.html`:
 
