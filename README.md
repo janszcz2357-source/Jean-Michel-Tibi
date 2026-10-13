@@ -23,13 +23,11 @@ The animations come from his job:
 - **Focus pull.** Point at the viewfinder to move the focus box. Light trails off the focus plane go soft, with bokeh discs, and in-focus trails get red focus peaking. The readout shows the focus distance.
 - **Playback.** 8× slow (200 fps played at 25p), real time, or pause, which stops every looping animation.
 - **Rewind.** "Rewind to the top" runs the tape backwards while the page scrolls up.
-- **Jog wheel.** Scrolling works the tape like a jog wheel: scroll down fast and the viewfinder fast-forwards, scroll up and it rewinds, with the light trails stretching to match.
-- **Scrolling.** Every reveal is tied to the scroll position. It plays forward as you scroll down, runs backwards as you scroll up, and can't fall behind a fast scroll. Headings rack into focus, section labels type on, story cards tilt up into frame from left to right, and career rows unspool like tape. The memoir swings in on its spine, the trust panel opens from a letterbox, and the world feed switches on like a monitor. The route across the shot map draws itself as you scroll, and each pin lands when the line reaches it. The big quotes light up word by word as you read down to them.
-- **On air.** A red playhead runs down the career, with the year under it pinned beside the timeline. In the shot list, the camera cuts from card to card across the row in the middle of the screen. The bar under the header marks each chapter and lights the one you're in. A signal travels through the replay diagram, and the header's REC light drops to standby in the two sections about what he won't film and the people he lost. The memorial section stays still.
+- **Reading.** Headings rack into focus, labels type on, the big quotes resolve word by word, and a red editing-timeline playhead runs down the career. A signal travels through the replay diagram, and the header's REC light drops to standby in the two sections about what he won't film and the people he lost. The memorial section stays still.
 
 On phones the section links move into a full-screen menu. Videos play inline through YouTube's privacy-enhanced player; inside a frame, where embeds are blocked, the same links open YouTube instead.
 
-Visitors who ask their system for reduced motion get the complete page with none of it. Browsers without scroll-driven animations get timed versions of the same reveals. Nothing on screen when the page loads is hidden or dimmed, and content further down waits in its start pose, so nothing flickers as it arrives. Once an effect has played, the element is left exactly as styled.
+Visitors who ask their system for reduced motion get the complete page with none of it. Scroll reveals never hide content at rest: an element keeps its normal look until it reaches the screen.
 
 This is an unofficial profile compiled from public sources. It is not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. It uses no photographs.
 
@@ -39,7 +37,7 @@ This is an unofficial profile compiled from public sources. It is not affiliated
 | --- | --- |
 | `index.html` | The page. Both languages are in the markup; CSS hides the one not selected. |
 | `assets/style.css` | All styles. Colour tokens at the top, light and dark themes. |
-| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind, jog wheel), shot map (land data embedded as compact bit grids), video players, phone menu, sharing, scroll motion (scroll-timeline set-up with a timed fallback, quote read-along, career playhead and pinned year, on-air card, chapter marks), replay diagram, section highlighting. |
+| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind), shot map (land data embedded as compact bit grids), video players, phone menu, sharing, scroll reveals, replay diagram, career playhead, section highlighting. |
 | `assets/favicon.svg` | Tab icon. |
 | `404.html` | "No signal" page with broadcast colour bars, shown for any address that doesn't exist. |
 | `vercel.json` | Security headers for the Vercel deployment. |

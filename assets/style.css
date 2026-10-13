@@ -372,8 +372,8 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .report-row p { max-width: 62ch; }
 
 /* ---------- shot list ---------- */
-.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid transparent; }
-.shot { position: relative; background: var(--paper); box-shadow: 0 0 0 1px var(--rule); padding: 1.25rem 1.25rem 2.1rem; display: grid; gap: 0.7rem; align-content: start; min-width: 0; }
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.shot { position: relative; background: var(--paper); padding: 1.25rem 1.25rem 2.1rem; display: grid; gap: 0.7rem; align-content: start; min-width: 0; }
 .shot header { display: grid; gap: 0.25rem; padding-bottom: 0.7rem; border-bottom: 1px dashed var(--rule); }
 .shot .place { display: flex; justify-content: space-between; gap: 0.75rem; align-items: baseline; }
 .shot .place h3 { font-stretch: 105%; }
@@ -779,6 +779,9 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   }
   .ty.is-in { animation: type 0.7s steps(24, end) backwards; }
   @keyframes type { from { clip-path: inset(0 100% 0 0); } }
+  .slowmo .w { display: inline-block; }
+  .slowmo.is-in .w { animation: word 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms + 80ms); }
+  @keyframes word { from { opacity: 0.06; filter: blur(9px); transform: translateY(0.2em); } }
   .odds.is-in .bar span { animation: fill 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
   .odds.is-in .bar .luck { transform-origin: left; animation-delay: 0.3s; }
   .odds.is-in .bar .work { transform-origin: right; animation-delay: 0.55s; }
@@ -910,7 +913,7 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .atlas-eu .atlas-map { aspect-ratio: 30 / 32; margin-top: 0.4rem; }
 .atlas-map canvas, .atlas-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .atlas-map svg { overflow: visible; pointer-events: none; }
-.atlas .route { fill: none; stroke: var(--frame); stroke-width: calc(1.3px / var(--map-scale, 8)); opacity: 0.75; stroke-linecap: round; }
+.atlas .route { fill: none; stroke: var(--frame); stroke-width: 1.3; vector-effect: non-scaling-stroke; opacity: 0.75; stroke-linecap: round; }
 .atlas .spot { fill: var(--frame); }
 .atlas .eu-box { fill: none; stroke: var(--screen-muted); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
 .atlas .eu-label { fill: var(--screen-muted); font-family: var(--mono); font-size: 1.9px; letter-spacing: 0.2px; text-transform: uppercase; }
@@ -1093,166 +1096,4 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   @keyframes pin-pulse { 0% { box-shadow: 0 0 0 2px var(--screen), 0 0 0 2px color-mix(in srgb, var(--frame) 60%, transparent); } 100% { box-shadow: 0 0 0 2px var(--screen), 0 0 0 14px transparent; } }
   .shot.is-flash { transition: background-color 0.4s; }
   .shot.is-flash::before { transform: none; }
-}
-
-/* =====================================================================
-   v5: scroll motion
-   Browsers with scroll timelines tie every reveal to the scroll position:
-   it plays forward as you scroll down, rewinds as you scroll up, and can
-   never lag behind a fast scroll. Other browsers get the timed reveals
-   above, with content that is still below the fold at load waiting in its
-   start pose so nothing flickers on arrival.
-   Fill is backwards only (the hero's dolly-out aside, which ends off
-   screen): once an effect has played, the element is left with its own
-   style, with no leftover transforms, filters or clips.
-   ===================================================================== */
-
-/* nothing in motion may widen the page */
-main { overflow-x: clip; }
-
-/* reading progress: chapter marks on the bar under the header */
-.progress i { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--muted); opacity: 0.45; transition: background-color 0.3s, opacity 0.3s, height 0.3s, top 0.3s; }
-.progress i.is-current { background: var(--tally); opacity: 1; top: -4px; height: 10px; }
-
-/* career: the year under the playhead, pinned while you scroll the timeline */
-.report-tc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4rem); height: 0; z-index: 2; pointer-events: none; }
-.report-tc .label {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  max-width: 100%;
-  padding: 0.38rem 0.75rem;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--paper);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-.report-tc .label::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--tally); }
-.report-tc.is-on .label { opacity: 1; }
-
-/* shot list: the card on air (the director cuts across the row crossing mid-screen) */
-.shot.is-air::before { opacity: 1; --c: var(--tally); }
-.shot.is-air::after { opacity: 1; }
-
-@media (max-width: 760px) {
-  .report-tc { display: none; }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  /* quotes light up word by word as you scroll through them (all browsers) */
-  .sd-read .w { opacity: clamp(0.2, calc(var(--p, 1) * (var(--n, 1) + 3) - var(--i, 0) - 1), 1); transition: opacity 0.18s linear; }
-  .shot.is-air::before { transform: none; }
-
-  /* timed fallback: below-the-fold content waits in its start pose */
-  .rv.rv-wait { opacity: 0; transform: translate3d(0, 22px, 0); }
-  .rf.rv-wait { opacity: 0.2; filter: blur(12px); }
-  .ty.rv-wait { clip-path: inset(0 100% 0 0); }
-  .cover.rv-wait { opacity: 0; }
-
-  @supports (animation-timeline: view()) {
-    /* generic: rise into place, cascading across a row */
-    .sd-rise {
-      animation: sd-rise linear backwards;
-      animation-timeline: view();
-      animation-range: entry calc(4% + var(--col, 0) * 9%) entry calc(82% + var(--col, 0) * 9%);
-    }
-    @keyframes sd-rise { from { opacity: 0; translate: 0 2.6rem; } }
-
-    /* headings: a focus pull, hunting slightly before it settles (the lens breathes in, never past the column) */
-    .sd-rack {
-      transform-origin: 0 60%;
-      animation: sd-rack linear backwards;
-      animation-timeline: view();
-      animation-range: entry 10% cover 34%;
-    }
-    @keyframes sd-rack {
-      0% { opacity: 0.08; filter: blur(14px); scale: 0.96; }
-      68% { opacity: 1; filter: blur(0); scale: 1; }
-      80% { filter: blur(1.6px); }
-    }
-
-    /* section labels type on, one character per step */
-    .sd-type {
-      animation: sd-type steps(26, end) backwards;
-      animation-timeline: view();
-      animation-range: entry 30% cover 28%;
-    }
-    @keyframes sd-type { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-
-    /* story cards tilt up into place, left to right */
-    .shots { perspective: 1400px; }
-    .sd-card {
-      transform-origin: 50% 100%;
-      animation: sd-card linear backwards;
-      animation-timeline: view();
-      animation-range: entry calc(var(--col, 0) * 11%) entry calc(74% + var(--col, 0) * 11%);
-    }
-    @keyframes sd-card { from { opacity: 0; translate: 0 3.2rem; rotate: x 16deg; } }
-
-    /* career rows unspool like tape */
-    .sd-row {
-      animation: sd-row linear backwards;
-      animation-timeline: view();
-      animation-range: entry 0% entry 85%;
-    }
-    @keyframes sd-row {
-      from { opacity: 0; translate: -1.6rem 0; clip-path: inset(0 100% 0 0); }
-      65% { clip-path: inset(0 0 0 0); }
-    }
-
-    /* the memoir swings in on its spine */
-    .sd-book {
-      animation: sd-book linear backwards;
-      animation-timeline: view();
-      animation-range: entry 10% cover 42%;
-    }
-    @keyframes sd-book { from { opacity: 0; rotate: y -52deg; translate: -1.2rem 0; } }
-
-    /* dark panels open from a letterbox to full width */
-    .sd-widen { --r: 4px; animation: sd-widen linear backwards; animation-timeline: view(); animation-range: entry 0% cover 34%; }
-    /* the world feed switches on like a monitor: a bright line opens to the full picture */
-    .sd-crt { animation: sd-crt linear backwards; animation-timeline: view(); animation-range: entry 5% entry 95%; }
-    @keyframes sd-crt {
-      from { clip-path: inset(49.5% 0 round 6px); }
-      25% { clip-path: inset(47% 0 round 6px); }
-      to { clip-path: inset(0 0 round 6px); }
-    }
-    @keyframes sd-widen { from { clip-path: inset(0 4.5% round var(--r)); } to { clip-path: inset(0 0 round var(--r)); } }
-
-    /* leaving the hero: the camera dollies out */
-    .sd-hero { animation: sd-hero linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
-    @keyframes sd-hero { to { scale: 0.9; opacity: 0.2; border-radius: 30px; } }
-
-    /* luck bars fill as they reach the middle of the screen */
-    .sd .odds { view-timeline: --odds block; }
-    .sd .odds .bar span { animation: sd-fill linear backwards; animation-timeline: --odds; }
-    .sd .odds .bar .luck { transform-origin: left; animation-range: entry 45% cover 48%; }
-    .sd .odds .bar .work { transform-origin: right; animation-range: entry 70% cover 54%; }
-    @keyframes sd-fill { from { scale: 0 1; } }
-
-    /* refusals: the stop square fills as each line arrives */
-    .sd .refusals li .label::before { animation: sd-stop linear backwards; animation-timeline: view(); animation-range: entry 0% entry 100%; }
-    @keyframes sd-stop { from { background: transparent; scale: 1.8; } }
-
-    /* shot map: the route draws as you scroll, each pin lands when the line reaches it */
-    .sd .atlas { view-timeline: --atlas block; }
-    .sd .atlas .route { animation: sd-draw linear backwards; animation-timeline: --atlas; animation-range: cover 22% cover 58%; }
-    @keyframes sd-draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
-    .sd .atlas .pin {
-      animation: sd-pin linear backwards;
-      animation-timeline: --atlas;
-      animation-range: cover calc(20.5% + var(--at, 0) * 36%) cover calc(24.5% + var(--at, 0) * 36%);
-    }
-    @keyframes sd-pin { 0% { opacity: 0; scale: 0; } 70% { opacity: 1; scale: 1.35; } }
-  }
-}
-
-@media print {
-  .rv-wait { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; }
 }
