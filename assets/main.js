@@ -328,8 +328,8 @@
      to the stories; the line joins the moments in the order they happened.
      ===================================================================== */
   var GRIDS = {
-    world: { b64: "AAAADoi3sAP//gAAAAAMAD///sAAAAgBgACfwz/AD/+gAAA4AEHf///+/8gBAP/7/nJdjwD/+AAAH/AA7f///////f4P//////h8H/gAAAf/6//f////////Mf/////9H4D8AeAA+ev///////////AP/////4A0B4AAAD5/////////////Af3////gHgA4AAAH5///////////LwAHgH///gHkAAAAAH4/////////+CIAABAB///4D+AAAAGCx/////////4A8AAIAAf///n/gAAAOCD/////////wA4AAAAAf///n/wAAAbP///////////AgAAAAAP/////wAAADf//////////9AAAAAAAF////0YAAAB///////////9AAAAAAAD////8EAAAB///////////5AAAAAAAD////2AAAAB/f5fP//////wAAAAAAAD////gAAAAfxnwPP//////jAAAAAAAD////AAAAAPCb3/n/////+CAAAAAAAD///8AAAAAfALf/n////+ECAAAAAAAB///8AAAAAGHQP/n/////mMAAAAAAAA///8AAAAAH+Ai///////E8AAAAAAAAf//wAAAAAP/AA///////BgAAAAAAAAP//gAAAAAf/73///////gAAAAAAAAAD/AQAAAAAf////f/////gAAAAAAAAAF+AQAAAAB///+/n/////AAAAAAAAAAC+AAAAAAB///+f0H////AAAAAAAAAAAeAwAAAAD////f/B///8gAAAAAAAAAAeGEAAAAH////v+B/z/AAAAAAAAAAAAPMAgAAAD////n+A/B+gAAAAAAAAAAAD8AAAAAD////n4AeB/AgAAAAAAAAAAAPAAAAAH////3gAcAfAgAAAAAAAAAAADAAAAAD////6AAcAfggAAAAAAAAAAABDwAAAD////8wAMATAIAAAAAAAAAAAAr/AAAB/////gAKASAAAAAAAAAAAAAAH/gAAA/////gACAAAIAAAAAAAAAAAAH/8AAAaH///AAAAsGAAAAAAAAAAAAAH/+AAAAB//+AAAAUOAAAAAAAAAAAAAP/+AAAAB//8AAAAYegAAAAAAAAAAAAP//gAAAD//4AAAAMeBgAAAAAAAAAAAP//8AAAB//wAAAAGdiuAAAAAAAAAAAf///AAAA//wAAAACAQHgAAAAAAAAAAP///gAAA//wAAAABwAHwgAAAAAAAAAH///AAAA//wAAAAACIDQIAAAAAAAAAH//+AAAAf/wAAAAAAAAAAAAAAAAAAAD//+AAAA//wgAAAAABxAAAAAAAAAAAD//+AAAA//wgAAAAAPxgBAAAAAAAAAA//8AAAA//jgAAAAAf5gAAAAAAAAAAAf/8AAAA//DgAAAAAf/gAAAAAAAAAAAf/8AAAAf/DAAAAAD//4CAAAAAAAAAAf/wAAAAf/DAAAAAH//4AAAAAAAAAAAf/AAAAAf+CAAAAAH//8AAAAAAAAAAAf/AAAAAP8AAAAAAH//+AAAAAAAAAAA/+AAAAAP8AAAAAAH//+AAAAAAAAAAA/+AAAAAH4AAAAAAD//+AAAAAAAAAAA/8AAAAAHwAAAAAADwf8AAAAAAAAAAA/gAAAAAAAAAAAAACAH4AIAAAAAAAAB/wAAAAAAAAAAAAAAAD4AEAAAAAAAAB+AAAAAAAAAAAAAAAAAAAGAAAAAAAAB6AAAAAAAAAAAAAAAAAwAMAAAAAAAAA8AAAAAAAAAAAAAAAAAQAYAAAAAAAAB4AAAAAAAAAAAAAAAAAAAwAAAAAAAAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAACAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAA=", cols: 180, lon0: -180, lat0: 74, dLon: 2, dLat: 2, c0: 27, r0: 6, vc: 143, vr: 54 },
-    europe: { b64: "AAHx/AXYABh/AT4AAB/IDeAAM+Az+AAI+A/cAAYfB/eAAZYA/fAAdAA/HAAaAT/HgAMh//DwAf3//HwH////H8P////P8P////f4f////D8/////PD/////QD/////AP/////A//////E//////P//////H//////B//////B//////A//////Af/////A///P//A///H//A//vD//A//Hh////GDw////AHwf///AR4H///AQ+D//8AAPH//4AYHn8/wAYHX4/xAYBDw/wAQBBw", cols: 42, lon0: -6, lat0: 59, dLon: 0.762127, dLat: 0.5, c0: 8, r0: 4, vc: 30, vr: 32 }
+    world: { b64: "AAAAAAABf+B//AAAAAAAAAAAAAAAAAAAAAAAA///////AAAABH4ADgAAAAAAAAAAACd//////4AB/gAAAAB8AAAAAAAAAAB/S/4////4AAZAAAMAAPwAAAAAAAAAD/nvwAf//4AAAAADwAf/4AHIAAAAAAH/3/8AP//wAAAAAODf///+DAAAgD8AD/53/wP//gAAA4AMH///////wBgf////79/wH//AAAf/i///////////+f//////1+H/ggAAf/////////////+///////n+H/A+AB+/////////////Cf/////708D8AIAH//////////////Af/////gHgB4AAAP7///////////v4AH4P///wH+AAAAGP5//////////+cAADwD///8H/AAAAOC//////////8A8AAEAB////v/gAAAfDv/////////4B4AAAAAf/////wAAAbv///////////AwAAAAAP/////wAAAH////////////AgAAAAAH////+4AAAD///////////9AAAAAAAD////+YAAAD///////////9AAAAAAAD////+AAAAB//7f///////5QAAAAAAH////gAAAAf9vwP///////zgAAAAAAD////gAAAAfi/////////+CAAAAAAAD///+AAAAAfALf///////8CAAAAAAAB///8AAAAAP/zf///////mOAAAAAAAB///8AAAAAH/AC///////H8AAAAAAAAf//4AAAAAf/zB///////hwAAAAAAAAP//wAAAAAf//////////hAAAAAAAAAP/owAAAAA/////f/////gAAAAAAAAAH/AwAAAAB///+/v/////AAAAAAAAAAD/AQAAAAD/////3/////gAAAAAAAAAAeA4AAAAD////f/D///+gAAAAAAAAAAfOOAAAAH//////B/z/wAAAAAAAgAAAf+F4AAAD////v+A/h+wgAAAAAAAAAAH8AAAAAD////38A/B/AgAAAAAAAAAAAfgAAAAH/////wAcAfggAAAAAAAAAAAHgAAAAH/////AAcAfgYAAAAAAAAAAABj+AAAD/////wAMATgYAAAAAAAAAAAA//AAAB/////wAKASAYAAAAAAAAAAAAX/gAAA/////gACAICcAAAAAAAAAAAAH/8AAAfP///AAAAsHAAAAAAAAAAAAAH/+AAAAB///AAAA8OAAAAAAAAAAAAAP/+AAAAD//8AAAAc+4AAAAAAAAAAAAf//wAAAD//4AAAAM/hgAAAAAAAAAAAf//+AAAB//wAAAAOdm/AAAAAAAAAAAf///AAAA//wAAAAGBgfuAAAAAAAAAAP///gAAA//wAAAAB4AHwAAAAAAAAAAP///gAAA//wAAAAAOoDYIAAAAAAAAAH///AAAAf/4AAAAAABBAAAAAAAAAAAH//+AAAA//4gAAAAAB7AAAAAAAAAAAD//+AAAA//5wAAAAAP7gAAAAAAAAAAB//+AAAA//zgAAAAAf/gABAAAAAAAAAf/8AAAA//DgAAAAA//wAAAAAAAAAAAf/8AAAA//DgAAAAD//4CAAAAAAAAAA//4AAAAf/HAAAAAH//8AAAAAAAAAAA//gAAAAf/DAAAAAP//+AAAAAAAAAAA//AAAAAf+AAAAAAH//+AAAAAAAAAAA//AAAAAP8AAAAAAH//+AAAAAAAAAAA/+AAAAAH4AAAAAAH//+AAAAAAAAAAA/8AAAAAHwAAAAAAH4f8AAAAAAAAAAA/4AAAAAGAAAAAAADAP8AIAAAAAAAAB/wAAAAAAAAAAAAAAAD4AEAAAAAAAAB/gAAAAAAAAAAAAAAABwAGAAAAAAAAB+AAAAAAAAAAAAAAAAAwAMAAAAAAAAB8AAAAAAAAAAAAAAAAAwAYAAAAAAAAB8AAAAAAAAAAAAAAAAAABwAAAAAAAAD4AAAAAAAAAAAAAAAAAAAgAAAAAAAAD4AAAAAAAAAACAAAAAAAAAAAAAAAAADwgAAAAAAAAAAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", cols: 180, lon0: -180, lat0: 84, dLon: 2, dLat: 2, c0: 0, r0: 0, vc: 180, vr: 71 },
+    europe: { b64: "A+AAA/oB/4PwABn9DP/B+AAcfA//4HgAHz4H//A+AA94A//4z4AD4AH//PfAAdAZ///48AD3f///+HwAf/////7+A///////P8P//////z/j//////4f4f/////4B/v//////Afz//////4HA///////ABP//////4AP///////AP///////4D////////AP///////4Af///////AB///////4AH//////+AA///////gAH//9///4AA///j//+AAH//8f//wFB//Hx//+D//8wfD//gf//AL4P/8D//4DPg//gf//AY/D/8D//wBD8f//f/4AYHz+Z7/+ADAdfj/f/xAYBh4f7/+ADAMPD/f/wAABg8P7/8AAAYPz/f/gAAeA8P7/wABhwDA/B+B/+EAIH4MB//gAAAsBg//+AAAAAP///wAAcAA==", cols: 57, lon0: -10, lat0: 58, dLon: 0.73314, dLat: 0.5, c0: 0, r0: 0, vc: 55, vr: 46 }
   };
   var PLACES = {
     spa: { lon: 5.971, lat: 50.437, eu: 1, name: ["Spa-Francorchamps"], when: ["2000"] },
@@ -469,10 +469,36 @@
       var tl = project(gw, ge.lon0 + ge.c0 * ge.dLon, ge.lat0 - ge.r0 * ge.dLat);
       var br = project(gw, ge.lon0 + (ge.c0 + ge.vc) * ge.dLon, ge.lat0 - (ge.r0 + ge.vr) * ge.dLat);
       var ex = tl[0] * gw.vc, ey = tl[1] * gw.vr, ew = (br[0] - tl[0]) * gw.vc, eh = (br[1] - tl[1]) * gw.vr;
+      var inEU = function (lon, lat) {
+        var xy = project(ge, lon, lat);
+        return xy[0] > 0.02 && xy[0] < 0.98 && xy[1] > 0.02 && xy[1] < 0.98;
+      };
+
+      /* every circuit in the list beside the maps gets a ring, unless a story pin already
+         marks it; circuits too close to tell apart at this scale share one ring */
+      var circuits = $$(".clist li[data-c]").map(function (li) {
+        var ll = li.getAttribute("data-ll").split(",");
+        return { li: li, key: li.getAttribute("data-c"), near: li.getAttribute("data-near"), lon: +ll[0], lat: +ll[1] };
+      });
+      var rings = {};
+      circuits.forEach(function (c) { if (!c.near && !PLACES[c.key]) rings[c.key] = { items: [c] }; });
+      circuits.forEach(function (c) { if (c.near && rings[c.near]) rings[c.near].items.push(c); });
+      Object.keys(rings).forEach(function (k) {
+        var r = rings[k], n = r.items.length;
+        r.lon = r.items.reduce(function (sum, c) { return sum + c.lon; }, 0) / n;
+        r.lat = r.items.reduce(function (sum, c) { return sum + c.lat; }, 0) / n;
+        r.eu = inEU(r.lon, r.lat);
+      });
+
       var spots = "";
       Object.keys(PLACES).forEach(function (key) {
         var xy = project(gw, PLACES[key].lon, PLACES[key].lat);
         spots += '<circle class="spot" cx="' + (xy[0] * gw.vc).toFixed(2) + '" cy="' + (xy[1] * gw.vr).toFixed(2) + '" r="0.55"></circle>';
+      });
+      Object.keys(rings).forEach(function (k) {
+        if (!rings[k].eu) return;
+        var xy = project(gw, rings[k].lon, rings[k].lat);
+        spots += '<circle class="spot is-ring" cx="' + (xy[0] * gw.vc).toFixed(2) + '" cy="' + (xy[1] * gw.vr).toFixed(2) + '" r="0.45"></circle>';
       });
       svg.innerHTML =
         '<rect class="eu-box" x="' + ex.toFixed(2) + '" y="' + ey.toFixed(2) + '" width="' + ew.toFixed(2) + '" height="' + eh.toFixed(2) + '"></rect>' +
@@ -493,14 +519,67 @@
       addPin(worldMap, "gulf", project(gw, (sk.lon + ym.lon) / 2, (sk.lat + ym.lat) / 2),
         ["Sakhir 2018 · 2020 / Yas Marina 2021", "Sakhir 2018 · 2020 / Yas Marina 2021"], Math.min(at("sakhir"), at("yasmarina")));
 
+      /* the rings sit under the pins; each one and its line in the list light up together */
+      var tipPart = function (c) { return $(".c-name", c.li).innerHTML + " · " + $(".c-yrs", c.li).innerHTML; };
+      var lights = function (el, lis) {
+        var on = function () { el.classList.add("is-hot"); lis.forEach(function (li) { li.classList.add("is-hot"); }); };
+        var off = function () { el.classList.remove("is-hot"); lis.forEach(function (li) { li.classList.remove("is-hot"); }); };
+        lis.forEach(function (li) { li.addEventListener("mouseenter", on); li.addEventListener("mouseleave", off); });
+        el.addEventListener("mouseenter", on);
+        el.addEventListener("mouseleave", off);
+      };
+      Object.keys(rings).forEach(function (k) {
+        var r = rings[k], map = r.eu ? euMap : worldMap, xy = project(r.eu ? ge : gw, r.lon, r.lat);
+        var el = document.createElement("span");
+        el.className = "trk";
+        el.setAttribute("aria-hidden", "true");
+        el.style.setProperty("--x", (xy[0] * 100).toFixed(2) + "%");
+        el.style.setProperty("--y", (xy[1] * 100).toFixed(2) + "%");
+        el.style.setProperty("--xn", xy[0].toFixed(3));
+        if (xy[0] < 0.22) el.classList.add("tip-start");
+        else if (xy[0] > 0.78) el.classList.add("tip-end");
+        if (xy[1] < 0.2) el.classList.add("tip-below");
+        el.innerHTML = '<span class="tip">' + r.items.map(tipPart).join("<br>") + "</span>";
+        map.appendChild(el);
+        lights(el, r.items.map(function (c) { return c.li; }));
+      });
+      circuits.forEach(function (c) {
+        var pl = PLACES[c.key], pin = pl ? pinsByPlace[pl.gulf ? "gulf" : c.key] : c.near === "gulf" ? pinsByPlace.gulf : null;
+        if (pin) lights(pin, [c.li]);
+      });
+
       /* the route's stroke is set in map units, so the dash that draws it stays exact */
+      /* where two pins' tap areas would overlap at this size, ease them apart sideways */
+      var spread = function (map) {
+        var pins = $$(".pin", map), w = map.offsetWidth, h = map.offsetHeight;
+        var at = pins.map(function (p) {
+          p.style.removeProperty("--nx");
+          return [parseFloat(p.style.getPropertyValue("--x")) / 100 * w, parseFloat(p.style.getPropertyValue("--y")) / 100 * h, 0];
+        });
+        for (var i = 0; i < pins.length; i++) {
+          for (var j = i + 1; j < pins.length; j++) {
+            var size = pins[i].offsetWidth, dx = at[j][0] + at[j][2] - at[i][0] - at[i][2], dy = at[j][1] - at[i][1];
+            if (Math.abs(dx) < size && Math.abs(dy) < size) {
+              var push = (size - Math.abs(dx)) / 2 + 0.5, dir = dx < 0 ? -1 : 1;
+              at[i][2] -= push * dir;
+              at[j][2] += push * dir;
+            }
+          }
+        }
+        pins.forEach(function (p, k) { if (at[k][2]) p.style.setProperty("--nx", at[k][2].toFixed(1) + "px"); });
+      };
       var drawMaps = function () {
         drawDots(worldCanvas, GRIDS.world);
         drawDots(euCanvas, GRIDS.europe);
+        spread(worldMap);
+        spread(euMap);
         if (worldMap.offsetWidth) svg.style.setProperty("--map-scale", (worldMap.offsetWidth / gw.vc).toFixed(3));
       };
       root.classList.add("has-atlas");
       drawMaps();
+      /* on a phone the world map scrolls sideways: open on the Americas, with Alaska at the edge */
+      var scroller = worldMap.parentNode;
+      if (scroller.scrollWidth > scroller.clientWidth + 4) scroller.scrollLeft = Math.round(worldMap.offsetWidth * 0.12);
       if ("ResizeObserver" in window) {
         var ro = new ResizeObserver(drawMaps);
         ro.observe(worldMap);

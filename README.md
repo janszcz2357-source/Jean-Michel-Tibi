@@ -11,7 +11,7 @@ A one-page profile of Jean-Michel Tibi, the French Formula 1 cameraman and direc
 - **In memory**: Jules Bianchi, Anthoine Hubert and his camera partner Thomas Bonnecarrère
 - **Credits**: awards, *Drive to Survive*, the F1 video game, Olympics, football and French TV
 - **The memoir**: *30 ans de F1 : Mes histoires secrètes* (City Éditions, 2023)
-- **Shot map**: an LED-style world map of the eighteen moments, with a Europe close-up. Each pin jumps to its story, and a line joins the moments in the order they happened
+- **Shot map**: an LED-style map of the whole world with a Europe close-up. Filled pins are the eighteen moments: each jumps to its story, and a line joins them in the order they happened. Rings mark every other circuit on his Formula 1 calendar since 1997, plus Le Mans, and the list beside the maps gives the years each circuit was on the calendar. The list in `index.html` is the source the rings are drawn from.
 - **Watch and listen**: the documentary, the podcast and the Matt Amys video play on the page
 - **FAQ** and **Sources**: every interview and article the page draws on
 
