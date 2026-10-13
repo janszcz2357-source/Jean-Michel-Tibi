@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>No signal · Jean-Michel Tibi</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0E1113">
+<script>
+(function () {
+  var l = null;
+  try { l = localStorage.getItem("jmt-lang"); } catch (e) {}
+  if (l !== "fr" && l !== "en") l = (navigator.language || "").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+  document.documentElement.setAttribute("data-lang", l);
+  document.documentElement.lang = l;
+  if (l === "fr") document.title = "Pas de signal · Jean-Michel Tibi";
+})();
+</script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap">
+<style>
+/* Layout: a broadcast test card. SMPTE colour bars fill the screen; a dark monitor card sits on top.
+   The bars are a fixed object, so the page keeps one look in both themes. */
+:root {
+  --screen: #0E1113;
+  --ink: #EEF0EE;
+  --muted: #9AA4AA;
+  --rule: #2A3135;
+  --frame: #F0B23A;
+  --rec: #FF4A3D;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+:root:not([data-lang="fr"]) .t[lang="fr"],
+:root[data-lang="fr"] .t[lang="en"] { display: none !important; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #131313;
+  color: var(--ink);
+  font-family: var(--body);
+  display: grid;
+  place-items: center;
+  padding: 1.5rem clamp(16px, 4vw, 40px);
+  overflow-x: hidden;
+}
+.bars { position: fixed; inset: 0; display: grid; grid-template-rows: 67fr 8fr 25fr; z-index: -1; }
+.bars > div { display: grid; }
+.top { grid-template-columns: repeat(7, 1fr); }
+.mid { grid-template-columns: repeat(7, 1fr); }
+.low { grid-template-columns: 15fr 15fr 15fr 15fr 4fr 4fr 4fr 12fr; }
+.bars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0 2px, transparent 2px 4px);
+}
+.card {
+  position: relative;
+  width: min(34rem, 100%);
+  background: var(--screen);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  display: grid;
+  gap: 1rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+.corner { position: absolute; width: 22px; height: 22px; border: 0 solid var(--frame); }
+.tl { top: 10px; left: 10px; border-top-width: 2px; border-left-width: 2px; }
+.tr { top: 10px; right: 10px; border-top-width: 2px; border-right-width: 2px; }
+.bl { bottom: 10px; left: 10px; border-bottom-width: 2px; border-left-width: 2px; }
+.br { bottom: 10px; right: 10px; border-bottom-width: 2px; border-right-width: 2px; }
+.osd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-inline: 0.25rem;
+}
+.osd .state { color: var(--rec); display: inline-flex; align-items: center; gap: 0.45rem; }
+.osd .state::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--rec); }
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 820;
+  font-stretch: 125%;
+  font-size: clamp(2.4rem, 1.4rem + 5vw, 4.2rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  padding-inline: 0.25rem;
+}
+p { margin: 0; font-size: 1.15rem; line-height: 1.5; color: #D5D9D6; padding-inline: 0.25rem; max-width: 40ch; }
+.back {
+  justify-self: start;
+  margin: 0.4rem 0.25rem 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--frame);
+  color: var(--screen);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.back:hover { background: var(--ink); }
+.back:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .osd .state::before { animation: blink 1.2s steps(2, jump-none) infinite; }
+  .card { animation: tune 0.9s steps(1, end) backwards; }
+  @keyframes blink { 50% { opacity: 0.2; } }
+  @keyframes tune { 0% { opacity: 0; } 20% { opacity: 1; } 35% { opacity: 0.3; } 50%, 100% { opacity: 1; } }
+}
+</style>
+</head>
+<body>
+<div class="bars" aria-hidden="true">
+  <div class="top">
+    <span style="background:#C0C0C0"></span><span style="background:#C0C000"></span><span style="background:#00C0C0"></span><span style="background:#00C000"></span><span style="background:#C000C0"></span><span style="background:#C00000"></span><span style="background:#0000C0"></span>
+  </div>
+  <div class="mid">
+    <span style="background:#0000C0"></span><span style="background:#131313"></span><span style="background:#C000C0"></span><span style="background:#131313"></span><span style="background:#00C0C0"></span><span style="background:#131313"></span><span style="background:#C0C0C0"></span>
+  </div>
+  <div class="low">
+    <span style="background:#00214C"></span><span style="background:#FFFFFF"></span><span style="background:#32006A"></span><span style="background:#131313"></span><span style="background:#090909"></span><span style="background:#131313"></span><span style="background:#1D1D1D"></span><span style="background:#131313"></span>
+  </div>
+</div>
+
+<main class="card">
+  <span class="corner tl" aria-hidden="true"></span>
+  <span class="corner tr" aria-hidden="true"></span>
+  <span class="corner bl" aria-hidden="true"></span>
+  <span class="corner br" aria-hidden="true"></span>
+  <div class="osd" aria-hidden="true">
+    <span class="state">No signal</span>
+    <span>TC --:--:--:--</span>
+    <span>RF ✕</span>
+    <span>404</span>
+  </div>
+  <h1><span class="t" lang="en">No signal</span><span class="t" lang="fr">Pas de signal</span></h1>
+  <p class="t" lang="en">This page dropped off the RF link. It may have moved, or the address has a typo.</p>
+  <p class="t" lang="fr">Cette page a perdu la liaison HF. Elle a peut-être changé d’adresse, ou il y a une faute de frappe.</p>
+  <a class="back" href="/"><span class="t" lang="en">Back to the paddock</span><span class="t" lang="fr">Retour au paddock</span> <span aria-hidden="true">↵</span></a>
+</main>
+</body>
+</html>

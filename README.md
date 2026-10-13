@@ -11,7 +11,9 @@ A one-page profile of Jean-Michel Tibi, the French Formula 1 cameraman and direc
 - **In memory**: Jules Bianchi, Anthoine Hubert and his camera partner Thomas Bonnecarrère
 - **Credits**: awards, *Drive to Survive*, the F1 video game, Olympics, football and French TV
 - **The memoir**: *30 ans de F1 : Mes histoires secrètes* (City Éditions, 2023)
-- **Watch and listen**, **FAQ** and **Sources**: every interview and article the page draws on
+- **Shot map**: an LED-style world map of the eighteen moments, with a Europe close-up. Each pin jumps to its story, and a line joins the moments in the order they happened
+- **Watch and listen**: the documentary, the podcast and the Matt Amys video play on the page
+- **FAQ** and **Sources**: every interview and article the page draws on
 
 ## Motion
 
@@ -23,6 +25,8 @@ The animations come from his job:
 - **Rewind.** "Rewind to the top" runs the tape backwards while the page scrolls up.
 - **Reading.** Headings rack into focus, labels type on, the big quotes resolve word by word, and a red editing-timeline playhead runs down the career. A signal travels through the replay diagram, and the header's REC light drops to standby in the two sections about what he won't film and the people he lost. The memorial section stays still.
 
+On phones the section links move into a full-screen menu. Videos play inline through YouTube's privacy-enhanced player; inside a frame, where embeds are blocked, the same links open YouTube instead.
+
 Visitors who ask their system for reduced motion get the complete page with none of it. Scroll reveals never hide content at rest: an element keeps its normal look until it reaches the screen.
 
 This is an unofficial profile compiled from public sources. It is not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. It uses no photographs.
@@ -33,8 +37,11 @@ This is an unofficial profile compiled from public sources. It is not affiliated
 | --- | --- |
 | `index.html` | The page. Both languages are in the markup; CSS hides the one not selected. |
 | `assets/style.css` | All styles. Colour tokens at the top, light and dark themes. |
-| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind), scroll reveals, replay diagram, career playhead, section highlighting. |
+| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind), shot map (land data embedded as compact bit grids), video players, phone menu, sharing, scroll reveals, replay diagram, career playhead, section highlighting. |
 | `assets/favicon.svg` | Tab icon. |
+| `404.html` | "No signal" page with broadcast colour bars, shown for any address that doesn't exist. |
+| `vercel.json` | Security headers for the Vercel deployment. |
+| `robots.txt`, `sitemap.xml` | For search engines. |
 | `assets/og-image.png` | 1200×630 image for link previews. |
 | `tools/og-card.html`, `tools/render-og.js` | Source and script for the link-preview image. |
 

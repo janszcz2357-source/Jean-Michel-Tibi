@@ -17,8 +17,11 @@
 })();
 </script>
 <meta name="description" content="An unofficial profile of Jean-Michel Tibi, the French Formula 1 cameraman known in the paddock as “the Legend”: his career, his slow-motion shots, his memoir and the documentary about him. In English and French.">
-<meta name="theme-color" content="#0E1113">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#EDEFEE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1214" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="profile">
+<meta property="og:site_name" content="Jean-Michel Tibi">
 <meta property="og:title" content="Jean-Michel Tibi, the Legend behind the lens">
 <meta property="og:description" content="The French cameraman who has filmed Formula 1 from inside the garages since 1997. Career, iconic shots, memoir and sources.">
 <meta property="og:url" content="https://jean-michel-tibi.vercel.app/">
@@ -28,6 +31,9 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jean-Michel Tibi, the Legend behind the lens">
+<meta name="twitter:description" content="The French cameraman who has filmed Formula 1 from inside the garages since 1997.">
+<meta name="twitter:image" content="https://jean-michel-tibi.vercel.app/assets/og-image.png">
 <link rel="canonical" href="https://jean-michel-tibi.vercel.app/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,6 +67,30 @@
       "datePublished": "2023-09-20",
       "inLanguage": "fr",
       "isbn": "9782824621654"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Jean-Michel Tibi: The Legend Behind The Lens",
+      "description": "Short documentary about Formula 1 camera operator Jean-Michel Tibi, by Julian Ross Graham and Keven Bobby Blanco.",
+      "thumbnailUrl": "https://i.ytimg.com/vi/UIhHyypvhKI/maxresdefault.jpg",
+      "uploadDate": "2026-01-25",
+      "duration": "PT7M48S",
+      "embedUrl": "https://www.youtube-nocookie.com/embed/UIhHyypvhKI",
+      "url": "https://www.youtube.com/watch?v=UIhHyypvhKI",
+      "about": { "@id": "#jmt" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Who is the cameraman always in the F1 garages?", "acceptedAnswer": { "@type": "Answer", "text": "Very often it is Jean-Michel Tibi, the French FOM camera operator who films slow-motion emotion shots in every team's garage for the world feed." } },
+        { "@type": "Question", "name": "Is he the cameraman in the F1 video game?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. After he advised Codemasters on realism, they scanned him at home for two hours." } },
+        { "@type": "Question", "name": "What camera does he use?", "acceptedAnswer": { "@type": "Answer", "text": "An ARRI Amira cinema camera on a wireless RF link, shooting 25p at 200 frames a second with a 1/250 shutter, so his replays play eight times slower than life." } },
+        { "@type": "Question", "name": "How long has he worked in Formula 1?", "acceptedAnswer": { "@type": "Answer", "text": "His first Grands Prix were in 1992 and his first full season in 1997. 2025 was his 34th season." } },
+        { "@type": "Question", "name": "Did he work on Drive to Survive?", "acceptedAnswer": { "@type": "Answer", "text": "He advised the Box to Box Films crew during season 1 and is credited as a special adviser." } },
+        { "@type": "Question", "name": "Has he written a book?", "acceptedAnswer": { "@type": "Answer", "text": "30 ans de F1 : Mes histoires secrètes, with Axel Brémond (City Éditions, 2023). It is in French." } },
+        { "@type": "Question", "name": "Is there a documentary about him?", "acceptedAnswer": { "@type": "Answer", "text": "The Legend Behind The Lens (2026), an eight-minute film by Julian Ross Graham and Keven Bobby Blanco, free on YouTube." } },
+        { "@type": "Question", "name": "Where can I follow him?", "acceptedAnswer": { "@type": "Answer", "text": "On Instagram as @f1jmt." } }
+      ]
     }
   ]
 }
@@ -84,6 +114,11 @@
         <li><a href="#watch"><span class="t" lang="en">Watch</span><span class="t" lang="fr">À voir</span></a></li>
       </ul>
     </nav>
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu">
+      <span class="menu-ic" aria-hidden="true"></span>
+      <span class="menu-now"><span class="t" lang="en">Sections</span><span class="t" lang="fr">Rubriques</span></span>
+      <span class="menu-close"><span class="t" lang="en">Close</span><span class="t" lang="fr">Fermer</span></span>
+    </button>
     <div class="switch" role="group" aria-label="Language / Langue">
       <button type="button" data-set-lang="en" aria-pressed="true" lang="en">EN</button>
       <button type="button" data-set-lang="fr" aria-pressed="false" lang="fr">FR</button>
@@ -91,6 +126,27 @@
   </div>
   <div class="progress" aria-hidden="true"><span></span></div>
 </header>
+
+<div class="menu" id="menu" hidden>
+  <span class="corner tl" aria-hidden="true"></span>
+  <span class="corner tr" aria-hidden="true"></span>
+  <span class="corner bl" aria-hidden="true"></span>
+  <span class="corner br" aria-hidden="true"></span>
+  <nav aria-label="Menu">
+    <ol>
+      <li><a href="#work" data-target="work"><span class="t" lang="en">The job</span><span class="t" lang="fr">Le métier</span></a></li>
+      <li><a href="#path" data-target="path"><span class="t" lang="en">Career</span><span class="t" lang="fr">Parcours</span></a></li>
+      <li><a href="#shots" data-target="shots"><span class="t" lang="en">Shot list</span><span class="t" lang="fr">Les plans</span></a></li>
+      <li><a href="#trust" data-target="trust"><span class="t" lang="en">Trust</span><span class="t" lang="fr">Confiance</span></a></li>
+      <li><a href="#memory" data-target="memory"><span class="t" lang="en">In memory</span><span class="t" lang="fr">Mémoire</span></a></li>
+      <li><a href="#honours" data-target="honours"><span class="t" lang="en">Credits</span><span class="t" lang="fr">Palmarès</span></a></li>
+      <li><a href="#book" data-target="book"><span class="t" lang="en">Book</span><span class="t" lang="fr">Livre</span></a></li>
+      <li><a href="#watch" data-target="watch"><span class="t" lang="en">Watch</span><span class="t" lang="fr">À voir</span></a></li>
+      <li><a href="#faq" data-target="faq"><span class="t" lang="en">FAQ</span><span class="t" lang="fr">FAQ</span></a></li>
+      <li><a href="#sources" data-target="sources"><span class="t" lang="en">Sources</span><span class="t" lang="fr">Sources</span></a></li>
+    </ol>
+  </nav>
+</div>
 
 <main id="main" class="wrap">
 
@@ -443,93 +499,112 @@
       <p class="intro t" lang="fr">Il a l’habitude d’être au bon endroit au bon moment. Dix-huit de ces moments, racontés par lui.</p>
     </div>
 
+    <figure class="atlas" aria-labelledby="atlas-cap">
+      <div class="atlas-grid">
+        <div class="atlas-panel atlas-world">
+          <span class="osd-l label"><span class="t" lang="en">World feed</span><span class="t" lang="fr">Signal international</span></span>
+          <span class="osd-r label"><span class="t" lang="en">18 moments · 14 places · 5 continents</span><span class="t" lang="fr">18 moments · 14 lieux · 5 continents</span></span>
+          <div class="atlas-scroll">
+            <div class="atlas-map" data-map="world"></div>
+          </div>
+          <span class="swipe label" aria-hidden="true"><span class="t" lang="en">Swipe the map →</span><span class="t" lang="fr">Faites glisser la carte →</span></span>
+        </div>
+        <div class="atlas-panel atlas-eu">
+          <span class="osd-l label">Europe</span>
+          <span class="osd-r label"><span class="t" lang="en">6 places</span><span class="t" lang="fr">6 lieux</span></span>
+          <div class="atlas-map" data-map="europe"></div>
+        </div>
+      </div>
+      <figcaption id="atlas-cap" class="label muted"><span class="t" lang="en">Select a place to jump to its story. The line joins the moments in the order they happened.</span><span class="t" lang="fr">Choisissez un lieu pour aller à son histoire. La ligne relie les moments dans l’ordre où ils se sont produits.</span></figcaption>
+    </figure>
+
     <div class="shots">
-      <article class="shot">
+      <article class="shot" data-place="spa">
         <header><div class="place"><h3>Spa-Francorchamps</h3><span class="yr">2000</span></div><span class="label pos"><span class="t" lang="en">Position · Top of Les Combes</span><span class="t" lang="fr">Position · Haut des Combes</span></span></header>
         <p class="t" lang="en">He is filming Ricardo Zonta’s white BAR when Schumacher’s red Ferrari pulls out, then Häkkinen appears behind it with two wheels on the grass. “Like opening a Kinder Surprise and finding two or three surprises inside.”</p>
         <p class="t" lang="fr">Il filme la BAR blanche de Ricardo Zonta quand la Ferrari rouge de Schumacher déboîte, puis Häkkinen surgit, deux roues dans l’herbe. «&nbsp;C’est comme ouvrir un Kinder Surprise et trouver deux ou trois surprises dedans.&nbsp;»</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="interlagos">
         <header><div class="place"><h3>Interlagos</h3><span class="yr">2001</span></div><span class="label pos"><span class="t" lang="en">Position · Senna S</span><span class="t" lang="fr">Position · S de Senna</span></span></header>
         <p class="t" lang="en">Juan Pablo Montoya, in only his third Grand Prix, barges past Michael Schumacher for the lead.</p>
         <p class="t" lang="fr">Juan Pablo Montoya, pour son troisième Grand Prix seulement, «&nbsp;dégage&nbsp;» Michael Schumacher d’un coup de roue pour prendre la tête.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="melbourne">
         <header><div class="place"><h3>Melbourne</h3><span class="yr"><span class="t" lang="en">Early 2000s</span><span class="t" lang="fr">Début 2000</span></span></div><span class="label pos"><span class="t" lang="en">Position · Ferrari motorhome</span><span class="t" lang="fr">Position · Motorhome Ferrari</span></span></header>
         <p class="t" lang="en">Running late for Michael Schumacher’s season-opening interview, he is sweating over tripod and lights. “Easy, easy. Do you want a coffee?” The champion gets up and makes him an espresso himself.</p>
         <p class="t" lang="fr">En retard pour l’interview de début de saison de Michael Schumacher, il transpire sur son trépied et ses lumières. «&nbsp;Doucement. Tu veux un café&nbsp;?&nbsp;» Le champion se lève et lui prépare lui-même un expresso.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="indianapolis">
         <header><div class="place"><h3>Indianapolis</h3><span class="yr">2005</span></div><span class="label pos"><span class="t" lang="en">Position · Trackside</span><span class="t" lang="fr">Position · Bord de piste</span></span></header>
         <p class="t" lang="en">The Michelin tyre dispute leaves only six cars to start the United States Grand Prix.</p>
         <p class="t" lang="fr">L’imbroglio des pneus Michelin&nbsp;: six voitures seulement au départ du Grand Prix des États-Unis.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="interlagos">
         <header><div class="place"><h3>Interlagos</h3><span class="yr">2005</span></div><span class="label pos"><span class="t" lang="en">Fernando Alonso’s first title</span><span class="t" lang="fr">Premier titre d’Alonso</span></span></header>
         <p class="t" lang="en">Fernando Alonso becomes world champion. Video maker Matt Amys puts the shot first on his list of iconic F1 images filmed by Tibi.</p>
         <p class="t" lang="fr">Fernando Alonso devient champion du monde. Le vidéaste Matt Amys place ce plan en tête des images cultes de la F1 signées Tibi.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="shanghai">
         <header><div class="place"><h3>Shanghai</h3><span class="yr">2007</span></div><span class="label pos"><span class="t" lang="en">Position · Beside the gravel trap</span><span class="t" lang="fr">Position · À côté du bac à graviers</span></span></header>
         <p class="t" lang="en">Lewis Hamilton slides into the gravel at the pit entry, a costly mistake in his rookie title fight.</p>
         <p class="t" lang="fr">Lewis Hamilton s’échoue dans le bac à graviers à l’entrée des stands, une erreur coûteuse dans sa course au titre de débutant.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="monza">
         <header><div class="place"><h3>Monza</h3><span class="yr">2008</span></div><span class="label pos"><span class="t" lang="en">Sebastian Vettel’s first win</span><span class="t" lang="fr">Première victoire de Vettel</span></span></header>
         <p class="t" lang="en">He films Sebastian Vettel’s first Grand Prix victory. Years later the two go motorbike riding in the Alps, and no photo of it ends up online the next morning.</p>
         <p class="t" lang="fr">Il filme la première victoire de Sebastian Vettel. Des années plus tard, ils partent faire de la moto ensemble dans les Alpes, et aucune photo ne finit en ligne le lendemain matin.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="hungaroring">
         <header><div class="place"><h3>Hungaroring</h3><span class="yr">2009</span></div><span class="label pos"><span class="t" lang="en">Position · Outside the medical centre</span><span class="t" lang="fr">Position · Devant le centre médical</span></span></header>
         <p class="t" lang="en">Felipe Massa is hit on the helmet by a loose spring. Tibi does not film Massa. He films the people waiting outside: Stefano Domenicali, Nicolas Todt, Gino Rosato.</p>
         <p class="t" lang="fr">Felipe Massa est touché au casque par un ressort. Tibi ne filme pas Massa&nbsp;: il filme ceux qui attendent dehors, Stefano Domenicali, Nicolas Todt, Gino Rosato.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="interlagos">
         <header><div class="place"><h3>Interlagos</h3><span class="yr">2009</span></div><span class="label pos"><span class="t" lang="en">Position · Parc fermé</span><span class="t" lang="fr">Position · Parc fermé</span></span></header>
         <p class="t" lang="en">Jenson Button clinches the title, jumps out of the car and kisses him live on air while the director shouts in his ear to get out of shot. “Can we celebrate later?”</p>
         <p class="t" lang="fr">Jenson Button décroche le titre, saute de sa voiture et l’embrasse en direct, pendant que le réalisateur lui hurle dans l’oreillette de sortir du champ. «&nbsp;On peut fêter ça plus tard&nbsp;?&nbsp;»</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="interlagos">
         <header><div class="place"><h3>Interlagos</h3><span class="yr">2012</span></div><span class="label pos"><span class="t" lang="en">Position · Mercedes garage</span><span class="t" lang="fr">Position · Garage Mercedes</span></span></header>
         <p class="t" lang="en">On the morning of his last race, Michael Schumacher asks him to come by afterwards, then hands him the gloves he raced in: “You supported me all these years.” They hang framed in Tibi’s home.</p>
         <p class="t" lang="fr">Le matin de sa dernière course, Michael Schumacher lui demande de passer le voir après, puis lui offre ses gants de course&nbsp;: «&nbsp;Tu m’as toujours soutenu.&nbsp;» Ils sont encadrés chez lui.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="sakhir">
         <header><div class="place"><h3>Sakhir</h3><span class="yr">2018</span></div><span class="label pos"><span class="t" lang="en">Position · Ferrari pit box</span><span class="t" lang="fr">Position · Stand Ferrari</span></span></header>
         <p class="t" lang="en">A Ferrari mechanic is struck during Kimi Räikkönen’s stop. Live cameras cover the injured man, so Tibi films what nobody else has: Maurizio Arrivabene staying calm, then a mechanic hurling his helmet at the garage wall. The edit tells the whole story.</p>
         <p class="t" lang="fr">Un mécanicien Ferrari est percuté lors de l’arrêt de Kimi Räikkönen. Les caméras du direct couvrent le blessé&nbsp;; Tibi filme ce que personne n’a&nbsp;: Maurizio Arrivabene qui reste calme, puis un mécanicien qui jette son casque contre le mur. Le montage raconte toute l’histoire.</p>
       </article>
-      <article class="shot missed">
+      <article class="shot missed" data-place="hockenheim">
         <header><div class="place"><h3>Hockenheim</h3><span class="yr">2018</span></div><span class="label pos"><span class="t" lang="en">The one that got away</span><span class="t" lang="fr">Celui qui lui a échappé</span></span></header>
         <p class="t" lang="en">Vettel slides off in the rain while leading. Tibi is caught between the Ferrari and Mercedes garages with no reaction from either. The director calls for RF 6, his camera. There is nothing. He still remembers how furious he was.</p>
         <p class="t" lang="fr">Vettel sort de la piste sous la pluie alors qu’il mène. Tibi est coincé entre les garages Ferrari et Mercedes, sans aucune réaction ni d’un côté ni de l’autre. Le réalisateur réclame «&nbsp;HF 6&nbsp;», sa caméra. Rien. «&nbsp;J’avais les boules.&nbsp;»</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="sakhir">
         <header><div class="place"><h3>Sakhir</h3><span class="yr">2020</span></div><span class="label pos"><span class="t" lang="en">Position · Pit lane</span><span class="t" lang="fr">Position · Voie des stands</span></span></header>
         <p class="t" lang="en">While Romain Grosjean’s car burns, he has to switch off his own emotions and film the people watching the screens. One of them is Grosjean’s manager Stéphane Guérin, whom no other cameraman would have recognised.</p>
         <p class="t" lang="fr">Pendant que la voiture de Romain Grosjean brûle, il doit couper toute émotion et filmer ceux qui regardent les écrans. Parmi eux, Stéphane Guérin, le manager de Romain, qu’aucun autre caméraman n’aurait reconnu.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="monaco">
         <header><div class="place"><h3>Monaco</h3><span class="yr">2021</span></div><span class="label pos"><span class="t" lang="en">Position · Mercedes pit box</span><span class="t" lang="fr">Position · Stand Mercedes</span></span></header>
         <p class="t" lang="en">Valtteri Bottas’s front-right wheel nut will not come off. Breaking the pit lane’s unwritten rule, Tibi crosses in front of the raised car and films the gun chewing the nut, metal flying in the light. Bottas turns in the cockpit and looks straight at him.</p>
         <p class="t" lang="fr">L’écrou avant droit de Valtteri Bottas refuse de sortir. Enfreignant la règle non écrite des stands, Tibi passe devant la voiture levée et filme le pistolet qui ronge l’écrou, des copeaux de métal dans la lumière. Bottas se retourne dans son cockpit et le regarde.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="copenhagen">
         <header><div class="place"><h3>Copenhagen</h3><span class="yr">2021</span></div><span class="label pos"><span class="t" lang="en">Position · Parken Stadium, Euro 2020</span><span class="t" lang="fr">Position · Parken, Euro 2020</span></span></header>
         <p class="t" lang="en">Not every big moment is in motorsport. He is filming Denmark v Finland when Christian Eriksen collapses on the pitch. Eriksen survived.</p>
         <p class="t" lang="fr">Tous les grands moments ne sont pas en sport auto. Il filme Danemark–Finlande quand Christian Eriksen s’effondre sur la pelouse. Eriksen a survécu.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="jeddah">
         <header><div class="place"><h3>Jeddah</h3><span class="yr">2021</span></div><span class="label pos"><span class="t" lang="en">Position · Red Bull, then Mercedes</span><span class="t" lang="fr">Position · Red Bull, puis Mercedes</span></span></header>
         <p class="t" lang="en">Saturday: Max Verstappen clips the wall on his final qualifying lap and Tibi films Jos Verstappen banging the table. Sunday: hidden behind mechanics, he catches Toto Wolff smashing his headphones. Wolff tells him he knew it was him. Tibi: “I’m just a witness to what happens in front of me.”</p>
         <p class="t" lang="fr">Samedi&nbsp;: Max Verstappen touche le mur dans son dernier tour de qualification, et Tibi filme Jos Verstappen qui frappe la table. Dimanche&nbsp;: caché derrière les mécaniciens, il saisit Toto Wolff qui fracasse son casque audio. Wolff lui dira qu’il savait que c’était lui. Tibi&nbsp;: «&nbsp;Je ne suis qu’un témoin de ce qui se passe devant moi.&nbsp;»</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="mexico">
         <header><div class="place"><h3>Mexico City</h3><span class="yr">2021</span></div><span class="label pos"><span class="t" lang="en">Position · Podium</span><span class="t" lang="fr">Position · Podium</span></span></header>
         <p class="t" lang="en">Max Verstappen “reigning like an eagle”, Sergio Pérez celebrating a podium like a win, and Lewis Hamilton with Angela Cullen almost unnoticed.</p>
         <p class="t" lang="fr">Max Verstappen «&nbsp;qui règne comme un aigle&nbsp;», Sergio Pérez qui fête son podium comme une victoire, et Lewis Hamilton avec Angela Cullen, presque ignorés.</p>
       </article>
-      <article class="shot">
+      <article class="shot" data-place="yasmarina">
         <header><div class="place"><h3>Yas Marina</h3><span class="yr">2021</span></div><span class="label pos"><span class="t" lang="en">Position · After the flag</span><span class="t" lang="fr">Position · Après le drapeau</span></span></header>
         <p class="t" lang="en">Verstappen takes the title on the final lap. “I had promised myself to capture tears in this final. But when I saw Lewis wiping his own, I didn’t have the strength to point my camera at him.”</p>
         <p class="t" lang="fr">Verstappen est sacré dans le dernier tour. «&nbsp;Je m’étais promis de capter des larmes lors de cette finale. Mais quand j’ai vu Lewis essuyer les siennes, je n’ai pas eu la force de pointer ma caméra sur lui.&nbsp;»</p>
@@ -739,35 +814,66 @@
       <h2 id="watch-h"><span class="t" lang="en">Hear it from him</span><span class="t" lang="fr">Par lui-même</span></h2>
     </div>
 
-    <ul class="media">
-      <li><a href="https://www.youtube.com/watch?v=UIhHyypvhKI" rel="noopener" target="_blank">
-        <span class="label meta"><span><span class="t" lang="en">Documentary</span><span class="t" lang="fr">Documentaire</span></span><span>2026</span><span><span class="t" lang="en">English</span><span class="t" lang="fr">Anglais</span></span><span>7:48</span></span>
-        <strong>The Legend Behind The Lens</strong>
+    <div class="feature">
+      <a class="player" href="https://www.youtube.com/watch?v=UIhHyypvhKI" data-yt="UIhHyypvhKI" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/UIhHyypvhKI/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">
+          <span class="player-ui" aria-hidden="true"><span class="play"></span></span>
+          <span class="player-meta label" aria-hidden="true">7:48</span>
+          <span class="sr"><span class="t" lang="en">Play the documentary The Legend Behind The Lens, 7 minutes 48</span><span class="t" lang="fr">Lire le documentaire The Legend Behind The Lens, 7 minutes 48</span></span>
+        </a>
+      <div class="feature-body">
+        <span class="label meta"><span><span class="t" lang="en">Documentary</span><span class="t" lang="fr">Documentaire</span></span><span>2026</span><span><span class="t" lang="en">English</span><span class="t" lang="fr">Anglais</span></span></span>
+        <h3>The Legend Behind The Lens</h3>
         <p class="t" lang="en">Short film by Julian Ross Graham and Keven Bobby Blanco. Senna, Jeddah, Spa and Suzuka, in his own words. Finalist at the International Auto Film Festa 2026.</p>
         <p class="t" lang="fr">Court métrage de Julian Ross Graham et Keven Bobby Blanco. Senna, Djeddah, Spa et Suzuka, racontés par lui. Finaliste de l’International Auto Film Festa 2026.</p>
-        <span class="go"><span class="t" lang="en">Watch on YouTube ↗</span><span class="t" lang="fr">Voir sur YouTube ↗</span></span>
-      </a></li>
-      <li><a href="https://www.youtube.com/watch?v=f3_oKmhanUY" rel="noopener" target="_blank">
-        <span class="label meta"><span><span class="t" lang="en">Podcast · Episode 99</span><span class="t" lang="fr">Podcast · Épisode 99</span></span><span>2022</span><span><span class="t" lang="en">French</span><span class="t" lang="fr">Français</span></span><span>1:23:10</span></span>
-        <strong lang="fr">Dans la Boîte à Gants</strong>
-        <p class="t" lang="en">His longest interview, with Yann Delplanque: Spa 2000, Bottas’s wheel nut, Jules and Anthoine, Thomas, the F1 game and the making of <i>Drive to Survive</i>.</p>
-        <p class="t" lang="fr">Son plus long entretien, avec Yann Delplanque&nbsp;: Spa 2000, l’écrou de Bottas, Jules et Anthoine, Thomas, le jeu F1 et les coulisses de <i>Drive to Survive</i>.</p>
-        <span class="go"><span class="t" lang="en">Watch on YouTube ↗</span><span class="t" lang="fr">Voir sur YouTube ↗</span></span>
-      </a></li>
-      <li><a href="https://www.youtube.com/watch?v=eqlPWtDqVeU" rel="noopener" target="_blank">
-        <span class="label meta"><span><span class="t" lang="en">Video</span><span class="t" lang="fr">Vidéo</span></span><span>2022</span><span><span class="t" lang="en">English</span><span class="t" lang="fr">Anglais</span></span><span>7:53</span></span>
-        <strong>How Formula 1’s Most Iconic Shots Are Filmed</strong>
-        <p class="t" lang="en">Matt Amys, who met him working in Formula E, asks about his ARRI Amira set-up, his replays and Jenson Button’s kiss.</p>
-        <p class="t" lang="fr">Matt Amys, qui l’a rencontré en Formule E, l’interroge sur son ARRI Amira, ses ralentis et le baiser de Jenson Button.</p>
-        <span class="go"><span class="t" lang="en">Watch on YouTube ↗</span><span class="t" lang="fr">Voir sur YouTube ↗</span></span>
-      </a></li>
-      <li><a href="https://horspistesf1.wordpress.com/2021/05/17/les-autres-francais-de-la-formule-1-jean-michel-tibi/" rel="noopener" target="_blank">
-        <span class="label meta"><span><span class="t" lang="en">Interview</span><span class="t" lang="fr">Entretien</span></span><span>2021</span><span><span class="t" lang="en">French</span><span class="t" lang="fr">Français</span></span></span>
-        <strong lang="fr">Les autres Français de la Formule 1</strong>
-        <p class="t" lang="en">The HorsPistesF1 portrait that started the book: his career, a race day hour by hour, and his best and worst memories.</p>
-        <p class="t" lang="fr">Le portrait de HorsPistesF1 à l’origine du livre&nbsp;: son parcours, une journée de course heure par heure, ses meilleurs et pires souvenirs.</p>
-        <span class="go"><span class="t" lang="en">Read on HorsPistesF1 ↗</span><span class="t" lang="fr">Lire sur HorsPistesF1 ↗</span></span>
-      </a></li>
+        <a class="go" href="https://www.youtube.com/watch?v=UIhHyypvhKI" rel="noopener" target="_blank"><span class="t" lang="en">Open on YouTube ↗</span><span class="t" lang="fr">Ouvrir sur YouTube ↗</span></a>
+      </div>
+    </div>
+
+    <ul class="media">
+      <li>
+        <a class="player player-sm" href="https://www.youtube.com/watch?v=f3_oKmhanUY" data-yt="f3_oKmhanUY" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/f3_oKmhanUY/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">
+          <span class="player-ui" aria-hidden="true"><span class="play"></span></span>
+          <span class="player-meta label" aria-hidden="true">1:23:10</span>
+          <span class="sr"><span class="t" lang="en">Play the podcast Dans la Boîte à Gants, episode 99</span><span class="t" lang="fr">Lire le podcast Dans la Boîte à Gants, épisode 99</span></span>
+        </a>
+        <div class="mc">
+          <span class="label meta"><span><span class="t" lang="en">Podcast · Episode 99</span><span class="t" lang="fr">Podcast · Épisode 99</span></span><span>2022</span><span><span class="t" lang="en">French</span><span class="t" lang="fr">Français</span></span></span>
+          <strong lang="fr">Dans la Boîte à Gants</strong>
+          <p class="t" lang="en">His longest interview, with Yann Delplanque: Spa 2000, Bottas’s wheel nut, Jules and Anthoine, Thomas, the F1 game and the making of <i>Drive to Survive</i>.</p>
+          <p class="t" lang="fr">Son plus long entretien, avec Yann Delplanque&nbsp;: Spa 2000, l’écrou de Bottas, Jules et Anthoine, Thomas, le jeu F1 et les coulisses de <i>Drive to Survive</i>.</p>
+          <a class="go" href="https://www.youtube.com/watch?v=f3_oKmhanUY" rel="noopener" target="_blank"><span class="t" lang="en">Open on YouTube ↗</span><span class="t" lang="fr">Ouvrir sur YouTube ↗</span></a>
+        </div>
+      </li>
+      <li>
+        <a class="player player-sm" href="https://www.youtube.com/watch?v=eqlPWtDqVeU" data-yt="eqlPWtDqVeU" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/eqlPWtDqVeU/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">
+          <span class="player-ui" aria-hidden="true"><span class="play"></span></span>
+          <span class="player-meta label" aria-hidden="true">7:53</span>
+          <span class="sr"><span class="t" lang="en">Play How Formula 1’s Most Iconic Shots Are Filmed, by Matt Amys</span><span class="t" lang="fr">Lire How Formula 1’s Most Iconic Shots Are Filmed, de Matt Amys</span></span>
+        </a>
+        <div class="mc">
+          <span class="label meta"><span><span class="t" lang="en">Video</span><span class="t" lang="fr">Vidéo</span></span><span>2022</span><span><span class="t" lang="en">English</span><span class="t" lang="fr">Anglais</span></span></span>
+          <strong>How Formula 1’s Most Iconic Shots Are Filmed</strong>
+          <p class="t" lang="en">Matt Amys, who met him working in Formula E, asks about his ARRI Amira set-up, his replays and Jenson Button’s kiss.</p>
+          <p class="t" lang="fr">Matt Amys, qui l’a rencontré en Formule E, l’interroge sur son ARRI Amira, ses ralentis et le baiser de Jenson Button.</p>
+          <a class="go" href="https://www.youtube.com/watch?v=eqlPWtDqVeU" rel="noopener" target="_blank"><span class="t" lang="en">Open on YouTube ↗</span><span class="t" lang="fr">Ouvrir sur YouTube ↗</span></a>
+        </div>
+      </li>
+      <li>
+        <a class="paper-cover" href="https://horspistesf1.wordpress.com/2021/05/17/les-autres-francais-de-la-formule-1-jean-michel-tibi/" rel="noopener" target="_blank" aria-hidden="true" tabindex="-1">
+          <span class="pc-q">«&nbsp;»</span>
+          <span class="label">HorsPistesF1 · 2021</span>
+        </a>
+        <div class="mc">
+          <span class="label meta"><span><span class="t" lang="en">Interview</span><span class="t" lang="fr">Entretien</span></span><span>2021</span><span><span class="t" lang="en">French</span><span class="t" lang="fr">Français</span></span></span>
+          <strong lang="fr">Les autres Français de la Formule 1</strong>
+          <p class="t" lang="en">The HorsPistesF1 portrait that started the book: his career, a race day hour by hour, and his best and worst memories.</p>
+          <p class="t" lang="fr">Le portrait de HorsPistesF1 à l’origine du livre&nbsp;: son parcours, une journée de course heure par heure, ses meilleurs et pires souvenirs.</p>
+          <a class="go" href="https://horspistesf1.wordpress.com/2021/05/17/les-autres-francais-de-la-formule-1-jean-michel-tibi/" rel="noopener" target="_blank"><span class="t" lang="en">Read on HorsPistesF1 ↗</span><span class="t" lang="fr">Lire sur HorsPistesF1 ↗</span></a>
+        </div>
+      </li>
     </ul>
     <div class="links">
       <a href="https://www.instagram.com/f1jmt/" rel="noopener" target="_blank">Instagram @f1jmt ↗</a>
@@ -848,11 +954,17 @@
   <div class="wrap">
     <p class="t" lang="en">An unofficial profile compiled from public interviews and articles, October 2026. Not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. No photographs are used.</p>
     <p class="t" lang="fr">Portrait non officiel, établi à partir d’entretiens et d’articles publics, octobre 2026. Sans lien avec Jean-Michel Tibi, la Formule 1 ou la Formula One Management. Aucune photographie n’est utilisée.</p>
-    <p class="label foot-links">
-      <a href="#faq">FAQ</a>
-      <a href="#sources">Sources</a>
-      <a href="#top"><span class="t" lang="en">Rewind to the top ↑</span><span class="t" lang="fr">Rembobiner ↑</span></a>
-    </p>
+    <div class="foot-side">
+      <div class="share-wrap">
+        <button type="button" class="share label" id="share"><span aria-hidden="true">↗</span> <span class="t" lang="en">Share this page</span><span class="t" lang="fr">Partager cette page</span></button>
+        <span class="share-status label" id="share-status" role="status" aria-live="polite"></span>
+      </div>
+      <p class="label foot-links">
+        <a href="#faq">FAQ</a>
+        <a href="#sources">Sources</a>
+        <a href="#top"><span class="t" lang="en">Rewind to the top ↑</span><span class="t" lang="fr">Rembobiner ↑</span></a>
+      </p>
+    </div>
   </div>
 </footer>
 
