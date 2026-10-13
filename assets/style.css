@@ -1339,10 +1339,13 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
    v8: animations back and more — pinned career year, on-air card, chapter
    marks, sliding toggles, card tilt, travelling map signal, spinning figures
    ===================================================================== */
+/* effects in mid-flight (cards tilting toward the viewer, frames locking on) may poke past the
+   screen edge for a moment; the page itself never scrolls sideways */
+html { overflow-x: clip; }
 .spec dd, .facts dd { font-variant-numeric: tabular-nums; }
 
 /* reading progress: chapter marks on the bar under the header */
-.progress i { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--muted); opacity: 0.45; transition: background-color 0.3s, opacity 0.3s, height 0.3s, top 0.3s; }
+.progress i { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--muted); opacity: 0.45; }
 .progress i.is-current { background: var(--tally); opacity: 1; top: -4px; height: 10px; }
 
 /* career: the year under the playhead, pinned while you scroll the timeline */
@@ -1399,6 +1402,7 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 
 @media (prefers-reduced-motion: no-preference) {
   .switch-ink { transition: transform 0.5s var(--ease-out), width 0.5s var(--ease-out), opacity 0.2s; }
+  .progress i { transition: background-color 0.3s, opacity 0.3s, height 0.3s, top 0.3s; }
   .shot.is-air::before { transform: none; }
   .shot.is-air::after { animation: tally 1.2s steps(2, jump-none) infinite; }
   .atlas .signal-glow { animation: sig-pulse 1.6s ease-out infinite; }
