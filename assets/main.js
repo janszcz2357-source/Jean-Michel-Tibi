@@ -401,6 +401,7 @@
   function jumpTo(key) {
     var cards = cardsFor(key);
     if (!cards.length) return;
+    if (!cards[0].offsetParent) expandShots(false);
     cards[0].setAttribute("tabindex", "-1");
     cards[0].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
     cards[0].focus({ preventScroll: true });
@@ -412,6 +413,31 @@
   function setHot(key, on) {
     var pin = pinsByPlace[key];
     if (pin) pin.classList.toggle("is-hot", on);
+  }
+
+  /* Shot list: the first rows show; the rest open on request */
+  var shotGrid = $(".shots"), moreBtn = null;
+  function expandShots(focusNew) {
+    if (!shotGrid || !shotGrid.classList.contains("is-collapsed")) return;
+    var hidden = $$(".shot", shotGrid).filter(function (c) { return !c.offsetParent; });
+    shotGrid.classList.remove("is-collapsed");
+    if (moreBtn) { moreBtn.setAttribute("aria-expanded", "true"); moreBtn.hidden = true; }
+    if (focusNew && hidden[0]) {
+      hidden[0].setAttribute("tabindex", "-1");
+      hidden[0].focus({ preventScroll: true });
+    }
+  }
+  if (shotGrid) {
+    var shotCount = $$(".shot", shotGrid).length;
+    shotGrid.classList.add("is-collapsed");
+    moreBtn = document.createElement("button");
+    moreBtn.type = "button";
+    moreBtn.className = "more label";
+    moreBtn.setAttribute("aria-expanded", "false");
+    moreBtn.setAttribute("aria-controls", "shot-list");
+    moreBtn.innerHTML = '<span aria-hidden="true">+</span> ' + both("Show all " + shotCount + " moments", "Afficher les " + shotCount + " moments");
+    moreBtn.addEventListener("click", function () { expandShots(true); });
+    shotGrid.parentNode.insertBefore(moreBtn, shotGrid.nextSibling);
   }
 
   var atlas = $(".atlas");
@@ -583,7 +609,7 @@
       ".section-head .intro", ".prose > p", ".aside-quote", ".hazard", ".odds", ".spec > div",
       ".callsheet > li", ".shot", ".refusals > li", ".credits > li", ".chips > li", ".plain > li",
       ".facts > div", ".media > li", ".faq > div", ".sources li", ".book-body h3", ".links a", ".note",
-      ".pipeline ol > li", ".feature", ".fps-stage", ".subhead", ".pull figcaption", ".atlas figcaption"
+      ".pipeline ol > li", ".feature", ".fps-stage", ".subhead", ".pull figcaption", ".atlas figcaption", ".pitlane"
     ].join(","), "rv");
     tag(".report-row[role=listitem]", "wipe");
     $$(".pull blockquote, .trust blockquote").forEach(function (q) { if (!q.closest(STILL)) splitWords(q); });
@@ -593,7 +619,8 @@
     /* only content below the fold waits; what is already in view stays put */
     var fold = window.innerHeight;
     targets = targets.filter(function (el) {
-      if (el.getBoundingClientRect().top < fold) return false;
+      var folded = !el.offsetParent && el.classList.contains("shot");
+      if (!folded && el.getBoundingClientRect().top < fold) return false;
       el.classList.add("rv-wait");
       return true;
     });
@@ -1032,7 +1059,7 @@
       var ahead = clamp(v * 350, 500, 2600), miss = 0;
       for (var j = 0; j < pending.length; j++) {
         var el = pending[j];
-        if (!el.classList.contains("rv-wait")) continue;
+        if (!el.classList.contains("rv-wait") || !el.offsetParent) continue;
         var er = el.getBoundingClientRect();
         if (er.top < vh + ahead && er.bottom > -ahead) { sweep.push(el); miss = 0; }
         else if (er.top >= vh + ahead && ++miss > 6) break;

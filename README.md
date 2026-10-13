@@ -4,9 +4,9 @@ A one-page profile of Jean-Michel Tibi, the French Formula 1 cameraman and direc
 
 ## What's on the page
 
-- **The job**: his role at Formula One Management, his camera settings (ARRI Amira, 25p at 200 fps), a side-by-side demo of why he shoots 200 frames a second, how his slow-motion replays reach the world feed, and a Grand Prix Sunday hour by hour
+- **The job**: his role at Formula One Management, a pit-lane schematic of how he works every garage, his camera settings (ARRI Amira, 25p at 200 fps), a side-by-side demo of why he shoots 200 frames a second, how his slow-motion replays reach the world feed, and a Grand Prix Sunday hour by hour
 - **Career**: from Paris motorbike courier (early 1980s) to his 34th F1 season (2025)
-- **Shot list**: eighteen moments he filmed, from Spa 2000 to Abu Dhabi 2021, including the one he missed
+- **Shot list**: eighteen moments he filmed, from Spa 2000 to Abu Dhabi 2021, including the one he missed. The first rows show; the rest open with a button or from the map
 - **Trust**: the shots he chooses not to take
 - **In memory**: Jules Bianchi, Anthoine Hubert and his camera partner Thomas Bonnecarrère
 - **Credits**: awards, *Drive to Survive*, the F1 video game, Olympics, football and French TV
