@@ -770,52 +770,76 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   @keyframes hunt { 35% { scale: 1.3; } 70% { scale: 0.92; } }
 
   /* --- scroll reveals ---
-     Content still below the fold at load waits in its start pose (rv-wait) and plays in once,
-     as soon as it reaches the screen. Every move is short and front-loaded, so text is legible
-     within a fraction of a second. A fast scroll gets a brief fade instead (rv-fast): no travel,
-     no stagger, nothing trailing behind the reader. --d staggers items that arrive together. */
+     Content still below the fold at load waits in its start pose (rv-wait) and plays in once as it
+     reaches the screen. Eases are front-loaded, so text is legible early while the motion carries on
+     and settles. On a fast scroll the script starts what is about to arrive a moment early, so it comes
+     into view already moving. --d staggers items that arrive together. */
   .rv-wait { opacity: 0; }
-  .rv.is-in { animation: rise 0.65s var(--ease-out) var(--d, 0ms) backwards; }
-  @keyframes rise { from { opacity: 0; transform: translate3d(0, 18px, 0); } }
-  .rf.is-in { animation: rack 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards; }
+  .rv.is-in { animation: rise 0.95s var(--ease-out) var(--d, 0ms) backwards; }
+  @keyframes rise { from { opacity: 0; transform: translate3d(0, 28px, 0); } }
+  .rf.is-in { animation: rack 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards; }
   @keyframes rack {
-    0% { opacity: 0; filter: blur(10px); }
-    45% { opacity: 1; filter: blur(0); }
-    62% { filter: blur(1.6px); }
+    0% { opacity: 0; filter: blur(12px); }
+    50% { opacity: 1; filter: blur(0); }
+    66% { filter: blur(2px); }
     100% { filter: blur(0); }
   }
-  .rf.is-in::after { animation: acquire 1.25s var(--ease-out) var(--d, 0ms) backwards; }
-  .ty.is-in { animation: type 0.5s steps(22, end) var(--d, 0ms) backwards; }
+  .rf.is-in::after { animation: acquire 1.7s var(--ease-out) calc(var(--d, 0ms) + 0.1s) backwards; }
+  .ty.is-in { animation: type 0.75s steps(24, end) var(--d, 0ms) backwards; }
   @keyframes type { from { clip-path: inset(0 100% 0 0); } }
   .slowmo .w { display: inline-block; }
-  .slowmo.is-in .w { animation: word 0.75s var(--ease-out) backwards; animation-delay: calc(var(--d, 0ms) + var(--wi, 0) * 50ms); }
-  @keyframes word { from { opacity: 0.05; filter: blur(6px); transform: translate3d(0, 0.18em, 0); } }
-  .wipe.is-in { animation: wipe 0.7s var(--ease-out) var(--d, 0ms) backwards; }
-  @keyframes wipe { from { opacity: 0.25; clip-path: inset(0 100% 0 0); } }
-  .shot.is-in::before { animation: acquire 1.15s var(--ease-out) calc(var(--d, 0ms) + 0.1s) backwards; }
+  .slowmo.is-in .w { animation: word 1.15s var(--ease-out) backwards; animation-delay: calc(var(--d, 0ms) + var(--wi, 0) * 85ms); }
+  @keyframes word { from { opacity: 0.05; filter: blur(8px); transform: translate3d(0, 0.25em, 0); } }
+  .wipe.is-in { animation: wipe 1s var(--ease-out) var(--d, 0ms) backwards; }
+  @keyframes wipe { from { opacity: 0.2; clip-path: inset(0 100% 0 0); transform: translate3d(-18px, 0, 0); } }
+  /* story cards tilt up into frame, left to right, then their frame lines lock on */
+  .shots { perspective: 1400px; }
+  .card.is-in { transform-origin: 50% 100%; animation: card-in 1.05s var(--ease-out) var(--d, 0ms) backwards; }
+  @keyframes card-in { from { opacity: 0; transform: translate3d(0, 48px, 0) rotateX(18deg); } }
+  .shot.is-in::before { animation: acquire 1.4s var(--ease-out) calc(var(--d, 0ms) + 0.25s) backwards; }
   @keyframes acquire {
     0% { opacity: 0; transform: scale(1.12); }
     28% { opacity: 1; transform: scale(1); }
     72% { opacity: 1; }
     100% { opacity: 0; transform: scale(1); }
   }
-  .odds.is-in .bar span { animation: fill 1s var(--ease-out) backwards; }
-  .odds.is-in .bar .luck { transform-origin: left; animation-delay: calc(var(--d, 0ms) + 0.15s); }
-  .odds.is-in .bar .work { transform-origin: right; animation-delay: calc(var(--d, 0ms) + 0.3s); }
-  .odds.is-in .odds-row + .odds-row .bar .luck { animation-delay: calc(var(--d, 0ms) + 0.35s); }
-  .odds.is-in .odds-row + .odds-row .bar .work { animation-delay: calc(var(--d, 0ms) + 0.5s); }
+  /* the trust panel opens from a letterbox */
+  .widen.is-in { animation: widen 1.25s var(--ease-out) var(--d, 0ms) backwards; }
+  @keyframes widen { from { clip-path: inset(0 8% round 4px); } to { clip-path: inset(0 0 round 4px); } }
+  .odds.is-in .bar span { animation: fill 1.4s var(--ease-out) backwards; }
+  .odds.is-in .bar .luck { transform-origin: left; animation-delay: calc(var(--d, 0ms) + 0.3s); }
+  .odds.is-in .bar .work { transform-origin: right; animation-delay: calc(var(--d, 0ms) + 0.55s); }
+  .odds.is-in .odds-row + .odds-row .bar .luck { animation-delay: calc(var(--d, 0ms) + 0.6s); }
+  .odds.is-in .odds-row + .odds-row .bar .work { animation-delay: calc(var(--d, 0ms) + 0.85s); }
   @keyframes fill { from { transform: scaleX(0); } }
-  .refusals li.is-in .label::before { animation: stop-on 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--d, 0ms) + 0.2s) backwards; }
+  .refusals li.is-in .label::before { animation: stop-on 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--d, 0ms) + 0.35s) backwards; }
   @keyframes stop-on { from { background: transparent; transform: scale(1.8); } }
-  .cover.is-in { animation: book-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards; }
-  @keyframes book-in { from { opacity: 0; transform: rotateY(-48deg) rotateX(6deg) translateX(-14px); } }
-  /* a fast scroll: just a short fade */
-  .rv-fast.is-in, .rv-fast.is-in .w, .rv-fast.is-in .bar span { animation: quick 0.22s ease-out backwards !important; }
-  .rv-fast.is-in::before, .rv-fast.is-in::after, .rv-fast.is-in .label::before { animation: none !important; }
-  @keyframes quick { from { opacity: 0; } }
-  /* a very fast scroll: content ahead of the reader is simply shown */
-  .rv-instant.is-in, .rv-instant.is-in .w, .rv-instant.is-in .bar span,
-  .rv-instant.is-in::before, .rv-instant.is-in::after, .rv-instant.is-in .label::before { animation: none !important; }
+  /* occupational hazard: the warning label blinks as it arrives */
+  .hazard.is-in .label { animation: warn 0.5s steps(2, jump-none) calc(var(--d, 0ms) + 0.5s) 3; }
+  @keyframes warn { 50% { opacity: 0.15; } }
+  /* the memoir swings in on its spine, then light sweeps across the cover */
+  .cover.is-in { animation: book-in 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards; }
+  @keyframes book-in { from { opacity: 0; transform: rotateY(-55deg) rotateX(6deg) translateX(-18px); } }
+  .cover.is-in::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 38%, color-mix(in srgb, var(--paper) 40%, transparent) 50%, transparent 62%) 0 0 / 250% 100% no-repeat;
+    animation: sheen 1.3s ease-in-out calc(var(--d, 0ms) + 1.15s) backwards;
+  }
+  @keyframes sheen { from { background-position: 100% 0; } to { background-position: 0 0; } }
+  /* the world feed switches on like a monitor before the route draws */
+  .atlas.is-in .atlas-grid { animation: crt 1s var(--ease-out) backwards; }
+  @keyframes crt {
+    0% { clip-path: inset(49.6% 0 round 6px); filter: brightness(2.2); }
+    22% { clip-path: inset(47% 0 round 6px); filter: brightness(2.2); }
+    100% { clip-path: inset(0 0 round 6px); filter: brightness(1); }
+  }
+  /* the header drops in as the camera powers on */
+  .site-head { animation: head-in 0.8s var(--ease-out) 0.15s backwards; }
+  @keyframes head-in { from { transform: translateY(-100%); } }
 
   /* --- hover and state transitions --- */
   .cover { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -1112,9 +1136,9 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   .menu .corner { animation-delay: 0.05s; }
   @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
 
-  .atlas.is-in .route { animation: draw 3.6s linear 0.3s backwards; }
+  .atlas.is-in .route { animation: draw 4.2s linear 0.9s backwards; }
   @keyframes draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
-  .atlas.is-in .pin { animation: pin-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.4) backwards; animation-delay: calc(0.22s + var(--at, 0) * 3.6s); }
+  .atlas.is-in .pin { animation: pin-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.4) backwards; animation-delay: calc(0.82s + var(--at, 0) * 4.2s); }
   @keyframes pin-in { from { opacity: 0; transform: scale(0); } }
   .pin.is-hot::before { animation: pin-pulse 1.2s ease-out infinite; }
   @keyframes pin-pulse { 0% { box-shadow: 0 0 0 2px var(--screen), 0 0 0 2px color-mix(in srgb, var(--frame) 60%, transparent); } 100% { box-shadow: 0 0 0 2px var(--screen), 0 0 0 14px transparent; } }
@@ -1309,4 +1333,78 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 @media print {
   .shots.is-collapsed .shot { display: grid !important; }
   .more { display: none; }
+}
+
+/* =====================================================================
+   v8: animations back and more — pinned career year, on-air card, chapter
+   marks, sliding toggles, card tilt, travelling map signal, spinning figures
+   ===================================================================== */
+.spec dd, .facts dd { font-variant-numeric: tabular-nums; }
+
+/* reading progress: chapter marks on the bar under the header */
+.progress i { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--muted); opacity: 0.45; transition: background-color 0.3s, opacity 0.3s, height 0.3s, top 0.3s; }
+.progress i.is-current { background: var(--tally); opacity: 1; top: -4px; height: 10px; }
+
+/* career: the year under the playhead, pinned while you scroll the timeline */
+.report-tc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4rem); height: 0; z-index: 2; pointer-events: none; }
+.report-tc .label {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  padding: 0.38rem 0.75rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.25s, transform 0.35s var(--ease-out);
+}
+.report-tc .label::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--tally); }
+.report-tc.is-on .label { opacity: 1; transform: none; }
+@media (max-width: 760px) { .report-tc { display: none; } }
+
+/* shot list: the card on air (the director cuts across the row crossing mid-screen) */
+.shot.is-air::before { opacity: 1; --c: var(--tally); }
+.shot.is-air::after { opacity: 1; }
+
+/* toggles: one highlight slides to the pressed button */
+.switch { position: relative; }
+.switch button { position: relative; z-index: 1; }
+.switch-ink {
+  position: absolute;
+  z-index: 0;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: var(--sw, 0px);
+  border-radius: 999px;
+  background: var(--ink);
+  transform: translateX(var(--sx, 0px));
+  opacity: 0;
+  pointer-events: none;
+}
+.switch-ink.is-on { opacity: 1; }
+.speed .switch .switch-ink { background: var(--frame); }
+:root.has-switch-ink .switch button[aria-pressed="true"] { background: transparent; }
+
+/* shot map: a signal keeps travelling the route */
+.atlas .signal { fill: var(--rec); }
+.atlas .signal-glow { fill: var(--rec); opacity: 0.25; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .switch-ink { transition: transform 0.5s var(--ease-out), width 0.5s var(--ease-out), opacity 0.2s; }
+  .shot.is-air::before { transform: none; }
+  .shot.is-air::after { animation: tally 1.2s steps(2, jump-none) infinite; }
+  .atlas .signal-glow { animation: sig-pulse 1.6s ease-out infinite; }
+  @keyframes sig-pulse { 0% { opacity: 0.45; } 100% { opacity: 0.05; } }
+  /* story cards lean toward the pointer */
+  @media (hover: hover) and (pointer: fine) {
+    .shot { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.5s var(--ease-out); }
+  }
 }
