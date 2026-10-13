@@ -69,7 +69,7 @@
 
 <header class="site-head">
   <div class="wrap">
-    <a class="mark" href="#top" aria-label="Jean-Michel Tibi"><span class="dot" aria-hidden="true"></span>JMT</a>
+    <a class="mark" href="#top" aria-label="Jean-Michel Tibi"><span class="dot" aria-hidden="true"></span>JMT<span class="tally" aria-hidden="true"><span class="on">Rec</span><span class="off">Stby</span></span></a>
     <nav class="site-nav label" aria-label="Sections">
       <ul>
         <li><a href="#work"><span class="t" lang="en">The job</span><span class="t" lang="fr">Le métier</span></a></li>
@@ -87,6 +87,7 @@
       <button type="button" data-set-lang="fr" aria-pressed="false" lang="fr">FR</button>
     </div>
   </div>
+  <div class="progress" aria-hidden="true"><span></span></div>
 </header>
 
 <main id="main" class="wrap">
@@ -95,6 +96,8 @@
   <section id="top" aria-labelledby="name">
     <div class="viewfinder">
       <canvas id="streaks" aria-hidden="true"></canvas>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="iris" aria-hidden="true"></div>
       <span class="corner tl" aria-hidden="true"></span>
       <span class="corner tr" aria-hidden="true"></span>
       <span class="corner bl" aria-hidden="true"></span>
@@ -103,19 +106,20 @@
 
       <div class="osd-bar">
         <div class="osd" aria-hidden="true">
-          <span class="rec">Rec</span>
+          <span class="rec" id="rec">Rec</span>
           <span>TC <span class="tc" id="tc">01:00:00:00</span></span>
           <span>25p</span>
           <span>200 fps</span>
           <span>1/250</span>
-          <span>ND</span>
           <span>RF</span>
+          <span class="focus" id="focus-readout">Focus 4.1 m</span>
         </div>
         <div class="speed">
           <span><span class="t" lang="en">Playback</span><span class="t" lang="fr">Lecture</span></span>
-          <div class="switch" role="group" aria-label="Playback speed">
+          <div class="switch" role="group" aria-label="Playback / Lecture">
             <button type="button" data-speed="8" aria-pressed="true"><span class="t" lang="en">8× slow</span><span class="t" lang="fr">Ralenti ×8</span></button>
             <button type="button" data-speed="1" aria-pressed="false"><span class="t" lang="en">Real time</span><span class="t" lang="fr">Temps réel</span></button>
+            <button type="button" data-speed="0" aria-pressed="false"><span aria-hidden="true">❚❚</span> Pause</button>
           </div>
         </div>
       </div>
@@ -192,28 +196,34 @@
       </div>
       <p class="muted t" lang="en" style="max-width:62ch">The radio link only carries 50 frames a second, so he cannot stream 200 fps footage live. He edits on the move instead.</p>
       <p class="muted t" lang="fr" style="max-width:62ch">La liaison HF ne transporte que 50 images par seconde&nbsp;: impossible d’envoyer ses 200 images/s en direct. Alors il monte en marchant.</p>
+      <button type="button" class="replay label" id="replay"><span aria-hidden="true">▶</span> <span class="t" lang="en">Replay the clip</span><span class="t" lang="fr">Rejouer le plan</span></button>
       <ol>
         <li>
+          <span class="wire" aria-hidden="true"></span>
           <strong><span class="t" lang="en">Shoot</span><span class="t" lang="fr">Tourner</span></strong>
           <p class="t" lang="en">25p at 200 frames a second. On the grid alone he may record 30 or 40 clips.</p>
           <p class="t" lang="fr">25p à 200 images/s. Rien que sur la grille, il enregistre parfois 30 ou 40 plans.</p>
         </li>
         <li>
+          <span class="wire" aria-hidden="true"></span>
           <strong><span class="t" lang="en">Cue</span><span class="t" lang="fr">Caler</span></strong>
           <p class="t" lang="en">He finds the moment on the camera while still watching the garage for the next stop.</p>
           <p class="t" lang="fr">Il cale le moment sur la caméra, tout en surveillant le garage pour le prochain arrêt.</p>
         </li>
         <li>
+          <span class="wire" aria-hidden="true"></span>
           <strong><span class="t" lang="en">Send</span><span class="t" lang="fr">Envoyer</span></strong>
           <p class="t" lang="en">He replays the clip down the RF link to the broadcast centre.</p>
           <p class="t" lang="fr">Il rejoue le plan dans la liaison HF vers le centre de diffusion.</p>
         </li>
         <li>
+          <span class="wire" aria-hidden="true"></span>
           <strong><span class="t" lang="en">Play out</span><span class="t" lang="fr">Diffuser</span></strong>
           <p class="t" lang="en">An EVS replay operator records it and plays it out on a short delay.</p>
           <p class="t" lang="fr">Un opérateur EVS l’enregistre et le diffuse en léger différé.</p>
         </li>
         <li>
+          <span class="wire" aria-hidden="true"></span>
           <strong><span class="t" lang="en">On air</span><span class="t" lang="fr">À l’antenne</span></strong>
           <p class="t" lang="en">The world sees it eight times slower than life. <span class="math">200 ÷ 25 = 8</span></p>
           <p class="t" lang="fr">Le monde le voit huit fois plus lentement que la réalité. <span class="math">200 ÷ 25 = 8</span></p>
@@ -322,6 +332,7 @@
     </div>
 
     <div class="report" role="list">
+      <div class="playhead" aria-hidden="true"></div>
       <div class="report-row head label" aria-hidden="true">
         <span><span class="t" lang="en">Year</span><span class="t" lang="fr">Année</span></span>
         <span class="h-where"><span class="t" lang="en">Where</span><span class="t" lang="fr">Où</span></span>
@@ -685,7 +696,7 @@
     </div>
 
     <div class="book">
-      <div>
+      <div class="cover-wrap">
         <div class="cover" aria-hidden="true">
           <span class="c-author">Jean-Michel Tibi</span>
           <span class="c-title" lang="fr">30 ans de F1<small>Mes histoires secrètes</small></span>
@@ -838,7 +849,7 @@
     <p class="label foot-links">
       <a href="#faq">FAQ</a>
       <a href="#sources">Sources</a>
-      <a href="#top"><span class="t" lang="en">Back to top ↑</span><span class="t" lang="fr">Haut de page ↑</span></a>
+      <a href="#top"><span class="t" lang="en">Rewind to the top ↑</span><span class="t" lang="fr">Rembobiner ↑</span></a>
     </p>
   </div>
 </footer>

@@ -13,6 +13,18 @@ A one-page profile of Jean-Michel Tibi, the French Formula 1 cameraman and direc
 - **The memoir**: *30 ans de F1 : Mes histoires secrètes* (City Éditions, 2023)
 - **Watch and listen**, **FAQ** and **Sources**: every interview and article the page draws on
 
+## Motion
+
+The animations come from his job:
+
+- **Power-on.** The lens iris opens, frame lines snap in, the camera readouts flicker on, the stat counters spin, and his name is pulled into focus.
+- **Focus pull.** Point at the viewfinder to move the focus box. Light trails off the focus plane go soft, with bokeh discs, and in-focus trails get red focus peaking. The readout shows the focus distance.
+- **Playback.** 8× slow (200 fps played at 25p), real time, or pause, which stops every looping animation.
+- **Rewind.** "Rewind to the top" runs the tape backwards while the page scrolls up.
+- **Reading.** Headings rack into focus, labels type on, the big quotes resolve word by word, and a red editing-timeline playhead runs down the career. A signal travels through the replay diagram, and the header's REC light drops to standby in the two sections about what he won't film and the people he lost. The memorial section stays still.
+
+Visitors who ask their system for reduced motion get the complete page with none of it. Scroll reveals never hide content at rest: an element keeps its normal look until it reaches the screen.
+
 This is an unofficial profile compiled from public sources. It is not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. It uses no photographs.
 
 ## Files
@@ -21,7 +33,7 @@ This is an unofficial profile compiled from public sources. It is not affiliated
 | --- | --- |
 | `index.html` | The page. Both languages are in the markup; CSS hides the one not selected. |
 | `assets/style.css` | All styles. Colour tokens at the top, light and dark themes. |
-| `assets/main.js` | Language switch, slow-motion control, viewfinder animation, section highlighting. |
+| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind), scroll reveals, replay diagram, career playhead, section highlighting. |
 | `assets/favicon.svg` | Tab icon. |
 | `assets/og-image.png` | 1200×630 image for link previews. |
 | `tools/og-card.html`, `tools/render-og.js` | Source and script for the link-preview image. |

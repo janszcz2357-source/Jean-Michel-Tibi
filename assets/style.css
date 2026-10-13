@@ -132,7 +132,7 @@ p { margin: 0; }
   gap: 0.5rem;
   flex: none;
 }
-.mark .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--tally); }
+.mark .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--tally); transition: background-color 0.3s, box-shadow 0.3s; }
 .site-nav { margin-left: auto; overflow-x: auto; scrollbar-width: none; min-width: 0; }
 .site-nav::-webkit-scrollbar { display: none; }
 .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.1rem; white-space: nowrap; }
@@ -187,10 +187,31 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .corner.tr { top: 10px; right: 10px; border-top-width: 2px; border-right-width: 2px; }
 .corner.bl { bottom: 10px; left: 10px; border-bottom-width: 2px; border-left-width: 2px; }
 .corner.br { bottom: 10px; right: 10px; border-bottom-width: 2px; border-right-width: 2px; }
-.crosshair { position: absolute; right: 22%; top: 46%; width: 26px; height: 26px; pointer-events: none; opacity: 0.55; }
-.crosshair::before, .crosshair::after { content: ""; position: absolute; background: var(--frame); }
-.crosshair::before { left: 50%; top: 0; bottom: 0; width: 1px; }
-.crosshair::after { top: 50%; left: 0; right: 0; height: 1px; }
+/* focus box: sits at 74% / 46% and is moved from there with a transform */
+.crosshair {
+  --c: var(--frame);
+  position: absolute;
+  left: 74%;
+  top: 46%;
+  width: 56px;
+  height: 40px;
+  margin: -20px 0 0 -28px;
+  pointer-events: none;
+  opacity: 0.85;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / 11px 1.5px,
+    linear-gradient(var(--c), var(--c)) left top / 1.5px 8px,
+    linear-gradient(var(--c), var(--c)) right top / 11px 1.5px,
+    linear-gradient(var(--c), var(--c)) right top / 1.5px 8px,
+    linear-gradient(var(--c), var(--c)) left bottom / 11px 1.5px,
+    linear-gradient(var(--c), var(--c)) left bottom / 1.5px 8px,
+    linear-gradient(var(--c), var(--c)) right bottom / 11px 1.5px,
+    linear-gradient(var(--c), var(--c)) right bottom / 1.5px 8px;
+  background-repeat: no-repeat;
+}
+.crosshair::before, .crosshair::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--frame); }
+.crosshair::before { width: 1px; height: 10px; margin: -5px 0 0 -0.5px; }
+.crosshair::after { width: 10px; height: 1px; margin: -0.5px 0 0 -5px; }
 
 .osd-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; padding-inline: 0.25rem; }
 .osd {
@@ -204,8 +225,9 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
 }
-.osd .rec { color: var(--rec); display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 500; }
-.osd .rec::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--rec); animation: tally 1.6s steps(2, jump-none) infinite; }
+.osd .rec { color: var(--rec); display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 500; min-width: 9ch; }
+.osd .focus { display: inline-block; min-width: 11ch; }
+.osd .rec::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--rec); flex: none; }
 .osd .tc { color: var(--screen-ink); }
 @keyframes tally { 50% { opacity: 0.25; } }
 
@@ -224,7 +246,6 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   line-height: 0.9;
   letter-spacing: -0.015em;
   text-transform: uppercase;
-  animation: stretch 2.2s cubic-bezier(0.16, 0.8, 0.12, 1) 0.15s both;
 }
 .name span { display: block; }
 @keyframes stretch { from { font-stretch: 62%; } }
@@ -309,8 +330,10 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--accent);
+  z-index: 1;
+  transition: color 0.3s;
 }
-.pipeline li::after { content: ""; position: absolute; top: -6px; right: 0; width: 10px; height: 10px; border-top: 2px solid var(--ink); border-right: 2px solid var(--ink); transform: rotate(45deg); }
+.pipeline li::after { content: ""; position: absolute; top: -6px; right: 0; width: 10px; height: 10px; border-top: 2px solid var(--ink); border-right: 2px solid var(--ink); transform: rotate(45deg); z-index: 1; }
 .pipeline li:last-child::after { display: none; }
 .pipeline strong { font-family: var(--display); font-weight: 700; font-stretch: 105%; font-size: 1.1rem; }
 .pipeline p { color: var(--muted); font-size: 1rem; line-height: 1.5; }
@@ -341,7 +364,7 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .hazard p:last-child { font-size: 1.02rem; }
 
 /* ---------- camera report (career) ---------- */
-.report { border-top: 2px solid var(--ink); }
+.report { border-top: 2px solid var(--ink); position: relative; padding-left: 1.6rem; }
 .report-row { display: grid; grid-template-columns: 9.5rem 13rem minmax(0, 1fr); gap: 1.25rem; padding-block: 1rem; border-bottom: 1px solid var(--rule); }
 .report-row.head { padding-block: 0.6rem; color: var(--muted); }
 .report-row .yr { font-family: var(--display); font-weight: 750; font-stretch: 115%; font-size: 1.15rem; font-variant-numeric: tabular-nums; line-height: 1.35; }
@@ -350,7 +373,7 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 
 /* ---------- shot list ---------- */
 .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
-.shot { background: var(--paper); padding: 1.25rem 1.25rem 1.4rem; display: grid; gap: 0.7rem; align-content: start; min-width: 0; }
+.shot { position: relative; background: var(--paper); padding: 1.25rem 1.25rem 2.1rem; display: grid; gap: 0.7rem; align-content: start; min-width: 0; }
 .shot header { display: grid; gap: 0.25rem; padding-bottom: 0.7rem; border-bottom: 1px dashed var(--rule); }
 .shot .place { display: flex; justify-content: space-between; gap: 0.75rem; align-items: baseline; }
 .shot .place h3 { font-stretch: 105%; }
@@ -379,7 +402,7 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .refusals li { display: grid; gap: 0.3rem; padding-block: 1rem; border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, var(--ink)); }
 .refusals li:first-child { border-top: 1px solid color-mix(in srgb, var(--paper) 18%, var(--ink)); }
 .refusals .label { color: var(--accent-inv); display: inline-flex; align-items: center; gap: 0.5rem; }
-.refusals .label::before { content: ""; width: 0.55rem; height: 0.55rem; border: 1.5px solid currentColor; border-radius: 1px; }
+.refusals .label::before { content: ""; width: 0.55rem; height: 0.55rem; border: 1.5px solid currentColor; border-radius: 1px; background: currentColor; }
 .refusals p { color: color-mix(in srgb, var(--paper) 85%, var(--ink)); }
 
 /* ---------- memory ---------- */
@@ -435,8 +458,9 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 /* ---------- watch ---------- */
 .media { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
 .media li { background: var(--paper); min-width: 0; }
-.media a { display: grid; gap: 0.45rem; align-content: start; padding: 1.2rem 1.25rem 1.3rem; text-decoration: none; height: 100%; }
-.media a:hover { background: var(--panel); }
+.media a { position: relative; isolation: isolate; display: grid; gap: 0.45rem; align-content: start; padding: 1.2rem 1.25rem 1.3rem; text-decoration: none; height: 100%; }
+.media a::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--panel); opacity: 0; }
+.media a:hover::before, .media a:focus-visible::before { opacity: 1; }
 .media .meta { display: flex; gap: 0.3rem 0.9rem; flex-wrap: wrap; color: var(--accent); }
 .media strong { font-family: var(--display); font-stretch: 105%; font-weight: 700; font-size: 1.15rem; line-height: 1.25; }
 .media p { color: var(--muted); font-size: 1rem; }
@@ -500,7 +524,292 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   .report-row.head { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .name { animation: none; }
-  .osd .rec::before { animation: none; }
-  .speed { display: none; }
+  .speed, .replay { display: none; }
+}
+
+/* =====================================================================
+   Animation layer
+   Static pieces first (they also serve reduced-motion visitors), then
+   everything that moves, inside prefers-reduced-motion: no-preference.
+   Scroll reveals never hide content at rest: an element keeps its normal
+   style until it scrolls into view, and only then plays in.
+   ===================================================================== */
+@property --iris { syntax: "<percentage>"; inherits: true; initial-value: 101%; }
+@property --blades { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+
+.iris, .grain { display: none; }
+
+/* header: camera status + reading progress */
+.mark .tally {
+  margin-left: 0.2rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  font-stretch: 100%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--tally);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0.12rem 0.3rem 0.08rem;
+  transition: color 0.3s;
+}
+.mark .tally .off { display: none; }
+:root[data-tally="off"] .mark .dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--muted); }
+:root[data-tally="off"] .mark .tally { color: var(--muted); }
+:root[data-tally="off"] .mark .tally .on { display: none; }
+:root[data-tally="off"] .mark .tally .off { display: inline; }
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none; }
+.progress span { display: block; height: 100%; background: var(--tally); transform: scaleX(0); transform-origin: left; }
+
+/* replay pipeline: signal wire and replay button */
+.replay {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--rule);
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+.replay:hover { border-color: var(--ink); }
+.replay [aria-hidden] { color: var(--tally); }
+.pipeline .wire { position: absolute; left: 0; top: -2px; width: 0; height: 2px; background: var(--tally); }
+.pipeline .wire::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--tally);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tally) 22%, transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.pipeline li.is-on::before { color: var(--tally); }
+.pipeline li.is-on .wire { width: 100%; }
+.pipeline li.is-live .wire::after { opacity: 1; }
+.pipeline .math { transition: color 0.3s; }
+.pipeline.is-done .math { color: var(--tally); }
+
+/* career: an editing-timeline playhead tracks the reader */
+.report::before { content: ""; position: absolute; left: 0.45rem; top: 0; bottom: 0; width: 2px; background: var(--rule); }
+.playhead { position: absolute; left: 0.45rem; top: 0; width: 2px; height: 0; background: var(--tally); pointer-events: none; }
+.playhead::after {
+  content: "";
+  position: absolute;
+  left: -5px;
+  bottom: -8px;
+  width: 12px;
+  height: 12px;
+  background: var(--tally);
+  clip-path: polygon(0 0, 100% 0, 100% 55%, 50% 100%, 0 55%);
+}
+.report-row { transition: background-color 0.3s; }
+.report-row.is-live { background: linear-gradient(90deg, color-mix(in srgb, var(--tally) 8%, transparent), transparent 75%); }
+.report-row .yr { transition: color 0.3s; }
+.report-row.is-live .yr { color: var(--tally); }
+
+/* shot cards: frame lines and a REC tag on hover */
+.shot::before {
+  --c: var(--accent);
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / 16px 2px,
+    linear-gradient(var(--c), var(--c)) left top / 2px 16px,
+    linear-gradient(var(--c), var(--c)) right top / 16px 2px,
+    linear-gradient(var(--c), var(--c)) right top / 2px 16px,
+    linear-gradient(var(--c), var(--c)) left bottom / 16px 2px,
+    linear-gradient(var(--c), var(--c)) left bottom / 2px 16px,
+    linear-gradient(var(--c), var(--c)) right bottom / 16px 2px,
+    linear-gradient(var(--c), var(--c)) right bottom / 2px 16px;
+  background-repeat: no-repeat;
+  transition: opacity 0.2s;
+}
+.shot::after {
+  content: "Rec";
+  position: absolute;
+  right: 18px;
+  bottom: 13px;
+  padding-left: 0.95em;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tally);
+  background: radial-gradient(circle at 0.32em 50%, var(--tally) 0.3em, transparent 0.33em);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.shot.missed::after { content: "Stby"; color: var(--muted); background: radial-gradient(circle at 0.32em 50%, var(--muted) 0.3em, transparent 0.33em); }
+.shot:hover::before, .shot:hover::after { opacity: 1; }
+
+/* book: a physical cover that tilts toward the pointer */
+.cover-wrap { perspective: 900px; }
+.cover { position: relative; overflow: hidden; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--sx, 30%) var(--sy, 20%), color-mix(in srgb, var(--screen-ink) 28%, transparent), transparent 60%);
+  opacity: var(--so, 0);
+  transition: opacity 0.4s;
+}
+
+@media (max-width: 960px) {
+  .pipeline .wire { left: -2px; top: 0; width: 2px; height: 0; margin-left: 0; }
+  .pipeline li.is-on .wire { width: 2px; height: 100%; }
+  .pipeline .wire::after { right: auto; left: -4px; top: auto; bottom: -5px; }
+}
+@media (max-width: 720px) {
+  .mark .tally { display: none; }
+}
+@media (max-width: 600px) {
+  .report { padding-left: 1.25rem; }
+  .report::before, .playhead { left: 0.3rem; }
+}
+@media (max-width: 480px) {
+  .speed > span:first-child { display: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* --- power-on: the iris opens, frame lines snap in, the OSD flickers on, focus is pulled --- */
+  .iris {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, transparent var(--iris), color-mix(in srgb, var(--frame) 80%, transparent) calc(var(--iris) + 0.3%), var(--screen) calc(var(--iris) + 1.3%));
+    animation: iris 1.15s cubic-bezier(0.7, 0, 0.2, 1) 0.1s both;
+  }
+  .iris::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-conic-gradient(from var(--blades) at 50% 50%, color-mix(in srgb, var(--screen-ink) 16%, transparent) 0deg 0.5deg, transparent 0.5deg 60deg);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent calc(var(--iris) + 1.3%), #000 calc(var(--iris) + 1.6%));
+    mask-image: radial-gradient(circle at 50% 50%, transparent calc(var(--iris) + 1.3%), #000 calc(var(--iris) + 1.6%));
+  }
+  @keyframes iris {
+    from { --iris: 0%; --blades: 0deg; }
+    to { --iris: 101%; --blades: 100deg; visibility: hidden; }
+  }
+
+  .corner { animation: frame-in 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s backwards; }
+  .corner.tl { --dx: -18px; --dy: -18px; }
+  .corner.tr { --dx: 18px; --dy: -18px; }
+  .corner.bl { --dx: -18px; --dy: 18px; }
+  .corner.br { --dx: 18px; --dy: 18px; }
+  @keyframes frame-in { from { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.35); } }
+
+  .osd > span, .speed, .crosshair { animation: osd-on 0.55s steps(1, end) backwards; }
+  .osd > span:nth-child(1) { animation-delay: 0.85s; }
+  .osd > span:nth-child(2) { animation-delay: 0.92s; }
+  .osd > span:nth-child(3) { animation-delay: 0.99s; }
+  .osd > span:nth-child(4) { animation-delay: 1.06s; }
+  .osd > span:nth-child(5) { animation-delay: 1.13s; }
+  .osd > span:nth-child(6) { animation-delay: 1.2s; }
+  .osd > span:nth-child(7) { animation-delay: 1.27s; }
+  .crosshair { animation-delay: 1.15s; }
+  .speed { animation-delay: 1.35s; }
+  @keyframes osd-on { 0% { opacity: 0; } 30% { opacity: 1; } 45% { opacity: 0.15; } 60%, 100% { opacity: 1; } }
+
+  .name { animation: stretch 2.2s cubic-bezier(0.16, 0.8, 0.12, 1) 0.45s backwards, focus-pull 1.8s ease-out 0.45s backwards; }
+  @keyframes focus-pull {
+    0% { filter: blur(16px); opacity: 0.3; }
+    55% { filter: blur(0); opacity: 1; }
+    68% { filter: blur(2.5px); }
+    82%, 100% { filter: blur(0); }
+  }
+  .hero-copy .eyebrow { animation: type 0.8s steps(30, end) 0.75s backwards; }
+  .aka { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1.05s backwards; }
+  .lede { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1.2s backwards; }
+  .slate div { animation: slate-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .slate div:nth-child(1) { animation-delay: 1.15s; }
+  .slate div:nth-child(2) { animation-delay: 1.23s; }
+  .slate div:nth-child(3) { animation-delay: 1.31s; }
+  .slate div:nth-child(4) { animation-delay: 1.39s; }
+  @keyframes slate-up { from { opacity: 0; transform: translateY(35%); } }
+
+  /* --- running viewfinder: REC blink, sensor grain, focus hunting (all stop on Pause) --- */
+  .osd .rec::before { animation: tally 1.6s steps(2, jump-none) infinite; }
+  .grain {
+    display: block;
+    position: absolute;
+    inset: -100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.055;
+    background-size: 180px 180px;
+    animation: grain 0.8s steps(1, end) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    17% { transform: translate(-6%, 4%); }
+    33% { transform: translate(4%, -7%); }
+    50% { transform: translate(-3%, 9%); }
+    67% { transform: translate(8%, 2%); }
+    83% { transform: translate(-7%, -5%); }
+  }
+  .viewfinder.is-paused .grain,
+  .viewfinder.is-paused .osd .rec::before { animation-play-state: paused; }
+  .crosshair.hunt { animation: hunt 0.45s cubic-bezier(0.3, 0, 0.3, 1); }
+  @keyframes hunt { 35% { scale: 1.3; } 70% { scale: 0.92; } }
+
+  /* --- scroll reveals --- */
+  .rv.is-in { animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 80ms); }
+  @keyframes rise { from { opacity: 0; transform: translate3d(0, 22px, 0); } }
+  .rf.is-in { animation: rack 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  @keyframes rack {
+    0% { filter: blur(12px); opacity: 0.2; }
+    55% { filter: blur(0); opacity: 1; }
+    70% { filter: blur(1.8px); }
+    100% { filter: blur(0); }
+  }
+  .ty.is-in { animation: type 0.7s steps(24, end) backwards; }
+  @keyframes type { from { clip-path: inset(0 100% 0 0); } }
+  .slowmo .w { display: inline-block; }
+  .slowmo.is-in .w { animation: word 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms + 80ms); }
+  @keyframes word { from { opacity: 0.06; filter: blur(9px); transform: translateY(0.2em); } }
+  .odds.is-in .bar span { animation: fill 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .odds.is-in .bar .luck { transform-origin: left; animation-delay: 0.3s; }
+  .odds.is-in .bar .work { transform-origin: right; animation-delay: 0.55s; }
+  .odds.is-in .odds-row + .odds-row .bar .luck { animation-delay: 0.6s; }
+  .odds.is-in .odds-row + .odds-row .bar .work { animation-delay: 0.85s; }
+  @keyframes fill { from { transform: scaleX(0); } }
+  .refusals li.is-in .label::before { animation: stop-on 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards; }
+  @keyframes stop-on { from { background: transparent; transform: scale(1.8); } }
+  .cover.is-in { animation: book-in 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  @keyframes book-in { from { opacity: 0; transform: rotateY(-40deg) rotateX(8deg) translateX(-16px); } }
+
+  /* --- hover and state transitions --- */
+  .cover { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .pipeline li.is-on .wire { transition: width 0.65s linear, height 0.65s linear; }
+  .shot::before { transform: scale(1.06); transition: opacity 0.2s, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .shot:hover::before { transform: none; }
+  .shot:hover::after { animation: tally 1.2s steps(2, jump-none) infinite; }
+  .media a::before { opacity: 1; transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .media a:hover::before, .media a:focus-visible::before { transform: scaleX(1); }
+  .media .go { transition: letter-spacing 0.3s; }
+  .media a:hover .go { letter-spacing: 0.08em; }
+  .site-nav a { transition: color 0.2s, border-color 0.3s; }
+  .switch button { transition: background-color 0.2s, color 0.2s; }
+}
+
+/* the replay button only makes sense when the pipeline can animate */
+@media (prefers-reduced-motion: reduce) {
+  .replay { display: none; }
 }
