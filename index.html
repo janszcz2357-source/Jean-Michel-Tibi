@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jean-Michel Tibi</title>
+<meta name="description" content="An unofficial profile of Jean-Michel Tibi, the French Formula 1 cameraman known in the paddock as “the Legend”, compiled from public interviews and articles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap">
+<style>
+/* Layout: one long reel. A dark camera viewfinder opens the page, set into a cool-paper "camera report"; every section below is ruled like a report sheet. */
+:root {
+  --paper: #EDEFEE;
+  --panel: #E2E6E5;
+  --ink: #15191B;
+  --muted: #56606A;
+  --rule: #C4CBCD;
+  --accent: #9A5900;
+  --tally: #C8231B;
+  /* The viewfinder is a device: it stays dark in both themes */
+  --screen: #0E1113;
+  --screen-ink: #EEF0EE;
+  --screen-muted: #9AA4AA;
+  --screen-rule: #2A3135;
+  --frame: #F0B23A;
+  --rec: #FF4A3D;
+
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --step--1: 0.8rem;
+  --step-0: 1.125rem;
+  --step-1: 1.35rem;
+  --step-2: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+  --step-3: clamp(2rem, 1.3rem + 3vw, 3.1rem);
+  --step-hero: clamp(2.3rem, 0.6rem + 7vw, 6.4rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1214;
+    --panel: #161A1D;
+    --ink: #E6E9E7;
+    --muted: #8F999F;
+    --rule: #2A3034;
+    --accent: #F0B23A;
+    --tally: #FF4A3D;
+    --screen: #060809;
+    --screen-rule: #252B2F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1214;
+  --panel: #161A1D;
+  --ink: #E6E9E7;
+  --muted: #8F999F;
+  --rule: #2A3034;
+  --accent: #F0B23A;
+  --tally: #FF4A3D;
+  --screen: #060809;
+  --screen-rule: #252B2F;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  padding-inline: clamp(16px, 4vw, 40px);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; }
+a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: 1160px; margin-inline: auto; }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 16px; background: var(--ink); color: var(--paper); padding: 8px 12px; z-index: 10; }
+
+/* ---------- utility type ---------- */
+.label {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.eyebrow { color: var(--accent); margin: 0 0 0.6rem; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h2 {
+  font-size: var(--step-3);
+  font-weight: 750;
+  font-stretch: 112%;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+h3 { font-size: var(--step-1); font-weight: 700; font-stretch: 100%; line-height: 1.2; }
+p { margin: 0; }
+.prose { max-width: 65ch; display: grid; gap: 1rem; }
+.muted { color: var(--muted); }
+
+/* ---------- header ---------- */
+.site-head {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  margin-inline: calc(-1 * clamp(16px, 4vw, 40px));
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+.site-head .wrap { display: flex; align-items: center; gap: 1.5rem; min-height: 3.25rem; }
+.mark {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 125%;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+}
+.mark .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--tally); }
+.site-nav { margin-left: auto; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.25rem; white-space: nowrap; }
+.site-nav a { text-decoration: none; color: var(--muted); padding-block: 0.9rem; display: inline-block; }
+.site-nav a:hover { color: var(--ink); }
+
+main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25rem, 3vw, 2rem) clamp(3rem, 6vw, 5rem); }
+
+/* ---------- hero viewfinder ---------- */
+.viewfinder {
+  position: relative;
+  background: var(--screen);
+  color: var(--screen-ink);
+  border: 1px solid var(--screen-rule);
+  border-radius: 6px;
+  overflow: hidden;
+  padding: clamp(18px, 3.5vw, 44px);
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  isolation: isolate;
+}
+.viewfinder canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+.viewfinder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--screen) 0%, color-mix(in srgb, var(--screen) 70%, transparent) 45%, transparent 100%),
+    repeating-linear-gradient(0deg, transparent 0 2px, color-mix(in srgb, var(--screen-ink) 3%, transparent) 2px 3px);
+  pointer-events: none;
+}
+/* frame-line corners */
+.corner { position: absolute; width: clamp(18px, 3vw, 34px); height: clamp(18px, 3vw, 34px); border: 0 solid var(--frame); opacity: 0.9; pointer-events: none; }
+.corner.tl { top: 10px; left: 10px; border-top-width: 2px; border-left-width: 2px; }
+.corner.tr { top: 10px; right: 10px; border-top-width: 2px; border-right-width: 2px; }
+.corner.bl { bottom: 10px; left: 10px; border-bottom-width: 2px; border-left-width: 2px; }
+.corner.br { bottom: 10px; right: 10px; border-bottom-width: 2px; border-right-width: 2px; }
+.crosshair { position: absolute; right: 22%; top: 46%; width: 26px; height: 26px; pointer-events: none; opacity: 0.55; }
+.crosshair::before, .crosshair::after { content: ""; position: absolute; background: var(--frame); }
+.crosshair::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+.crosshair::after { top: 50%; left: 0; right: 0; height: 1px; }
+
+.osd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--screen-muted);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  padding-inline: 0.25rem;
+}
+.osd .rec { color: var(--rec); display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 500; }
+.osd .rec::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--rec); animation: tally 1.6s steps(2, jump-none) infinite; }
+.osd .tc { color: var(--screen-ink); }
+@keyframes tally { 50% { opacity: 0.25; } }
+
+.hero-copy { display: grid; gap: 1.1rem; padding-inline: 0.25rem; min-width: 0; }
+.hero-copy .eyebrow { color: var(--frame); margin: 0; }
+.name {
+  font-size: var(--step-hero);
+  font-weight: 820;
+  font-stretch: 125%;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  animation: stretch 2.2s cubic-bezier(0.16, 0.8, 0.12, 1) 0.15s both;
+}
+.name span { display: block; }
+@keyframes stretch { from { font-stretch: 62%; } }
+.aka { font-family: var(--display); font-stretch: 100%; font-weight: 500; font-size: var(--step-1); color: var(--screen-ink); }
+.aka em { font-style: normal; color: var(--frame); }
+.lede { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); line-height: 1.5; color: color-mix(in srgb, var(--screen-ink) 88%, var(--screen-muted)); max-width: 46ch; }
+
+.slate {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--screen-rule);
+  margin-inline: calc(-1 * clamp(18px, 3.5vw, 44px));
+  margin-bottom: calc(-1 * clamp(18px, 3.5vw, 44px));
+}
+.slate div {
+  padding: 1rem clamp(30px, 3.5vw, 44px) 1.6rem;
+  border-left: 1px solid var(--screen-rule);
+  display: grid;
+  gap: 0.2rem;
+  align-content: start;
+  background: color-mix(in srgb, var(--screen) 82%, transparent);
+}
+.slate div:first-child { border-left: 0; }
+.slate b {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 120%;
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--screen-ink);
+}
+.slate span { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--screen-muted); }
+.hero-note { margin-top: 0.75rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.03em; }
+
+/* ---------- quotes ---------- */
+.pull {
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 52rem;
+}
+.pull blockquote {
+  margin: 0;
+  font-family: var(--body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 1.1rem + 2.6vw, 3rem);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.pull blockquote::before { content: "“"; color: var(--accent); }
+.pull blockquote::after { content: "”"; color: var(--accent); }
+.pull figcaption { color: var(--muted); }
+
+/* ---------- section shell ---------- */
+.section { display: grid; gap: clamp(1.75rem, 3.5vw, 2.75rem); scroll-margin-top: 4.5rem; }
+.section-head { display: grid; gap: 0.25rem; max-width: 50rem; }
+.section-head p:not(.eyebrow) { margin-top: 0.9rem; color: var(--muted); max-width: 60ch; }
+.split { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.split > * { min-width: 0; }
+
+/* spec sheet */
+.spec { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+.spec div { padding: 0.85rem 0.9rem 0.95rem 0; border-bottom: 1px solid var(--rule); display: grid; gap: 0.2rem; }
+.spec div:nth-child(odd) { padding-right: 1.25rem; }
+.spec div:nth-child(even) { padding-left: 1.25rem; border-left: 1px solid var(--rule); }
+.spec dt { color: var(--muted); }
+.spec dd { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 600; font-size: 1.05rem; line-height: 1.3; }
+
+/* race-day call sheet */
+.callsheet { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.callsheet li { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 1.25rem; padding-block: 0.95rem; border-bottom: 1px solid var(--rule); }
+.callsheet .when { color: var(--accent); padding-top: 0.2rem; font-variant-numeric: tabular-nums; }
+.callsheet strong { font-family: var(--display); font-stretch: 100%; font-weight: 700; display: block; margin-bottom: 0.15rem; font-size: 1.05rem; }
+.callsheet p { color: var(--muted); }
+.subhead { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+
+/* luck vs science */
+.odds { display: grid; gap: 1.1rem; padding: clamp(1.25rem, 3vw, 1.75rem); background: var(--panel); border-radius: 4px; }
+.odds-row { display: grid; gap: 0.45rem; }
+.odds-meta { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.bar { display: flex; height: 0.9rem; border-radius: 2px; overflow: hidden; background: var(--rule); }
+.bar .luck { background: var(--accent); }
+.bar .work { background: var(--ink); }
+.odds-key { display: flex; gap: 1.25rem; flex-wrap: wrap; color: var(--muted); }
+.odds-key i { display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 1px; margin-right: 0.4rem; vertical-align: -0.05rem; }
+.odds-key .k-luck { background: var(--accent); }
+.odds-key .k-work { background: var(--ink); }
+
+.aside-quote { border-left: 2px solid var(--accent); padding-left: 1.1rem; display: grid; gap: 0.4rem; }
+.aside-quote p:first-child { font-style: italic; font-size: var(--step-1); line-height: 1.35; }
+
+/* ---------- camera report (career) ---------- */
+.report { border-top: 2px solid var(--ink); }
+.report-row { display: grid; grid-template-columns: 9.5rem 13rem minmax(0, 1fr); gap: 1.25rem; padding-block: 1rem; border-bottom: 1px solid var(--rule); }
+.report-row.head { padding-block: 0.6rem; color: var(--muted); }
+.report-row .yr { font-family: var(--display); font-weight: 750; font-stretch: 115%; font-size: 1.15rem; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.report-row .where { color: var(--accent); padding-top: 0.25rem; }
+.report-row p { max-width: 62ch; }
+
+/* ---------- shot list ---------- */
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.shot { background: var(--paper); padding: 1.25rem 1.25rem 1.4rem; display: grid; gap: 0.7rem; align-content: start; }
+.shot header { display: grid; gap: 0.25rem; padding-bottom: 0.7rem; border-bottom: 1px dashed var(--rule); }
+.shot .place { display: flex; justify-content: space-between; gap: 0.75rem; align-items: baseline; }
+.shot .place h3 { font-stretch: 105%; }
+.shot .yr { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); font-variant-numeric: tabular-nums; flex: none; }
+.shot .pos { color: var(--muted); font-size: 0.72rem; }
+.shot p { font-size: 1.02rem; line-height: 1.55; }
+.shot q { font-style: italic; }
+
+/* ---------- memory ---------- */
+.memory { background: var(--panel); border-radius: 4px; padding: clamp(1.5rem, 4vw, 3rem); display: grid; gap: clamp(1.75rem, 3.5vw, 2.5rem); }
+.memory .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); }
+.memory article { display: grid; gap: 0.8rem; align-content: start; min-width: 0; }
+.memory h3 { font-size: var(--step-2); font-stretch: 110%; }
+.memory .when { color: var(--muted); }
+.memory .closing { border-top: 1px solid var(--rule); padding-top: 1.5rem; display: grid; gap: 0.5rem; max-width: 50rem; }
+.memory .closing blockquote { margin: 0; font-style: italic; font-size: var(--step-2); line-height: 1.25; text-wrap: balance; }
+
+/* ---------- honours ---------- */
+.credits { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.credits li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1.25rem; padding-block: 0.9rem; border-bottom: 1px solid var(--rule); }
+.credits .yr { font-family: var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 0.15rem; font-size: 0.9rem; }
+.credits strong { font-family: var(--display); font-stretch: 100%; font-weight: 700; display: block; font-size: 1.05rem; line-height: 1.35; }
+.credits span { color: var(--muted); font-size: 1rem; }
+.note { color: var(--muted); font-size: 0.95rem; margin-top: 0.9rem; max-width: 60ch; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chips li { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.03em; border: 1px solid var(--rule); border-radius: 999px; padding: 0.3rem 0.75rem; }
+.stack { display: grid; gap: 2rem; align-content: start; }
+.stack h3 { margin-bottom: 0.8rem; }
+
+/* ---------- book ---------- */
+.book { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: clamp(1.75rem, 5vw, 4rem); align-items: start; }
+.cover {
+  aspect-ratio: 146 / 225;
+  max-width: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 2px 6px 6px 2px;
+  padding: 1.4rem 1.2rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  box-shadow: inset 6px 0 0 color-mix(in srgb, var(--paper) 12%, transparent);
+}
+.cover .c-author { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
+.cover .c-title { align-self: center; font-family: var(--display); font-weight: 800; font-stretch: 120%; font-size: 2.6rem; line-height: 0.92; text-transform: uppercase; }
+.cover .c-title small { display: block; font-family: var(--body); font-style: italic; font-weight: 400; font-stretch: 100%; text-transform: none; font-size: 1.05rem; line-height: 1.25; margin-top: 0.6rem; color: color-mix(in srgb, var(--paper) 80%, var(--ink)); }
+.cover .c-pub { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; }
+.cover-cap { margin-top: 0.6rem; color: var(--muted); font-size: 0.7rem; }
+.book-body { display: grid; gap: 1.5rem; min-width: 0; }
+.book-body h3 { font-size: var(--step-2); font-stretch: 105%; }
+.facts { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.facts div { padding: 0.8rem 1rem 0.9rem 0; border-bottom: 1px solid var(--rule); display: grid; gap: 0.15rem; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 600; line-height: 1.3; }
+.links { display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; }
+.links a { font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.02em; }
+
+/* ---------- watch ---------- */
+.media { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.media li { background: var(--paper); }
+.media a { display: grid; gap: 0.45rem; padding: 1.2rem 1.25rem 1.3rem; text-decoration: none; height: 100%; }
+.media a:hover { background: var(--panel); }
+.media .meta { display: flex; gap: 0.9rem; flex-wrap: wrap; color: var(--accent); }
+.media strong { font-family: var(--display); font-stretch: 105%; font-weight: 700; font-size: 1.15rem; line-height: 1.25; }
+.media p { color: var(--muted); font-size: 1rem; }
+.media .go { font-family: var(--mono); font-size: 0.78rem; color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 0.2em; }
+
+/* ---------- sources / footer ---------- */
+.sources ol { margin: 0; padding-left: 1.4rem; columns: 2; column-gap: 3rem; }
+.sources li { font-size: 0.98rem; margin-bottom: 0.5rem; break-inside: avoid; color: var(--muted); }
+.sources li a { color: var(--ink); }
+.site-foot { border-top: 1px solid var(--rule); padding-block: 1.75rem 2.5rem; color: var(--muted); font-size: 0.95rem; }
+.site-foot .wrap { display: flex; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+.site-foot p { max-width: 70ch; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .report-row { grid-template-columns: 7.5rem minmax(0, 1fr); }
+  .report-row .where { grid-column: 2; padding-top: 0; order: -1; }
+  .report-row .yr { grid-row: span 2; }
+  .report-row.head .h-where { display: none; }
+}
+@media (max-width: 720px) {
+  .slate { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .slate div:nth-child(3) { border-left: 0; }
+  .slate div:nth-child(n+3) { border-top: 1px solid var(--screen-rule); }
+  .memory .pair { grid-template-columns: minmax(0, 1fr); }
+  .book { grid-template-columns: minmax(0, 1fr); }
+  .cover { max-width: 13rem; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .media { grid-template-columns: minmax(0, 1fr); }
+  .sources ol { columns: 1; }
+  .crosshair { display: none; }
+}
+@media (max-width: 600px) {
+  .name { font-stretch: 100%; }
+  .shots { grid-template-columns: minmax(0, 1fr); }
+  .spec { grid-template-columns: minmax(0, 1fr); }
+  .spec div:nth-child(even) { padding-left: 0; border-left: 0; }
+  .callsheet li, .credits li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
+  .credits .nodate { display: none; }
+  .report-row { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; }
+  .report-row .yr { grid-row: auto; }
+  .report-row .where { grid-column: auto; order: 0; }
+  .report-row.head { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .name { animation: none; }
+  .osd .rec::before { animation: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Jean-Michel Tibi, back to top"><span class="dot" aria-hidden="true"></span>JMT</a>
+    <nav class="site-nav label" aria-label="Sections">
+      <ul>
+        <li><a href="#work">The job</a></li>
+        <li><a href="#path">Career</a></li>
+        <li><a href="#shots">Shot list</a></li>
+        <li><a href="#honours">Credits</a></li>
+        <li><a href="#book">Book</a></li>
+        <li><a href="#watch">Watch</a></li>
+        <li><a href="#sources">Sources</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <!-- HERO -->
+  <section id="top" aria-labelledby="name">
+    <div class="viewfinder">
+      <canvas id="streaks" aria-hidden="true"></canvas>
+      <span class="corner tl" aria-hidden="true"></span>
+      <span class="corner tr" aria-hidden="true"></span>
+      <span class="corner bl" aria-hidden="true"></span>
+      <span class="corner br" aria-hidden="true"></span>
+      <span class="crosshair" aria-hidden="true"></span>
+
+      <div class="osd" aria-hidden="true">
+        <span class="rec">Rec</span>
+        <span>TC <span class="tc" id="tc">01:00:00:00</span></span>
+        <span>150 fps</span>
+        <span>180°</span>
+        <span>EI 800</span>
+        <span>RF link</span>
+      </div>
+
+      <div class="hero-copy">
+        <p class="label eyebrow">Formula 1 cameraman · Director of photography</p>
+        <h1 class="name" id="name"><span>Jean-Michel</span><span>Tibi</span></h1>
+        <p class="aka">Known in the paddock as <em>the Legend</em>, or simply JMT.</p>
+        <p class="lede">Since 1997 he has worked inside the Formula 1 garages with a slow-motion cinema camera, filming the faces behind the visors for the world feed. Millions of people have watched his pictures. Very few know his name.</p>
+      </div>
+
+      <div class="slate">
+        <div><b>34</b><span>Seasons in F1</span></div>
+        <div><b>6</b><span>FIFA World Cups</span></div>
+        <div><b>5</b><span>Summer Olympics</span></div>
+        <div><b>25</b><span>Le Mans 24 Hours</span></div>
+      </div>
+    </div>
+    <p class="hero-note">Figures as he gave them in <i>The Legend Behind The Lens</i> (2026), filmed during his 34th Formula 1 season in 2025.</p>
+  </section>
+
+  <figure class="pull">
+    <blockquote>It’s not how you see it, it’s how you imagine…</blockquote>
+    <figcaption class="label">His motto, on Instagram as @f1jmt</figcaption>
+  </figure>
+
+  <!-- THE JOB -->
+  <section class="section" id="work" aria-labelledby="work-h">
+    <div class="section-head">
+      <p class="label eyebrow">On the job</p>
+      <h2 id="work-h">One camera, every garage</h2>
+    </div>
+
+    <div class="split">
+      <div class="prose">
+        <p>Tibi is a freelance cameraman and director of photography for Formula One Management. He works in a small department that handles special projects for sponsors, teams, VIP guests and broadcasters, shooting the artistic requests they cannot shoot themselves. Most of his pictures go out on the international feed that every broadcaster takes.</p>
+        <p>He covers the paddock and the garages with an ARRI Amira cinema camera on a wireless link, and he always shoots in slow motion. The other garage cameramen each cover two neighbouring teams. He is the only one who works with all of them, so he has to know everyone. On race day he learns people by their silhouettes, because once the helmets and masks go on he can no longer see their faces.</p>
+        <p>He also worked personally for Bernie Ecclestone for 20 years, and is the official cameraman inside the F1 video game after advising Codemasters on its realism. Lando Norris once told him:</p>
+        <div class="aside-quote">
+          <p>“Even when I’m at home, you’re on my TV with a camera pointed at me!”</p>
+          <p class="label muted">Lando Norris, as told to HorsPistesF1 (2021, translated)</p>
+        </div>
+      </div>
+
+      <dl class="spec">
+        <div><dt class="label">Camera</dt><dd>ARRI Amira, wireless RF link</dd></div>
+        <div><dt class="label">Mode</dt><dd>Always slow motion</dd></div>
+        <div><dt class="label">Beat</dt><dd>Paddock, every garage, grid, parc fermé, podium</dd></div>
+        <div><dt class="label">In his ears</dt><dd>3 radios, 12 voices, all in English</dd></div>
+        <div><dt class="label">Race day</dt><dd>16 to 18 hours</dd></div>
+        <div><dt class="label">Sleep</dt><dd>Under four hours a night, by his own count</dd></div>
+      </dl>
+    </div>
+
+    <div class="split">
+      <div>
+        <div class="subhead">
+          <h3>His Grand Prix Sunday</h3>
+          <span class="label muted">From HorsPistesF1, 2021</span>
+        </div>
+        <ol class="callsheet">
+          <li><span class="label when">07:00</span><div><strong>Coffee first</strong><p>Preferably with a red Italian team. He says he only becomes sociable after it, “like a bear coming out of hibernation.”</p></div></li>
+          <li><span class="label when">Arrivals</span><div><strong>Drivers into the paddock</strong><p>His pictures go to the world feed and to every broadcaster.</p></div></li>
+          <li><span class="label when">Sessions</span><div><strong>Inside the garages</strong><p>FP1, FP2, FP3 and qualifying, from among the mechanics.</p></div></li>
+          <li><span class="label when">Grid</span><div><strong>The last minutes</strong><p>Concentration, nerves, breathing, the final words between drivers, engineers and mechanics.</p></div></li>
+          <li><span class="label when">Lights out</span><div><strong>Start reactions</strong><p>From the small starter’s hut, or from a garage to catch a team’s reaction. “I do what I feel.”</p></div></li>
+          <li><span class="label when">Race</span><div><strong>Pit stops and faces</strong><p>The stops, and the garages’ reactions to overtakes, crashes, yellow and red flags.</p></div></li>
+          <li><span class="label when">Flag</span><div><strong>Chequered flag to champagne</strong><p>Winning car, parc fermé, podium and champagne, always in slow motion, in close-up when he can.</p></div></li>
+          <li><span class="label when">Race +2 h</span><div><strong>Last shot, then pack-down</strong><p>The winning team with its trophies and drivers. Then the kit goes back in the cases.</p></div></li>
+        </ol>
+      </div>
+
+      <div class="stack">
+        <div>
+          <div class="subhead"><h3>How much is luck?</h3></div>
+          <div class="odds">
+            <div class="odds-row">
+              <div class="odds-meta"><span class="label">2021 · HorsPistesF1</span><span class="label muted">50 / 50</span></div>
+              <div class="bar" role="img" aria-label="2021: 50 percent luck, 50 percent race science"><span class="luck" style="width:50%"></span><span class="work" style="width:50%"></span></div>
+            </div>
+            <div class="odds-row">
+              <div class="odds-meta"><span class="label">2025 · The Legend Behind The Lens</span><span class="label muted">95 / 5</span></div>
+              <div class="bar" role="img" aria-label="2025: 95 percent luck, 5 percent work"><span class="luck" style="width:95%"></span><span class="work" style="width:5%"></span></div>
+            </div>
+            <div class="odds-key label"><span><i class="k-luck"></i>Luck</span><span><i class="k-work"></i>Race science / work</span></div>
+          </div>
+          <p class="note">He has given two answers four years apart. His co-author Axel Brémond thinks he often made his own luck.</p>
+        </div>
+        <div class="aside-quote">
+          <p>“You need a cool head and hot blood, but you must never stress. That’s the basis.”</p>
+          <p class="label muted">HorsPistesF1, 2021 (translated)</p>
+        </div>
+        <div class="aside-quote">
+          <p>“In my shot, I try to have only one person, for the shot to be very powerful. For me, it’s an obsession.”</p>
+          <p class="label muted">The Legend Behind The Lens, 2026</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section class="section" id="path" aria-labelledby="path-h">
+    <div class="section-head">
+      <p class="label eyebrow">Camera report</p>
+      <h2 id="path-h">From Paris courier to the F1 paddock</h2>
+      <p>Photography came first. Racing came through a chain of chance meetings, which is how he describes his whole career: “encounters and a lot of luck.”</p>
+    </div>
+
+    <div class="report" role="list">
+      <div class="report-row head label" aria-hidden="true"><span>Year</span><span class="h-where">Where</span><span>What happened</span></div>
+      <div class="report-row" role="listitem"><span class="yr">Early 1980s</span><span class="label where">Paris</span><p>Wants to be a photographer but has no technique yet. Works as a motorbike courier. After he runs eighteen red lights and gets away from the police, an officer asks to meet him and suggests he apply to become a police motorcyclist.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">1985</span><span class="label where">Château de Vincennes</span><p>Military service in the French Air Force’s historical service (SHAA). A year of free training in framing, lenses, aperture, depth of field, film stocks and black-and-white printing. Forty years later: “I’m still learning.”</p></div>
+      <div class="report-row" role="listitem"><span class="yr">Late 1980s</span><span class="label where">Paris</span><p>Two or three years as a fashion photographer’s assistant. Then video: weddings, private events and conventions.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">1992</span><span class="label where">Formula 1</span><p>His first Grands Prix, filming for Shell, a McLaren sponsor, alongside Ron Dennis and Ayrton Senna.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">1994</span><span class="label where">Motorsport TV</span><p>Meets TV producer Jean-Luc Roy through a friend and becomes a car and motorbike racing cameraman.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">1997</span><span class="label where">Formula One Management</span><p>Sends his CV to Formula 1 and is hired for three Grands Prix. He has worked for F1 ever since, through the Ecclestone years and the Liberty Media era.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">20 years</span><span class="label where">Bernie Ecclestone</span><p>Serves as Ecclestone’s personal cameraman. At their first meeting he contradicts “Mr E”, which Brémond calls the start of their mutual respect.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">2019, 2021</span><span class="label where">Monaco</span><p>Wins the Sportel Award for best slow motion in Formula 1, twice.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">2023</span><span class="label where">City Éditions</span><p>Publishes his memoir <i lang="fr">30 ans de F1 : Mes histoires secrètes</i>, written with Axel Brémond.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">2025</span><span class="label where">Worldwide</span><p>Starts his 34th season in Formula 1.</p></div>
+      <div class="report-row" role="listitem"><span class="yr">2026</span><span class="label where">Tokyo</span><p>The documentary <i>The Legend Behind The Lens</i> comes out in January and is named a finalist at the International Auto Film Festa in April.</p></div>
+    </div>
+  </section>
+
+  <!-- SHOT LIST -->
+  <section class="section" id="shots" aria-labelledby="shots-h">
+    <div class="section-head">
+      <p class="label eyebrow">Shot list</p>
+      <h2 id="shots-h">Where he was standing</h2>
+      <p>He has a habit of being in the right place at the right moment. A few of the places he was standing, in his own accounts.</p>
+    </div>
+
+    <div class="shots">
+      <article class="shot">
+        <header><div class="place"><h3>Spa-Francorchamps</h3><span class="yr">2000</span></div><span class="label pos">Position · Top of Les Combes</span></header>
+        <p>Mika Häkkinen passes Michael Schumacher and Ricardo Zonta in one move, one of the most famous overtakes in Formula 1.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Interlagos</h3><span class="yr">2001</span></div><span class="label pos">Position · Senna S</span></header>
+        <p>Juan Pablo Montoya, in only his third Grand Prix, muscles past Michael Schumacher for the lead.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Suzuka</h3><span class="yr">2002</span></div><span class="label pos">Position · 130R</span></header>
+        <p>Allan McNish’s Toyota crashes at the flat-out 130R, at around 320 km/h by his account.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Melbourne</h3><span class="yr">Ferrari years</span></div><span class="label pos">Position · Ferrari motorhome</span></header>
+        <p>Waiting to film Michael Schumacher’s season-opening interview, he is offered a coffee. Schumacher gets up and makes him an espresso himself. “I will never forget it.”</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Indianapolis</h3><span class="yr">2005</span></div><span class="label pos">Position · Trackside</span></header>
+        <p>The Michelin tyre dispute leaves only six cars to start the United States Grand Prix.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Shanghai</h3><span class="yr">2007</span></div><span class="label pos">Position · Beside the gravel trap</span></header>
+        <p>Lewis Hamilton slides into the gravel at the pit entry, a costly mistake in his rookie title fight.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Hungaroring</h3><span class="yr">2009</span></div><span class="label pos">Position · Trackside</span></header>
+        <p>Felipe Massa is struck on the helmet by a loose spring and placed in a medically induced coma.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Interlagos</h3><span class="yr">2012</span></div><span class="label pos">Position · Mercedes garage</span></header>
+        <p>Before his last race, Michael Schumacher asks him to come by afterwards, then hands him the gloves he raced in. Tibi slept with them in his backpack on the way home.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Sakhir</h3><span class="yr">2020</span></div><span class="label pos">Position · Haas garage</span></header>
+        <p>When Romain Grosjean’s car splits in two and catches fire, he films the team’s fear and helplessness live.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Jeddah</h3><span class="yr">2021</span></div><span class="label pos">Position · Mercedes garage</span></header>
+        <p>At the height of the Hamilton–Verstappen fight he catches Toto Wolff tearing off his headphones. Wolff later tells him he knew it was him. Tibi’s answer: he is only a witness to what happens in front of him.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Mexico City</h3><span class="yr">2021</span></div><span class="label pos">Position · Podium</span></header>
+        <p>Max Verstappen <q>reigning like an eagle</q>, Sergio Pérez celebrating a podium like a win, and Lewis Hamilton with Angela Cullen almost unnoticed.</p>
+      </article>
+      <article class="shot">
+        <header><div class="place"><h3>Yas Marina</h3><span class="yr">2021</span></div><span class="label pos">Position · After the flag</span></header>
+        <p>Verstappen takes the title on the final lap. <q>I had promised myself to capture tears in this final. But when I saw Lewis wiping his own, I didn’t have the strength to point my camera at him.</q></p>
+      </article>
+    </div>
+  </section>
+
+  <figure class="pull">
+    <blockquote>My best shot will be the next shot.</blockquote>
+    <figcaption class="label">The Legend Behind The Lens, 2026</figcaption>
+  </figure>
+
+  <!-- MEMORY -->
+  <section class="section" id="memory" aria-labelledby="memory-h">
+    <div class="memory">
+      <div class="section-head">
+        <p class="label eyebrow">Two last pictures</p>
+        <h2 id="memory-h">Jules and Anthoine</h2>
+        <p>He filmed the last interview of one young French driver and the last laps of another. He speaks about both in every long interview he gives.</p>
+      </div>
+      <div class="pair">
+        <article>
+          <p class="label when">Suzuka · Japanese Grand Prix · 2014</p>
+          <h3>Jules Bianchi</h3>
+          <p>Working for Canal+, the crew asks Bianchi on the grid whether the wet track is raceable. “It’s tricky, but it’ll be fine,” he answers. Laps later he leaves the track where Adrian Sutil has gone off and hits the recovery vehicle. Tibi phones Nicolas Todt in tears and goes to the hospital after the race. Months later he is at the funeral in Nice. A week before Suzuka, the two had spent the night after the Singapore Grand Prix celebrating together.</p>
+        </article>
+        <article>
+          <p class="label when">Spa-Francorchamps · Formula 2 · 2019</p>
+          <h3>Anthoine Hubert</h3>
+          <p>He is following Hubert for a Formula 2 documentary. From the first corner, La Source, he films the formation lap and the start: Hubert’s last two passes. Then the race is stopped and the circuit falls quiet. “Complete silence. It was deafening.” His son was at the circuit that weekend, the only time Tibi brought family to a race, and saw him cry for the only time.</p>
+        </article>
+      </div>
+      <div class="closing">
+        <blockquote>“It’s like a scar on my heart. There should not be any dead or injured people in our world.”</blockquote>
+        <p class="label muted">The Legend Behind The Lens, 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HONOURS -->
+  <section class="section" id="honours" aria-labelledby="honours-h">
+    <div class="section-head">
+      <p class="label eyebrow">Credits</p>
+      <h2 id="honours-h">Awards and work beyond F1</h2>
+    </div>
+
+    <div class="split">
+      <div>
+        <ul class="credits">
+          <li><span class="yr">2019</span><div><strong>Sportel Awards, Monaco</strong><span>Best slow motion, Formula 1</span></div></li>
+          <li><span class="yr">2021</span><div><strong>Sportel Awards, Monaco</strong><span>Best slow motion, Formula 1</span></div></li>
+          <li><span class="yr">2022</span><div><strong>BAFTA</strong><span>Formula 1, Abu Dhabi Grand Prix 2021 coverage</span></div></li>
+          <li><span class="yr nodate">—</span><div><strong>Sports Emmy</strong><span>Outstanding documentary</span></div></li>
+          <li><span class="yr nodate">—</span><div><strong>F1 video game, Codemasters</strong><span>Appears as the in-game official cameraman</span></div></li>
+          <li><span class="yr">2026</span><div><strong>International Auto Film Festa, Tokyo</strong><span>Finalist: <i>The Legend Behind The Lens</i>, the documentary about him</span></div></li>
+        </ul>
+        <p class="note">The Sportel, BAFTA and Emmy credits are as he lists them on his LinkedIn profile.</p>
+      </div>
+
+      <div class="stack">
+        <div>
+          <h3>Other championships and events</h3>
+          <ul class="chips">
+            <li>Formula 2</li>
+            <li>Formula E</li>
+            <li>Extreme E</li>
+            <li>GT racing</li>
+            <li>Le Mans 24 Hours</li>
+            <li>FIFA World Cups</li>
+            <li>Olympic Games</li>
+            <li>UEFA Euros</li>
+            <li>French TV talk shows</li>
+            <li>Music and political TV</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Screen credits (IMDb)</h3>
+          <ul class="credits">
+            <li><span class="yr">2019</span><div><strong>And We Go Green</strong><span>Formula E documentary</span></div></li>
+            <li><span class="yr">2013</span><div><strong>European Le Mans Series</strong><span>TV coverage</span></div></li>
+            <li><span class="yr">2010</span><div><strong lang="fr">Touche pas à mon poste !</strong><span>French TV talk show</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK -->
+  <section class="section" id="book" aria-labelledby="book-h">
+    <div class="section-head">
+      <p class="label eyebrow">The memoir</p>
+      <h2 id="book-h">Thirty years of secret stories</h2>
+    </div>
+
+    <div class="book">
+      <div>
+        <div class="cover" aria-hidden="true">
+          <span class="c-author">Jean-Michel Tibi</span>
+          <span class="c-title" lang="fr">30 ans de F1<small>Mes histoires secrètes</small></span>
+          <span class="c-pub">City Éditions · 2023</span>
+        </div>
+        <p class="label cover-cap">Typographic stand-in, not the real cover</p>
+      </div>
+
+      <div class="book-body">
+        <h3 lang="fr">30 ans de F1 : Mes histoires secrètes</h3>
+        <div class="prose">
+          <p>His memoir (in French; the title means “30 Years of F1: My Secret Stories”) collects the stories he could never fit into an interview: his first meeting with Bernie Ecclestone, his dealings with Bernard Tapie, a murder case from his A1GP years, Schumacher, Senna, and the paddock seen from behind the camera.</p>
+          <p>The book grew out of a 2021 portrait on Axel Brémond’s blog HorsPistesF1. After Tibi posted a tribute to Bernard Tapie, Brémond suggested a book. Tibi’s reply: “If you have a publisher, we’ll do it!” They wrote it over five or six months, with Tibi sending memories by message as they came back to him. The first outline was sketched in a brasserie near the Gare de Lyon.</p>
+        </div>
+        <dl class="facts">
+          <div><dt class="label">Co-author</dt><dd>Axel Brémond</dd></div>
+          <div><dt class="label">Publisher</dt><dd>City Éditions</dd></div>
+          <div><dt class="label">Series editor</dt><dd>Frédéric Veille (RTL)</dd></div>
+          <div><dt class="label">Published</dt><dd>20 September 2023</dd></div>
+          <div><dt class="label">Price</dt><dd>€17.90</dd></div>
+          <div><dt class="label">Language</dt><dd>French</dd></div>
+        </dl>
+        <div class="links">
+          <a href="https://www.fnac.com/a17459587/Jean-Michel-Tibi-Dans-les-coulisses-de-la-F1" rel="noopener" target="_blank">Fnac ↗</a>
+          <a href="https://www.amazon.fr/30-ans-F1-histoires-secr%C3%A8tes/dp/2824621656" rel="noopener" target="_blank">Amazon.fr ↗</a>
+          <a href="https://www.babelio.com/livres/Tibi-30-ans-de-F1-Mes-histoires-secretes/1596563" rel="noopener" target="_blank">Babelio reviews ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WATCH -->
+  <section class="section" id="watch" aria-labelledby="watch-h">
+    <div class="section-head">
+      <p class="label eyebrow">Watch and listen</p>
+      <h2 id="watch-h">Hear it from him</h2>
+    </div>
+
+    <ul class="media">
+      <li><a href="https://www.youtube.com/watch?v=UIhHyypvhKI" rel="noopener" target="_blank">
+        <span class="label meta"><span>Documentary</span><span>2026</span><span>English</span></span>
+        <strong>The Legend Behind The Lens</strong>
+        <p>Short film by Julian Ross Graham and Keven Bobby Blanco. Senna, Jeddah, Spa and Suzuka, in his own words. Finalist at the International Auto Film Festa 2026.</p>
+        <span class="go">Watch on YouTube ↗</span>
+      </a></li>
+      <li><a href="https://www.youtube.com/watch?v=f3_oKmhanUY" rel="noopener" target="_blank">
+        <span class="label meta"><span>Podcast · Episode 99</span><span>2022</span><span>French</span></span>
+        <strong lang="fr">Dans la Boîte à Gants</strong>
+        <p>A long conversation with Yann Delplanque: Prost, Ecclestone, Schumacher’s espresso and gloves, and the making of <i>Drive to Survive</i>.</p>
+        <span class="go">Watch on YouTube ↗</span>
+      </a></li>
+      <li><a href="https://www.youtube.com/watch?v=eqlPWtDqVeU" rel="noopener" target="_blank">
+        <span class="label meta"><span>Video</span><span>2022</span><span>English</span></span>
+        <strong>How Formula 1’s Most Iconic Shots Are Filmed</strong>
+        <p>Matt Amys follows his race weekend with the ARRI Amira slow-motion camera.</p>
+        <span class="go">Watch on YouTube ↗</span>
+      </a></li>
+      <li><a href="https://horspistesf1.wordpress.com/2021/05/17/les-autres-francais-de-la-formule-1-jean-michel-tibi/" rel="noopener" target="_blank">
+        <span class="label meta"><span>Interview</span><span>2021</span><span>French</span></span>
+        <strong lang="fr">Les autres Français de la Formule 1</strong>
+        <p>The HorsPistesF1 portrait that started the book: his career, a race day hour by hour, and his best and worst memories.</p>
+        <span class="go">Read on HorsPistesF1 ↗</span>
+      </a></li>
+    </ul>
+    <div class="links">
+      <a href="https://www.instagram.com/f1jmt/" rel="noopener" target="_blank">Instagram @f1jmt ↗</a>
+      <a href="https://www.autohebdof1.com/news/other-races/carpooling/jean-michel-tibi-my-journey-consists-of-encounters-and-a-lot-of-luck.html" rel="noopener" target="_blank">AUTOhebdo interview, 2023 ↗</a>
+      <a href="https://m.imdb.com/name/nm10140222/" rel="noopener" target="_blank">IMDb ↗</a>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="section sources" id="sources" aria-labelledby="sources-h">
+    <div class="section-head">
+      <p class="label eyebrow">Research</p>
+      <h2 id="sources-h">Sources</h2>
+      <p>Everything on this page comes from these public interviews, articles and listings. Quotes from French sources are translated.</p>
+    </div>
+    <ol>
+      <li><a href="https://horspistesf1.wordpress.com/2021/05/17/les-autres-francais-de-la-formule-1-jean-michel-tibi/" rel="noopener" target="_blank">Les autres Français de la Formule 1 : Jean-Michel Tibi</a>, HorsPistesF1, May 2021</li>
+      <li><a href="https://www.youtube.com/watch?v=QWCKprPT0g0" rel="noopener" target="_blank">The Legend Behind The Lens: Jean-Michel Tibi</a>, International Auto Film Festa, April 2026</li>
+      <li><a href="https://www.youtube.com/watch?v=f3_oKmhanUY" rel="noopener" target="_blank">Jean-Michel Tibi, Dans la Boîte à Gants episode 99</a>, October 2022</li>
+      <li><a href="https://www.motorsinside.com/en/f1/news/31702-the-most-famous-formula-1-cameraman-jean-michel-tibi-releases-book" rel="noopener" target="_blank">The most famous French Formula 1 cameraman releases his book</a>, Motors Inside, September 2023</li>
+      <li><a href="https://franceracing.fr/f1/axel-bremond-raconte-les-30-ans-de-f1-de-jean-michel-tibi/" rel="noopener" target="_blank">Axel Brémond raconte les 30 ans de F1 de Jean-Michel Tibi</a>, France Racing, 2023</li>
+      <li><a href="https://www.autohebdof1.com/news/other-races/carpooling/jean-michel-tibi-my-journey-consists-of-encounters-and-a-lot-of-luck.html" rel="noopener" target="_blank">Jean-Michel Tibi: “My journey is about encounters and a lot of luck”</a>, AUTOhebdo, October 2023</li>
+      <li><a href="https://scuderiafans.com/motoracing-cameraman-jean-michel-tibi-explains-how-he-films-f1s-most-iconic-shots/" rel="noopener" target="_blank">Jean Michel Tibi explains how he films F1’s most iconic shots</a>, Scuderia Fans, September 2022</li>
+      <li><a href="https://www.librairiegeorges.com/livre/9782824621654-30-ans-de-f1-mes-histoires-secretes-jean-michel-tibi-axel-bremond/" rel="noopener" target="_blank">30 ans de F1 : mes histoires secrètes</a>, book listing (City Éditions, ISBN 978-2-8246-2165-4)</li>
+      <li><a href="https://fr.linkedin.com/in/jean-michel-tibi-89569942" rel="noopener" target="_blank">Jean Michel Tibi</a>, LinkedIn profile headline (award credits)</li>
+      <li><a href="https://m.imdb.com/name/nm10140222/" rel="noopener" target="_blank">Jean-Michel Tibi</a>, IMDb</li>
+      <li><a href="https://www.instagram.com/f1jmt/" rel="noopener" target="_blank">@f1jmt</a>, Instagram</li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>An unofficial profile compiled from public interviews and articles, October 2026. Not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management.</p>
+    <p class="label"><a href="#top">Back to top ↑</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Timecode: shot at 150 fps, played back at 25 fps, so it runs six times slower than real time */
+  var tc = document.getElementById("tc");
+  var t0 = performance.now();
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function tick(now) {
+    var frames = Math.floor(((now - t0) / 1000) * 25 / 6);
+    var f = frames % 25, s = Math.floor(frames / 25) % 60, m = Math.floor(frames / 1500) % 60, h = 1 + Math.floor(frames / 90000);
+    tc.textContent = pad(h) + ":" + pad(m) + ":" + pad(s) + ":" + pad(f);
+  }
+
+  /* Light trails crossing the viewfinder in slow motion */
+  var cv = document.getElementById("streaks");
+  var ctx = cv.getContext && cv.getContext("2d");
+  var W = 0, H = 0, streaks = [], colors = [];
+  function readColors() {
+    var cs = getComputedStyle(document.documentElement);
+    colors = [cs.getPropertyValue("--frame").trim(), cs.getPropertyValue("--screen-ink").trim(), cs.getPropertyValue("--rec").trim()];
+  }
+  function hexToRgba(hex, a) {
+    var h = hex.replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
+  }
+  function make(randomX) {
+    var r = Math.random();
+    return {
+      x: randomX ? Math.random() * (W + 400) - 200 : -40 - Math.random() * 300,
+      y: H * (0.18 + Math.random() * 0.7),
+      len: 90 + Math.random() * 320,
+      v: 0.25 + Math.random() * 0.9,
+      w: 0.6 + Math.random() * 1.8,
+      c: r < 0.18 ? 2 : (r < 0.6 ? 0 : 1),
+      a: 0.12 + Math.random() * 0.3
+    };
+  }
+  function resize() {
+    var rect = cv.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = rect.width; H = rect.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var count = Math.round(Math.max(14, Math.min(34, W / 32)));
+    streaks = [];
+    for (var i = 0; i < count; i++) streaks.push(make(true));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineCap = "round";
+    for (var i = 0; i < streaks.length; i++) {
+      var s = streaks[i];
+      var g = ctx.createLinearGradient(s.x - s.len, s.y, s.x, s.y);
+      g.addColorStop(0, hexToRgba(colors[s.c], 0));
+      g.addColorStop(1, hexToRgba(colors[s.c], s.a));
+      ctx.strokeStyle = g;
+      ctx.lineWidth = s.w;
+      ctx.beginPath();
+      ctx.moveTo(s.x - s.len, s.y);
+      ctx.lineTo(s.x, s.y);
+      ctx.stroke();
+    }
+  }
+  function step(dt) {
+    for (var i = 0; i < streaks.length; i++) {
+      var s = streaks[i];
+      s.x += s.v * dt / 16;
+      if (s.x - s.len > W) streaks[i] = make(false);
+    }
+  }
+
+  var running = true, last = performance.now();
+  function loop(now) {
+    var dt = Math.min(64, now - last); last = now;
+    tick(now);
+    if (ctx && running) { step(dt); draw(); }
+    requestAnimationFrame(loop);
+  }
+
+  if (ctx) {
+    readColors();
+    resize();
+    draw();
+    if ("ResizeObserver" in window) new ResizeObserver(function () { resize(); draw(); }).observe(cv);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) { running = entries[0].isIntersecting; }).observe(cv);
+    }
+  }
+  if (!reduce) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
