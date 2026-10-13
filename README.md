@@ -38,11 +38,15 @@ This is an unofficial profile compiled from public sources. It is not affiliated
 | `assets/og-image.png` | 1200×630 image for link previews. |
 | `tools/og-card.html`, `tools/render-og.js` | Source and script for the link-preview image. |
 
-## Viewing and publishing
+## Live site
 
-No build step. Open `index.html` in a browser, or publish with GitHub Pages: Settings → Pages → deploy from this branch, root folder. The `og:image` URL in `index.html` assumes the Pages address `https://janszcz2357-source.github.io/Jean-Michel-Tibi/`; change it if the site lives elsewhere.
+**https://jean-michel-tibi.vercel.app**
 
-The language follows the visitor's browser (French browsers get French). Visitors can switch with the EN / FR buttons, and links ending in `#fr` or `#en` open in that language. The page follows the system light or dark setting and turns off its animation for visitors who ask for reduced motion.
+The site is deployed on Vercel (project `jean-michel-tibi`), linked to this GitHub repository. Every push to `ccr-e84df72d-gatvo0`, the repository's default branch, redeploys production automatically. There is no build step: Vercel serves the files as they are. `.vercelignore` keeps `tools/` and this README off the public site.
+
+To view it locally, open `index.html` in a browser.
+
+The language follows the visitor's browser (French browsers get French). Visitors can switch with the EN / FR buttons, and links ending in `#fr` or `#en` open in that language. The page follows the system light or dark setting.
 
 To regenerate the link-preview image after editing `tools/og-card.html`:
 
