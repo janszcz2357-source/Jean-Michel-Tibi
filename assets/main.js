@@ -10,11 +10,15 @@
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
   function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
   function both(en, fr) { return '<span class="t" lang="en">' + en + '</span><span class="t" lang="fr">' + (fr || en) + "</span>"; }
+  function pad(n, len) { n = String(n); while (n.length < (len || 2)) n = "0" + n; return n; }
 
-  var colors = [];
+  /* Device colours (the viewfinder, the map and the frame-rate monitors stay dark in both themes) */
+  var colors = [], C = {};
   function readColors() {
     var cs = getComputedStyle(root);
-    colors = [cs.getPropertyValue("--frame").trim(), cs.getPropertyValue("--screen-ink").trim(), cs.getPropertyValue("--rec").trim()];
+    function v(name) { return cs.getPropertyValue(name).trim(); }
+    C = { frame: v("--frame"), ink: v("--screen-ink"), rec: v("--rec"), muted: v("--screen-muted"), rule: v("--screen-rule"), screen: v("--screen") };
+    colors = [C.frame, C.ink, C.rec];
   }
   function rgba(hex, a) {
     var h = hex.replace("#", "");
@@ -26,11 +30,13 @@
 
   /* ---------- language ---------- */
   var langButtons = $$("[data-set-lang]");
+  var langHooks = [];
   function setLang(lang, save) {
     root.setAttribute("data-lang", lang);
     root.lang = lang;
     langButtons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === lang)); });
     if (save) { try { localStorage.setItem("jmt-lang", lang); } catch (e) {} }
+    langHooks.forEach(function (fn) { fn(lang); });
   }
   langButtons.forEach(function (b) {
     b.addEventListener("click", function () { setLang(b.getAttribute("data-set-lang"), true); });
@@ -53,9 +59,8 @@
   var frames = 0;           // source timecode, in frames at 25 fps
   var HOME_X = 0.74, HOME_Y = 0.46;
   var focus = { x: HOME_X, y: HOME_Y, tx: HOME_X, ty: HOME_Y, hover: false };
-  var W = 0, H = 0, streaks = [];
+  var W = 0, H = 0, streaks = [], bokeh = [];
 
-  function pad(n) { return (n < 10 ? "0" : "") + n; }
   function showTimecode() {
     var f = Math.floor(frames);
     tc.textContent = pad(1 + Math.floor(f / 90000) % 23) + ":" + pad(Math.floor(f / 1500) % 60) + ":" + pad(Math.floor(f / 25) % 60) + ":" + pad(f % 25);
@@ -96,7 +101,37 @@
       v: 1.6 + Math.random() * 5.5,
       w: 0.6 + Math.random() * 1.8,
       c: r < 0.18 ? 2 : (r < 0.6 ? 0 : 1),
-      a: 0.14 + Math.random() * 0.3
+      a: 0.18 + Math.random() * 0.34
+    };
+  }
+  /* Background lights, far behind the focus plane: soft discs that drift slower than the
+     trails and swell or shrink as the focus is pulled nearer or further (focus breathing). */
+  var sprites = {};
+  function disc(col) {
+    if (sprites[col]) return sprites[col];
+    var s = document.createElement("canvas");
+    s.width = s.height = 128;
+    var g = s.getContext("2d");
+    var grd = g.createRadialGradient(64, 64, 0, 64, 64, 62);
+    grd.addColorStop(0, rgba(col, 0.5));
+    grd.addColorStop(0.8, rgba(col, 0.68));
+    grd.addColorStop(0.93, rgba(col, 0.95));
+    grd.addColorStop(1, rgba(col, 0));
+    g.fillStyle = grd;
+    g.beginPath();
+    g.arc(64, 64, 62, 0, 6.2832);
+    g.fill();
+    return (sprites[col] = s);
+  }
+  function makeBokeh(anywhere) {
+    var r = Math.random();
+    return {
+      x: anywhere ? W * (0.3 + Math.random() * 0.8) : -80 - Math.random() * 120,
+      y: H * (0.08 + Math.random() * 0.84),
+      r: (12 + Math.random() * 46) * Math.max(0.6, H / 640),
+      v: 0.12 + Math.random() * 0.45,
+      a: (0.05 + Math.random() * 0.1) * (r < 0.1 ? 0.7 : 1),
+      c: r < 0.1 ? 2 : (r < 0.68 ? 0 : 1)
     };
   }
   function resize() {
@@ -108,10 +143,19 @@
     var count = Math.round(Math.max(16, Math.min(36, W / 30)));
     streaks = [];
     for (var s = 0; s < count; s++) streaks.push(make(true));
+    bokeh = [];
+    for (var k = 0; k < Math.round(Math.max(7, Math.min(15, W / 80))); k++) bokeh.push(makeBokeh(true));
     placeBox();
   }
   function draw() {
     ctx.clearRect(0, 0, W, H);
+    var breathe = 0.72 + focus.y * 0.7;
+    for (var b = 0; b < bokeh.length; b++) {
+      var bk = bokeh[b], rr = bk.r * breathe;
+      ctx.globalAlpha = bk.a;
+      ctx.drawImage(disc(colors[bk.c]), bk.x - rr, bk.y - rr, rr * 2, rr * 2);
+    }
+    ctx.globalAlpha = 1;
     ctx.lineCap = "round";
     var fy = focus.y * H, depth = H * 0.34, stretch = speed === 1 ? 1.8 : 1;
     for (var s = 0; s < streaks.length; s++) {
@@ -159,6 +203,17 @@
         streaks[s] = n;
       }
     }
+    for (var b = 0; b < bokeh.length; b++) {
+      var bk = bokeh[b];
+      bk.x += bk.v * k;
+      if (rate >= 0 && bk.x - bk.r * 1.5 > W) {
+        bokeh[b] = makeBokeh(false);
+      } else if (rate < 0 && bk.x + bk.r * 1.5 < 0) {
+        var nb = makeBokeh(false);
+        nb.x = W + nb.r * 1.5 + Math.random() * 80;
+        bokeh[b] = nb;
+      }
+    }
   }
 
   var visible = true, last = performance.now();
@@ -168,8 +223,10 @@
     var rewinding = isRewinding(now);
     var rate = rewinding ? -3 : speed === 0 ? 0 : 1 / speed;
     frames = Math.max(0, frames + (dt / 1000) * 25 * rate);
-    showTimecode();
-    setRecLabel(now);
+    if (visible) {
+      showTimecode();
+      setRecLabel(now);
+    }
     if (!focus.hover && rate !== 0) {
       /* idle: the focus puller racks slowly between two depths */
       focus.ty = HOME_Y + Math.sin(now / 2800) * 0.14;
@@ -296,15 +353,15 @@
     return [((lon - g.lon0) / g.dLon - g.c0) / g.vc, ((g.lat0 - lat) / g.dLat - g.r0) / g.vr];
   }
   function drawDots(canvas, g) {
-    var rect = canvas.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
+    var w = canvas.offsetWidth, h = canvas.offsetHeight;
+    if (!w || !h) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(rect.width * dpr);
-    canvas.height = Math.round(rect.height * dpr);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
     var c = canvas.getContext("2d");
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
-    c.clearRect(0, 0, rect.width, rect.height);
-    var cw = rect.width / g.vc, ch = rect.height / g.vr, r = Math.max(0.7, Math.min(cw, ch) * 0.3);
+    c.clearRect(0, 0, w, h);
+    var cw = w / g.vc, ch = h / g.vr, r = Math.max(0.7, Math.min(cw, ch) * 0.3);
     c.fillStyle = rgba(colors[1], 0.3);
     c.beginPath();
     for (var row = 0; row < g.vr; row++) {
@@ -320,14 +377,14 @@
     c.fill();
   }
   var pinsByPlace = {};
-  function addPin(map, key, xy, label, n) {
+  function addPin(map, key, xy, label, at) {
     var b = document.createElement("button");
     b.type = "button";
     b.className = "pin";
     b.setAttribute("data-place", key);
     b.style.setProperty("--x", (xy[0] * 100).toFixed(2) + "%");
     b.style.setProperty("--y", (xy[1] * 100).toFixed(2) + "%");
-    b.style.setProperty("--n", n);
+    b.style.setProperty("--at", at.toFixed(3));
     if (xy[0] < 0.22) b.classList.add("tip-start");
     else if (xy[0] > 0.78) b.classList.add("tip-end");
     if (xy[1] < 0.2) b.classList.add("tip-below");
@@ -371,7 +428,7 @@
       worldMap.appendChild(worldCanvas);
       euMap.appendChild(euCanvas);
 
-      /* the route, in the order of the shot list */
+      /* the route, in the order of the shot list, drawn as gently bowed arcs */
       var route = [];
       $$(".shot[data-place]").forEach(function (c) {
         var key = c.getAttribute("data-place");
@@ -387,14 +444,27 @@
         return [xy[0] * gw.vc, xy[1] * gw.vr];
       });
       var d = "M" + pts[0][0].toFixed(2) + " " + pts[0][1].toFixed(2);
+      var lengths = [0];
       for (var i = 1; i < pts.length; i++) {
         var a = pts[i - 1], b = pts[i], dx = b[0] - a[0], dy = b[1] - a[1];
         var dist = Math.sqrt(dx * dx + dy * dy) || 1;
         var px = -dy / dist, py = dx / dist;
         if (py > 0) { px = -px; py = -py; }
         var bow = Math.min(dist * 0.22, 14);
-        d += " Q" + ((a[0] + b[0]) / 2 + px * bow).toFixed(2) + " " + ((a[1] + b[1]) / 2 + py * bow).toFixed(2) + " " + b[0].toFixed(2) + " " + b[1].toFixed(2);
+        var cx = (a[0] + b[0]) / 2 + px * bow, cy = (a[1] + b[1]) / 2 + py * bow;
+        d += " Q" + cx.toFixed(2) + " " + cy.toFixed(2) + " " + b[0].toFixed(2) + " " + b[1].toFixed(2);
+        /* arc length by sampling, so each pin can land as the line reaches it */
+        var len = 0, prevX = a[0], prevY = a[1];
+        for (var t = 1; t <= 16; t++) {
+          var u = t / 16;
+          var qx = (1 - u) * (1 - u) * a[0] + 2 * (1 - u) * u * cx + u * u * b[0];
+          var qy = (1 - u) * (1 - u) * a[1] + 2 * (1 - u) * u * cy + u * u * b[1];
+          len += Math.sqrt((qx - prevX) * (qx - prevX) + (qy - prevY) * (qy - prevY));
+          prevX = qx; prevY = qy;
+        }
+        lengths.push(lengths[i - 1] + len);
       }
+      var total = lengths[lengths.length - 1] || 1;
       var ge = GRIDS.europe;
       var tl = project(gw, ge.lon0 + ge.c0 * ge.dLon, ge.lat0 - ge.r0 * ge.dLat);
       var br = project(gw, ge.lon0 + (ge.c0 + ge.vc) * ge.dLon, ge.lat0 - (ge.r0 + ge.vr) * ge.dLat);
@@ -413,16 +483,22 @@
       /* pins: Europe gets its own close-up, Sakhir and Yas Marina share one pin */
       var order = {};
       route.forEach(function (key, idx) { if (!(key in order)) order[key] = idx; });
+      var at = function (key) { return lengths[order[key]] / total; };
       Object.keys(PLACES).forEach(function (key) {
         var pl = PLACES[key];
-        if (pl.eu) addPin(euMap, key, project(GRIDS.europe, pl.lon, pl.lat), [placeLabel(pl, 0), placeLabel(pl, 1)], order[key]);
-        else if (!pl.gulf) addPin(worldMap, key, project(gw, pl.lon, pl.lat), [placeLabel(pl, 0), placeLabel(pl, 1)], order[key]);
+        if (pl.eu) addPin(euMap, key, project(GRIDS.europe, pl.lon, pl.lat), [placeLabel(pl, 0), placeLabel(pl, 1)], at(key));
+        else if (!pl.gulf) addPin(worldMap, key, project(gw, pl.lon, pl.lat), [placeLabel(pl, 0), placeLabel(pl, 1)], at(key));
       });
       var sk = PLACES.sakhir, ym = PLACES.yasmarina;
       addPin(worldMap, "gulf", project(gw, (sk.lon + ym.lon) / 2, (sk.lat + ym.lat) / 2),
-        ["Sakhir 2018 · 2020 / Yas Marina 2021", "Sakhir 2018 · 2020 / Yas Marina 2021"], Math.min(order.sakhir, order.yasmarina));
+        ["Sakhir 2018 · 2020 / Yas Marina 2021", "Sakhir 2018 · 2020 / Yas Marina 2021"], Math.min(at("sakhir"), at("yasmarina")));
 
-      var drawMaps = function () { drawDots(worldCanvas, GRIDS.world); drawDots(euCanvas, GRIDS.europe); };
+      /* the route's stroke is set in map units, so the dash that draws it stays exact */
+      var drawMaps = function () {
+        drawDots(worldCanvas, GRIDS.world);
+        drawDots(euCanvas, GRIDS.europe);
+        if (worldMap.offsetWidth) svg.style.setProperty("--map-scale", (worldMap.offsetWidth / gw.vc).toFixed(3));
+      };
       root.classList.add("has-atlas");
       drawMaps();
       if ("ResizeObserver" in window) {
@@ -451,38 +527,52 @@
   }
 
   /* =====================================================================
-     Scroll reveals. Elements keep their normal look until they reach the
-     viewport, then play in once. Nothing is hidden at rest.
+     Scroll reveals. Content that is still below the fold waits in its
+     start pose and plays in once, as soon as it reaches the screen.
+     Content already on screen at load is left exactly as it is. A fast
+     scroll, or anything that arrives late or from above, gets a short
+     fade instead, so the page never trails behind the reader.
      ===================================================================== */
+  var scrollVel = 0, lastY = window.scrollY, lastT = performance.now();
+  function velocity() { return performance.now() - lastT > 120 ? 0 : scrollVel; }
+  var pending = [], reveal = null;
+
+  /* Quotes resolve word by word. Screen readers get the sentence whole. */
   function splitWords(el) {
-    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) {
-      if (!/\S/.test(node.nodeValue)) return;
-      var frag = document.createDocumentFragment();
-      node.nodeValue.split(/( +)/).forEach(function (part) {
-        if (!part) return;
-        if (/^ +$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-        var w = document.createElement("span");
-        w.className = "w";
-        w.textContent = part;
-        frag.appendChild(w);
-      });
-      node.parentNode.replaceChild(frag, node);
-    });
     var groups = $$(".t", el);
     if (!groups.length) groups = [el];
     groups.forEach(function (g) {
-      $$(".w", g).forEach(function (w, i) { w.style.setProperty("--i", Math.min(i, 24)); });
+      var whole = g.textContent.replace(/\s+/g, " ").trim();
+      var walker = document.createTreeWalker(g, NodeFilter.SHOW_TEXT, null), nodes = [], wi = 0;
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (node) {
+        if (!/\S/.test(node.nodeValue)) return;
+        var frag = document.createDocumentFragment();
+        node.nodeValue.split(/( +)/).forEach(function (part) {
+          if (!part) return;
+          if (/^ +$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          var w = document.createElement("span");
+          w.className = "w";
+          w.setAttribute("aria-hidden", "true");
+          w.style.setProperty("--wi", Math.min(wi++, 30));
+          w.textContent = part;
+          frag.appendChild(w);
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+      var sr = document.createElement("span");
+      sr.className = "sr";
+      sr.textContent = whole;
+      g.insertBefore(sr, g.firstChild);
     });
   }
 
+  var STILL = "#top, #memory";
   if (!reduce && hasIO) {
     var targets = [];
-    var still = function (el) { return el.closest("#top, #memory"); };
     var tag = function (sel, cls) {
       $$(sel).forEach(function (el) {
-        if (still(el)) return;
+        if (el.closest(STILL)) return;
         if (cls) el.classList.add(cls);
         targets.push(el);
       });
@@ -491,23 +581,56 @@
     tag(".section-head h2", "rf");
     tag([
       ".section-head .intro", ".prose > p", ".aside-quote", ".hazard", ".odds", ".spec > div",
-      ".callsheet > li", ".report-row[role=listitem]", ".shot", ".refusals > li", ".credits > li",
-      ".chips > li", ".plain > li", ".facts > div", ".media > li", ".faq > div", ".sources li",
-      ".book-body h3", ".links a", ".note", ".pipeline ol > li", ".feature"
+      ".callsheet > li", ".shot", ".refusals > li", ".credits > li", ".chips > li", ".plain > li",
+      ".facts > div", ".media > li", ".faq > div", ".sources li", ".book-body h3", ".links a", ".note",
+      ".pipeline ol > li", ".feature", ".fps-stage", ".subhead", ".pull figcaption", ".atlas figcaption"
     ].join(","), "rv");
-    $$(".pull blockquote, .trust blockquote").forEach(splitWords);
+    tag(".report-row[role=listitem]", "wipe");
+    $$(".pull blockquote, .trust blockquote").forEach(function (q) { if (!q.closest(STILL)) splitWords(q); });
     tag(".pull blockquote, .trust blockquote", "slowmo");
     tag(".cover", "");
 
-    var reveal = new IntersectionObserver(function (entries) {
-      var n = 0;
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.style.setProperty("--i", Math.min(n++, 8));
-        e.target.classList.add("is-in");
-        reveal.unobserve(e.target);
+    /* only content below the fold waits; what is already in view stays put */
+    var fold = window.innerHeight;
+    targets = targets.filter(function (el) {
+      if (el.getBoundingClientRect().top < fold) return false;
+      el.classList.add("rv-wait");
+      return true;
+    });
+    /* page order, so a sweep ahead of a fast scroll can stop at the first item out of reach */
+    pending = targets.slice().sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+
+    /* heading frames hug the longest line of the heading, whatever the language */
+    var frameHeads = function () {
+      $$(".rf").forEach(function (h) {
+        var range = document.createRange();
+        range.selectNodeContents(h);
+        var left = h.getBoundingClientRect().left, right = left;
+        Array.prototype.forEach.call(range.getClientRects(), function (r) { if (r.width) right = Math.max(right, r.right); });
+        h.style.setProperty("--fw", Math.round(right - left) + "px");
       });
-    }, { rootMargin: "0px 0px -6% 0px" });
+    };
+    frameHeads();
+    langHooks.push(frameHeads);
+    var headTimer = 0;
+    window.addEventListener("resize", function () { clearTimeout(headTimer); headTimer = setTimeout(frameHeads, 150); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(frameHeads);
+
+    reveal = new IntersectionObserver(function (entries) {
+      var vh = window.innerHeight, fast = Math.abs(velocity()) > 2.2, n = 0;
+      entries
+        .filter(function (e) { return e.isIntersecting; })
+        .sort(function (a, b) { return (a.boundingClientRect.top - b.boundingClientRect.top) || (a.boundingClientRect.left - b.boundingClientRect.left); })
+        .forEach(function (e) {
+          var el = e.target, r = e.boundingClientRect;
+          reveal.unobserve(el);
+          var quick = fast || r.top < vh * 0.7;
+          el.style.setProperty("--d", quick ? "0ms" : Math.min(n++, 5) * 70 + "ms");
+          if (quick) el.classList.add("rv-fast");
+          el.classList.remove("rv-wait");
+          el.classList.add("is-in");
+        });
+    }, { rootMargin: "0px 0px -2% 0px" });
     targets.forEach(function (el) { reveal.observe(el); });
   }
 
@@ -544,6 +667,247 @@
       pipeIO.observe($("ol", pipe));
     }
   }
+
+  /* =====================================================================
+     Why 200 frames a second. The same pass filmed by two cameras and
+     played at 25p. Slowed eight times, the 25 fps clip must show every
+     frame eight times over and the car jumps; the 200 fps clip has a new
+     frame for every frame on air. In real time the two look the same.
+     ===================================================================== */
+  var fpsStage = $(".fps-stage");
+  if (fpsStage) (function () {
+    var screens = $$(".fps-screen", fpsStage).map(function (el) {
+      var cvs = $("canvas", el);
+      return { el: el, cvs: cvs, c: cvs && cvs.getContext ? cvs.getContext("2d") : null, fps: Number(el.getAttribute("data-fps")), label: $(".fps-frame", el), w: 0, h: 0, bg: null, shown: -2 };
+    }).filter(function (s) { return s.c; });
+    if (!screens.length) return;
+    var note = $(".fps-note");
+    /* seconds of real time for the car to cross the frame; at this speed each 25 fps frame
+       turns the wheels about 196 degrees, so their five spokes seem to turn backwards */
+    var PASS = 0.71;
+    var slow = 8, running = false, t0 = 0;
+
+    /* a side-on Formula 1 car in "car units": 0 at the rear, 100 at the nose, y up from the ground */
+    function car(c, x0, ground, k, spin, alpha) {
+      function X(u) { return x0 + u * k; }
+      function Y(v) { return ground - v * k; }
+      c.save();
+      c.globalAlpha = alpha;
+      c.fillStyle = C.ink;
+      c.beginPath();
+      c.moveTo(X(9), Y(3));
+      c.lineTo(X(13), Y(2.2));
+      c.lineTo(X(90), Y(2.2));
+      c.quadraticCurveTo(X(96), Y(2.4), X(99), Y(4));
+      c.lineTo(X(99.5), Y(4.9));
+      c.quadraticCurveTo(X(92), Y(6.4), X(74), Y(8.4));
+      c.lineTo(X(64), Y(9.8));
+      c.lineTo(X(61), Y(10.6));
+      c.lineTo(X(51), Y(10.6));
+      c.lineTo(X(48), Y(12.4));
+      c.lineTo(X(45.5), Y(15.6));
+      c.lineTo(X(41), Y(15.9));
+      c.quadraticCurveTo(X(30), Y(13.2), X(16), Y(9.6));
+      c.lineTo(X(10), Y(8.4));
+      c.closePath();
+      c.fill();
+      /* sidepod stripe */
+      c.fillStyle = C.rec;
+      c.fillRect(X(30), Y(6.4), 26 * k, 1.1 * k);
+      /* halo and helmet */
+      c.strokeStyle = C.ink;
+      c.lineWidth = Math.max(1, 1.1 * k);
+      c.beginPath();
+      c.moveTo(X(50.5), Y(10.8));
+      c.quadraticCurveTo(X(53), Y(14.6), X(58.5), Y(13.3));
+      c.lineTo(X(61.5), Y(10.9));
+      c.stroke();
+      c.fillStyle = C.frame;
+      c.beginPath();
+      c.arc(X(54.6), Y(12.3), 2.3 * k, 0, 6.2832);
+      c.fill();
+      /* rear wing */
+      c.fillStyle = C.ink;
+      c.fillRect(X(1.5), Y(18.6), 8 * k, 10.6 * k);
+      c.fillStyle = C.frame;
+      c.fillRect(X(0.5), Y(18.8), 10 * k, 2 * k);
+      c.fillStyle = C.ink;
+      c.fillRect(X(8.5), Y(12), 3.5 * k, 4 * k);
+      /* wheels: five spokes, so the 25 fps camera shows the wagon-wheel effect */
+      [[19, 6.6], [83, 6.4]].forEach(function (wh) {
+        var cx = X(wh[0]), cy = Y(wh[1]), r = wh[1] * k;
+        c.fillStyle = "#1A1F22";
+        c.beginPath();
+        c.arc(cx, cy, r, 0, 6.2832);
+        c.fill();
+        c.strokeStyle = rgba(C.ink, 0.55);
+        c.lineWidth = Math.max(1, 0.45 * k);
+        c.stroke();
+        c.fillStyle = "#394146";
+        c.beginPath();
+        c.arc(cx, cy, r * 0.6, 0, 6.2832);
+        c.fill();
+        c.strokeStyle = rgba(C.ink, 0.8);
+        c.lineWidth = Math.max(1, 0.5 * k);
+        c.beginPath();
+        for (var s = 0; s < 5; s++) {
+          var ang = spin * (6.4 / wh[1]) + s * 1.2566;
+          c.moveTo(cx + Math.cos(ang) * r * 0.12, cy + Math.sin(ang) * r * 0.12);
+          c.lineTo(cx + Math.cos(ang) * r * 0.56, cy + Math.sin(ang) * r * 0.56);
+        }
+        c.stroke();
+      });
+      /* front wing */
+      c.fillStyle = C.ink;
+      c.fillRect(X(86), Y(2.4), 14.5 * k, 1.6 * k);
+      c.fillStyle = C.frame;
+      c.fillRect(X(99), Y(4.6), 2 * k, 4 * k);
+      c.restore();
+    }
+    function background(s) {
+      var b = document.createElement("canvas");
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      b.width = Math.round(s.w * dpr);
+      b.height = Math.round(s.h * dpr);
+      var c = b.getContext("2d");
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var ground = s.h * 0.8;
+      var sky = c.createLinearGradient(0, 0, 0, ground);
+      sky.addColorStop(0, C.screen);
+      sky.addColorStop(1, rgba(C.ink, 0.05));
+      c.fillStyle = sky;
+      c.fillRect(0, 0, s.w, ground);
+      /* stadium lights far behind, out of focus */
+      for (var i = 0; i < 9; i++) {
+        var lx = ((i * 0.37 + 0.11) % 1) * s.w, ly = s.h * (0.18 + ((i * 0.53) % 1) * 0.32), lr = s.h * (0.04 + ((i * 0.29) % 1) * 0.06);
+        c.globalAlpha = 0.07 + ((i * 0.41) % 1) * 0.07;
+        c.drawImage(disc(i % 3 ? C.frame : C.ink), lx - lr, ly - lr, lr * 2, lr * 2);
+      }
+      c.globalAlpha = 1;
+      c.fillStyle = rgba(C.ink, 0.04);
+      c.fillRect(0, ground, s.w, s.h - ground);
+      /* kerb along the track edge */
+      var kh = Math.max(3, s.h * 0.025), kw = s.w / 14;
+      for (var k = 0; k < 15; k++) {
+        c.fillStyle = k % 2 ? rgba(C.ink, 0.75) : rgba(C.rec, 0.85);
+        c.fillRect(k * kw, ground, kw, kh);
+      }
+      c.fillStyle = rgba(C.ink, 0.12);
+      c.fillRect(0, ground + kh + s.h * 0.06, s.w, 1);
+      return b;
+    }
+    function size(s) {
+      var r = s.cvs.getBoundingClientRect();
+      if (!r.width) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      s.w = r.width; s.h = r.height;
+      s.cvs.width = Math.round(r.width * dpr);
+      s.cvs.height = Math.round(r.height * dpr);
+      s.c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      s.bg = background(s);
+      s.shown = -2;
+    }
+    function geometry(s) {
+      var L = s.w * 0.56;
+      return { L: L, k: L / 100, ground: s.h * 0.8, from: -L * 1.05, travel: s.w + L * 2.1 };
+    }
+    function paint(s, t, ghosts) {
+      var c = s.c, g = geometry(s);
+      c.clearRect(0, 0, s.w, s.h);
+      c.drawImage(s.bg, 0, 0, s.w, s.h);
+      function at(tt, alpha) {
+        var x = g.from + g.travel * (tt / PASS);
+        car(c, x, g.ground, g.k, (x - g.from) / (6.4 * g.k), alpha);
+      }
+      if (ghosts) {
+        ghosts.forEach(function (tt, i) { at(tt, i === ghosts.length - 1 ? 1 : 0.12 + 0.3 * (i / ghosts.length)); });
+      } else if (t <= PASS) {
+        at(t, 1);
+      }
+      /* the captured frames of this pass, as a strip of ticks; the one on air is lit */
+      var n = Math.ceil(PASS * s.fps), x0 = 12, x1 = s.w - 12, y = s.h - 7;
+      var cur = ghosts ? -1 : Math.floor(t * s.fps);
+      c.fillStyle = rgba(C.ink, 0.22);
+      for (var i = 0; i < n; i++) c.fillRect(Math.round(x0 + (x1 - x0) * (i / (n - 1))), y, 1, 4);
+      if (cur >= 0 && cur < n) {
+        c.fillStyle = C.rec;
+        c.fillRect(Math.round(x0 + (x1 - x0) * (cur / (n - 1))) - 1, y - 2, 3, 6);
+      }
+    }
+    function label(s, f) {
+      if (!s.label) return;
+      var n = Math.ceil(PASS * s.fps), len = String(n).length;
+      s.label.textContent = f < 0 || f >= n ? "— / " + n : pad(f + 1, len) + " / " + n;
+    }
+    function render(now) {
+      var k = Math.floor((now - t0) / 40);          // playback frames at 25p
+      var tr = (k / 25) / slow;                      // the real time they show
+      var cycle = PASS + 0.75 / slow;                // the pass, then a short gap
+      var tp = tr % cycle;
+      screens.forEach(function (s) {
+        var f = tp > PASS ? -1 : Math.floor(tp * s.fps);
+        if (f === s.shown) return;
+        s.shown = f;
+        paint(s, f < 0 ? PASS + 1 : f / s.fps);
+        label(s, f);
+      });
+    }
+    function still() {
+      /* the same tenth of a second from each camera, as a multiple exposure */
+      screens.forEach(function (s) {
+        var ghosts = [];
+        for (var f = Math.round(0.16 * s.fps); f / s.fps < 0.26 - 1e-9; f++) ghosts.push(f / s.fps);
+        paint(s, 0, ghosts);
+        if (s.label) s.label.innerHTML = both(ghosts.length + " frames", ghosts.length + " images");
+      });
+    }
+    function sayNote() {
+      if (!note) return;
+      note.innerHTML = reduce
+        ? both("The same tenth of a second from each camera: three frames at 25 fps, twenty at 200 fps.", "Le même dixième de seconde vu par chaque caméra&nbsp;: trois images à 25 i/s, vingt à 200 i/s.")
+        : slow === 8
+        ? both("Slowed 8×: the 25 fps clip shows each frame eight times and the car jumps. The 200 fps clip glides.", "Ralenti ×8&nbsp;: le plan à 25 i/s montre chaque image huit fois et la voiture saute. Celui à 200 i/s glisse.")
+        : both("In real time you can’t tell the two cameras apart.", "En temps réel, impossible de distinguer les deux caméras.");
+    }
+    function loopFps(now) {
+      if (!running) return;
+      render(now);
+      requestAnimationFrame(loopFps);
+    }
+    function start() {
+      if (running || reduce) return;
+      running = true;
+      t0 = performance.now();
+      requestAnimationFrame(loopFps);
+    }
+    function stop() { running = false; }
+
+    screens.forEach(size);
+    if (reduce) still(); else render(performance.now());
+    sayNote();
+    if ("ResizeObserver" in window) {
+      var fro = new ResizeObserver(function () {
+        screens.forEach(size);
+        if (reduce) still(); else render(performance.now());
+      });
+      screens.forEach(function (s) { fro.observe(s.el); });
+    }
+    $$("[data-fps-speed]").forEach(function (btn, i, all) {
+      btn.addEventListener("click", function () {
+        slow = Number(btn.getAttribute("data-fps-speed"));
+        all.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+        t0 = performance.now();
+        sayNote();
+      });
+    });
+    if (hasIO && !reduce) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) start(); else stop();
+      }).observe(fpsStage);
+    } else if (!reduce) {
+      start();
+    }
+  })();
 
   /* =====================================================================
      Book cover tilts toward the pointer
@@ -650,7 +1014,8 @@
   }
 
   /* =====================================================================
-     Scroll-linked: reading progress, hero depth, career playhead
+     Scroll-linked, once per frame: reading progress, hero depth, career
+     playhead. Layout is read first, then everything is written.
      ===================================================================== */
   var bar = $(".progress span");
   var report = $(".report");
@@ -660,39 +1025,56 @@
 
   function onScrollFrame() {
     ticking = false;
-    var vh = window.innerHeight;
-    var range = root.scrollHeight - vh;
-    if (bar) bar.style.transform = "scaleX(" + (range > 0 ? clamp(window.scrollY / range, 0, 1) : 0).toFixed(4) + ")";
-
-    if (!reduce && vf) {
-      var hr = vf.getBoundingClientRect();
-      if (hr.bottom > 0) {
-        var hp = clamp(-hr.top / hr.height, 0, 1);
-        if (heroCopy) heroCopy.style.transform = hp ? "translate3d(0," + (hp * 36).toFixed(1) + "px,0)" : "";
-        if (cv) cv.style.transform = hp ? "scale(" + (1 + hp * 0.12).toFixed(3) + ")" : "";
+    var vh = window.innerHeight, y = window.scrollY, range = root.scrollHeight - vh;
+    /* a fast scroll outruns any animation: show what is about to arrive before it does */
+    var sweep = [], v = Math.abs(velocity());
+    if (pending.length && v > 2.2) {
+      var ahead = clamp(v * 350, 500, 2600), miss = 0;
+      for (var j = 0; j < pending.length; j++) {
+        var el = pending[j];
+        if (!el.classList.contains("rv-wait")) continue;
+        var er = el.getBoundingClientRect();
+        if (er.top < vh + ahead && er.bottom > -ahead) { sweep.push(el); miss = 0; }
+        else if (er.top >= vh + ahead && ++miss > 6) break;
+      }
+    }
+    var hr = !reduce && vf ? vf.getBoundingClientRect() : null;
+    var rr = report && playhead ? report.getBoundingClientRect() : null;
+    var line = vh * 0.5, live = null, inReport = rr && rr.top < vh && rr.bottom > 0;
+    if (inReport && line >= rr.top && line < rr.bottom) {
+      for (var i = 0; i < rows.length; i++) {
+        var b = rows[i].getBoundingClientRect();
+        if (b.top <= line && b.bottom > line) { live = rows[i]; break; }
       }
     }
 
-    if (report && playhead) {
-      var rr = report.getBoundingClientRect(), line = vh * 0.5;
-      if (rr.top < vh && rr.bottom > 0) {
-        playhead.style.height = clamp(line - rr.top, 0, rr.height).toFixed(1) + "px";
-        var live = null;
-        if (line >= rr.top && line < rr.bottom) {
-          rows.forEach(function (row) {
-            var b = row.getBoundingClientRect();
-            if (b.top <= line && b.bottom > line) live = row;
-          });
-        }
-        if (live !== liveRow) {
-          if (liveRow) liveRow.classList.remove("is-live");
-          if (live) live.classList.add("is-live");
-          liveRow = live;
-        }
-      }
+    if (sweep.length) {
+      sweep.forEach(function (el) {
+        if (reveal) reveal.unobserve(el);
+        el.classList.remove("rv-wait");
+        el.classList.add("is-in", "rv-instant");
+      });
+      pending = pending.filter(function (el) { return el.classList.contains("rv-wait"); });
+    }
+    if (bar) bar.style.transform = "scaleX(" + (range > 0 ? clamp(y / range, 0, 1) : 0).toFixed(4) + ")";
+    if (hr && hr.bottom > 0) {
+      var hp = clamp(-hr.top / hr.height, 0, 1);
+      if (heroCopy) heroCopy.style.transform = hp ? "translate3d(0," + (hp * 36).toFixed(1) + "px,0)" : "";
+      if (cv) cv.style.transform = hp ? "scale(" + (1 + hp * 0.12).toFixed(3) + ")" : "";
+    }
+    if (inReport) playhead.style.height = clamp(line - rr.top, 0, rr.height).toFixed(1) + "px";
+    if (live !== liveRow) {
+      if (liveRow) liveRow.classList.remove("is-live");
+      if (live) live.classList.add("is-live");
+      liveRow = live;
     }
   }
   function onScroll() {
+    var now = performance.now(), y = window.scrollY, dt = now - lastT;
+    /* after a pause there is no speed to go on, but a big jump is a fast scroll */
+    if (dt > 0) scrollVel = dt > 120 ? (Math.abs(y - lastY) > 240 ? (y - lastY) / 16 : 0) : scrollVel * 0.5 + ((y - lastY) / dt) * 0.5;
+    lastY = y;
+    lastT = now;
     if (!ticking) { ticking = true; requestAnimationFrame(onScrollFrame); }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -700,28 +1082,49 @@
   onScrollFrame();
 
   /* =====================================================================
-     Header: highlight the section being read, in the bar and the phone
-     menu. The camera goes to standby in the two sections about what he
-     will not film and who he lost.
+     Header: highlight the section being read, in the bar (with an
+     underline that glides between links) and in the phone menu. The camera
+     goes to standby in the two sections about what he will not film and
+     who he lost.
      ===================================================================== */
   var navLinks = {}, menuLinks = {};
   $$(".site-nav a[href^='#']").forEach(function (a) { navLinks[a.getAttribute("href").slice(1)] = a; });
   $$("#menu a[data-target]").forEach(function (a) { menuLinks[a.getAttribute("data-target")] = a; });
+  var navBox = $(".site-nav"), ink = null;
+  if (navBox) {
+    ink = document.createElement("span");
+    ink.className = "nav-ink";
+    ink.setAttribute("aria-hidden", "true");
+    navBox.appendChild(ink);
+    root.classList.add("has-ink");
+  }
   var currentId = null;
+  function placeInk() {
+    if (!ink) return;
+    var a = currentId && navLinks[currentId];
+    if (!a || !a.offsetWidth) { ink.classList.remove("is-on"); return; }
+    ink.style.setProperty("--ink-x", a.offsetLeft + "px");
+    ink.style.setProperty("--ink-w", (a.offsetWidth / 100).toFixed(3));
+    ink.classList.add("is-on");
+  }
   function markCurrent(id) {
     currentId = id;
     $$(".site-nav a.is-current, #menu a.is-current").forEach(function (a) { a.classList.remove("is-current"); });
     var nav = navLinks[id], item = menuLinks[id];
     if (nav) {
       nav.classList.add("is-current");
-      var bar2 = nav.closest(".site-nav");
-      if (bar2 && bar2.scrollWidth > bar2.clientWidth) {
-        bar2.scrollTo({ left: nav.offsetLeft - 16, behavior: reduce ? "auto" : "smooth" });
+      var navBar = nav.closest(".site-nav");
+      if (navBar && navBar.scrollWidth > navBar.clientWidth) {
+        navBar.scrollTo({ left: nav.offsetLeft - 16, behavior: reduce ? "auto" : "smooth" });
       }
     }
+    placeInk();
     if (item) item.classList.add("is-current");
     if (menuNow) menuNow.innerHTML = item ? item.innerHTML : menuDefault;
   }
+  langHooks.push(function () { placeInk(); });
+  window.addEventListener("resize", placeInk);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeInk);
   if (hasIO) {
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {

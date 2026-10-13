@@ -28,6 +28,8 @@
   --step-3: clamp(2rem, 1.3rem + 3vw, 3.1rem);
   --step-hero: clamp(2.3rem, 0.6rem + 7vw, 6.4rem);
   --gutter: clamp(16px, 4vw, 40px);
+  /* front-loaded ease: most of the change happens in the first fifth of the time */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -372,8 +374,8 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .report-row p { max-width: 62ch; }
 
 /* ---------- shot list ---------- */
-.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
-.shot { position: relative; background: var(--paper); padding: 1.25rem 1.25rem 2.1rem; display: grid; gap: 0.7rem; align-content: start; min-width: 0; }
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid transparent; }
+.shot { position: relative; background: var(--paper); box-shadow: 0 0 0 1px var(--rule); padding: 1.25rem 1.25rem 2.1rem; display: grid; gap: 0.7rem; align-content: start; min-width: 0; }
 .shot header { display: grid; gap: 0.25rem; padding-bottom: 0.7rem; border-bottom: 1px dashed var(--rule); }
 .shot .place { display: flex; justify-content: space-between; gap: 0.75rem; align-items: baseline; }
 .shot .place h3 { font-stretch: 105%; }
@@ -456,8 +458,8 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .links a { font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.02em; }
 
 /* ---------- watch ---------- */
-.media { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
-.media li { background: var(--paper); min-width: 0; display: grid; grid-template-rows: auto 1fr; }
+.media { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid transparent; }
+.media li { background: var(--paper); box-shadow: 0 0 0 1px var(--rule); min-width: 0; display: grid; grid-template-rows: auto 1fr; }
 .media .mc { display: grid; gap: 0.45rem; align-content: start; padding: 1.1rem 1.25rem 1.3rem; }
 .media .meta, .feature .meta { display: flex; gap: 0.3rem 0.9rem; flex-wrap: wrap; color: var(--accent); }
 .media strong { font-family: var(--display); font-stretch: 105%; font-weight: 700; font-size: 1.15rem; line-height: 1.25; }
@@ -767,31 +769,53 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   .crosshair.hunt { animation: hunt 0.45s cubic-bezier(0.3, 0, 0.3, 1); }
   @keyframes hunt { 35% { scale: 1.3; } 70% { scale: 0.92; } }
 
-  /* --- scroll reveals --- */
-  .rv.is-in { animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 80ms); }
-  @keyframes rise { from { opacity: 0; transform: translate3d(0, 22px, 0); } }
-  .rf.is-in { animation: rack 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  /* --- scroll reveals ---
+     Content still below the fold at load waits in its start pose (rv-wait) and plays in once,
+     as soon as it reaches the screen. Every move is short and front-loaded, so text is legible
+     within a fraction of a second. A fast scroll gets a brief fade instead (rv-fast): no travel,
+     no stagger, nothing trailing behind the reader. --d staggers items that arrive together. */
+  .rv-wait { opacity: 0; }
+  .rv.is-in { animation: rise 0.65s var(--ease-out) var(--d, 0ms) backwards; }
+  @keyframes rise { from { opacity: 0; transform: translate3d(0, 18px, 0); } }
+  .rf.is-in { animation: rack 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards; }
   @keyframes rack {
-    0% { filter: blur(12px); opacity: 0.2; }
-    55% { filter: blur(0); opacity: 1; }
-    70% { filter: blur(1.8px); }
+    0% { opacity: 0; filter: blur(10px); }
+    45% { opacity: 1; filter: blur(0); }
+    62% { filter: blur(1.6px); }
     100% { filter: blur(0); }
   }
-  .ty.is-in { animation: type 0.7s steps(24, end) backwards; }
+  .rf.is-in::after { animation: acquire 1.25s var(--ease-out) var(--d, 0ms) backwards; }
+  .ty.is-in { animation: type 0.5s steps(22, end) var(--d, 0ms) backwards; }
   @keyframes type { from { clip-path: inset(0 100% 0 0); } }
   .slowmo .w { display: inline-block; }
-  .slowmo.is-in .w { animation: word 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms + 80ms); }
-  @keyframes word { from { opacity: 0.06; filter: blur(9px); transform: translateY(0.2em); } }
-  .odds.is-in .bar span { animation: fill 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
-  .odds.is-in .bar .luck { transform-origin: left; animation-delay: 0.3s; }
-  .odds.is-in .bar .work { transform-origin: right; animation-delay: 0.55s; }
-  .odds.is-in .odds-row + .odds-row .bar .luck { animation-delay: 0.6s; }
-  .odds.is-in .odds-row + .odds-row .bar .work { animation-delay: 0.85s; }
+  .slowmo.is-in .w { animation: word 0.75s var(--ease-out) backwards; animation-delay: calc(var(--d, 0ms) + var(--wi, 0) * 50ms); }
+  @keyframes word { from { opacity: 0.05; filter: blur(6px); transform: translate3d(0, 0.18em, 0); } }
+  .wipe.is-in { animation: wipe 0.7s var(--ease-out) var(--d, 0ms) backwards; }
+  @keyframes wipe { from { opacity: 0.25; clip-path: inset(0 100% 0 0); } }
+  .shot.is-in::before { animation: acquire 1.15s var(--ease-out) calc(var(--d, 0ms) + 0.1s) backwards; }
+  @keyframes acquire {
+    0% { opacity: 0; transform: scale(1.12); }
+    28% { opacity: 1; transform: scale(1); }
+    72% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1); }
+  }
+  .odds.is-in .bar span { animation: fill 1s var(--ease-out) backwards; }
+  .odds.is-in .bar .luck { transform-origin: left; animation-delay: calc(var(--d, 0ms) + 0.15s); }
+  .odds.is-in .bar .work { transform-origin: right; animation-delay: calc(var(--d, 0ms) + 0.3s); }
+  .odds.is-in .odds-row + .odds-row .bar .luck { animation-delay: calc(var(--d, 0ms) + 0.35s); }
+  .odds.is-in .odds-row + .odds-row .bar .work { animation-delay: calc(var(--d, 0ms) + 0.5s); }
   @keyframes fill { from { transform: scaleX(0); } }
-  .refusals li.is-in .label::before { animation: stop-on 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards; }
+  .refusals li.is-in .label::before { animation: stop-on 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--d, 0ms) + 0.2s) backwards; }
   @keyframes stop-on { from { background: transparent; transform: scale(1.8); } }
-  .cover.is-in { animation: book-in 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
-  @keyframes book-in { from { opacity: 0; transform: rotateY(-40deg) rotateX(8deg) translateX(-16px); } }
+  .cover.is-in { animation: book-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) backwards; }
+  @keyframes book-in { from { opacity: 0; transform: rotateY(-48deg) rotateX(6deg) translateX(-14px); } }
+  /* a fast scroll: just a short fade */
+  .rv-fast.is-in, .rv-fast.is-in .w, .rv-fast.is-in .bar span { animation: quick 0.22s ease-out backwards !important; }
+  .rv-fast.is-in::before, .rv-fast.is-in::after, .rv-fast.is-in .label::before { animation: none !important; }
+  @keyframes quick { from { opacity: 0; } }
+  /* a very fast scroll: content ahead of the reader is simply shown */
+  .rv-instant.is-in, .rv-instant.is-in .w, .rv-instant.is-in .bar span,
+  .rv-instant.is-in::before, .rv-instant.is-in::after, .rv-instant.is-in .label::before { animation: none !important; }
 
   /* --- hover and state transitions --- */
   .cover { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -913,7 +937,7 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
 .atlas-eu .atlas-map { aspect-ratio: 30 / 32; margin-top: 0.4rem; }
 .atlas-map canvas, .atlas-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .atlas-map svg { overflow: visible; pointer-events: none; }
-.atlas .route { fill: none; stroke: var(--frame); stroke-width: 1.3; vector-effect: non-scaling-stroke; opacity: 0.75; stroke-linecap: round; }
+.atlas .route { fill: none; stroke: var(--frame); stroke-width: calc(1.3px / var(--map-scale, 8)); opacity: 0.75; stroke-linecap: round; }
 .atlas .spot { fill: var(--frame); }
 .atlas .eu-box { fill: none; stroke: var(--screen-muted); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
 .atlas .eu-label { fill: var(--screen-muted); font-family: var(--mono); font-size: 1.9px; letter-spacing: 0.2px; text-transform: uppercase; }
@@ -1088,12 +1112,107 @@ main { display: grid; gap: clamp(4rem, 9vw, 7.5rem); padding-block: clamp(1.25re
   .menu .corner { animation-delay: 0.05s; }
   @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
 
-  .atlas.is-in .route { animation: draw 4.2s cubic-bezier(0.45, 0, 0.25, 1) 0.3s backwards; }
+  .atlas.is-in .route { animation: draw 3.6s linear 0.3s backwards; }
   @keyframes draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
-  .atlas.is-in .pin { animation: pin-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.4) backwards; animation-delay: calc(var(--n, 0) * 180ms + 300ms); }
+  .atlas.is-in .pin { animation: pin-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.4) backwards; animation-delay: calc(0.22s + var(--at, 0) * 3.6s); }
   @keyframes pin-in { from { opacity: 0; transform: scale(0); } }
   .pin.is-hot::before { animation: pin-pulse 1.2s ease-out infinite; }
   @keyframes pin-pulse { 0% { box-shadow: 0 0 0 2px var(--screen), 0 0 0 2px color-mix(in srgb, var(--frame) 60%, transparent); } 100% { box-shadow: 0 0 0 2px var(--screen), 0 0 0 14px transparent; } }
   .shot.is-flash { transition: background-color 0.4s; }
   .shot.is-flash::before { transform: none; }
+}
+
+/* =====================================================================
+   v6: frame-rate demo, heading focus frames, gliding nav underline
+   ===================================================================== */
+/* ---------- why 200 fps ---------- */
+.fps { display: grid; gap: 1.1rem; }
+.fps-stage { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.75rem, 2vw, 1.25rem); }
+.fps-panel { margin: 0; display: grid; gap: 0.55rem; align-content: start; min-width: 0; }
+.fps-panel figcaption { color: var(--muted); }
+.fps-screen {
+  position: relative;
+  aspect-ratio: 16 / 7;
+  background: var(--screen);
+  color: var(--screen-ink);
+  border: 1px solid var(--screen-rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.fps-screen canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fps-osd {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  top: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.66rem;
+  color: var(--screen-muted);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.fps-rate { color: var(--frame); display: inline-flex; align-items: center; gap: 0.4rem; }
+.fps-rate::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--rec); }
+.fps-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.25rem; }
+.fps-note { color: var(--muted); font-size: 0.95rem; max-width: 60ch; }
+@media (max-width: 720px) {
+  .fps-stage { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fps-bar .switch { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fps-rate::before { animation: tally 1.2s steps(2, jump-none) infinite; }
+}
+
+/* ---------- section headings: frame lines lock on as the heading comes into focus ---------- */
+.rf { position: relative; }
+/* --fw is the width of the longest line, measured by script, so the frame hugs the words */
+.rf::after {
+  --c: var(--accent);
+  content: "";
+  position: absolute;
+  top: -0.12em;
+  bottom: -0.06em;
+  left: -0.28em;
+  width: calc(var(--fw, 100%) + 0.56em);
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / 14px 2px,
+    linear-gradient(var(--c), var(--c)) left top / 2px 14px,
+    linear-gradient(var(--c), var(--c)) right top / 14px 2px,
+    linear-gradient(var(--c), var(--c)) right top / 2px 14px,
+    linear-gradient(var(--c), var(--c)) left bottom / 14px 2px,
+    linear-gradient(var(--c), var(--c)) left bottom / 2px 14px,
+    linear-gradient(var(--c), var(--c)) right bottom / 14px 2px,
+    linear-gradient(var(--c), var(--c)) right bottom / 2px 14px;
+  background-repeat: no-repeat;
+}
+.trust .rf::after { --c: var(--accent-inv); }
+
+/* ---------- header: one underline that glides to the section being read ---------- */
+.site-nav { position: relative; }
+.nav-ink {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  height: 2px;
+  background: var(--tally);
+  transform-origin: 0 0;
+  transform: translateX(var(--ink-x, 0px)) scaleX(var(--ink-w, 0));
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-ink.is-on { opacity: 1; }
+:root.has-ink .site-nav a.is-current { border-bottom-color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .nav-ink { transition: transform 0.6s var(--ease-out), opacity 0.3s; }
+}
+
+@media print {
+  .rv-wait { opacity: 1 !important; }
 }

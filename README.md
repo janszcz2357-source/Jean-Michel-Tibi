@@ -4,7 +4,7 @@ A one-page profile of Jean-Michel Tibi, the French Formula 1 cameraman and direc
 
 ## What's on the page
 
-- **The job**: his role at Formula One Management, his camera settings (ARRI Amira, 25p at 200 fps), how his slow-motion replays reach the world feed, and a Grand Prix Sunday hour by hour
+- **The job**: his role at Formula One Management, his camera settings (ARRI Amira, 25p at 200 fps), a side-by-side demo of why he shoots 200 frames a second, how his slow-motion replays reach the world feed, and a Grand Prix Sunday hour by hour
 - **Career**: from Paris motorbike courier (early 1980s) to his 34th F1 season (2025)
 - **Shot list**: eighteen moments he filmed, from Spa 2000 to Abu Dhabi 2021, including the one he missed
 - **Trust**: the shots he chooses not to take
@@ -20,16 +20,19 @@ A one-page profile of Jean-Michel Tibi, the French Formula 1 cameraman and direc
 The animations come from his job:
 
 - **Power-on.** The lens iris opens, frame lines snap in, the camera readouts flicker on, the stat counters spin, and his name is pulled into focus.
-- **Focus pull.** Point at the viewfinder to move the focus box. Light trails off the focus plane go soft, with bokeh discs, and in-focus trails get red focus peaking. The readout shows the focus distance.
+- **Focus pull.** Point at the viewfinder to move the focus box. Light trails off the focus plane go soft, with bokeh discs, and in-focus trails get red focus peaking. Out-of-focus lights in the background swell and shrink as the focus moves. The readout shows the focus distance.
 - **Playback.** 8× slow (200 fps played at 25p), real time, or pause, which stops every looping animation.
 - **Rewind.** "Rewind to the top" runs the tape backwards while the page scrolls up.
-- **Reading.** Headings rack into focus, labels type on, the big quotes resolve word by word, and a red editing-timeline playhead runs down the career. A signal travels through the replay diagram, and the header's REC light drops to standby in the two sections about what he won't film and the people he lost. The memorial section stays still.
+- **Why 200 fps.** The same pass by a car, filmed at 25 and at 200 frames a second and both played at 25p. Slowed eight times, the 25 fps car jumps and its wheels turn the wrong way; the 200 fps car glides. Switch to real time and the two look the same.
+- **Reading.** Each piece of content plays in once as it reaches the screen. Headings rack into focus while frame lines lock onto them, section labels type on, career rows wipe in, shot cards are framed as they arrive, the book swings in on its spine, and the big quotes resolve word by word. A red editing-timeline playhead runs down the career, the shot-map route draws itself with each pin landing as the line reaches it, a signal travels through the replay diagram, and the header's underline glides to the section you're in. The REC light drops to standby in the two sections about what he won't film and the people he lost. The memorial section stays still.
+
+The reveals are built to keep up with the reader. Each one is short and front-loaded, so text is legible within a fraction of a second. Content already on screen when the page loads is never hidden. On a fast scroll, what is about to arrive is shown before it gets there, so the page never goes blank or trails behind.
 
 On phones the section links move into a full-screen menu. Videos play inline through YouTube's privacy-enhanced player; inside a frame, where embeds are blocked, the same links open YouTube instead.
 
-Visitors who ask their system for reduced motion get the complete page with none of it. Scroll reveals never hide content at rest: an element keeps its normal look until it reaches the screen.
+Visitors who ask their system for reduced motion get the complete page with none of it; the frame-rate demo becomes a still multiple exposure of the same tenth of a second from each camera.
 
-This is an unofficial profile compiled from public sources. It is not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. It uses no photographs.
+This is an unofficial profile compiled from public sources. It is not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. It uses no photographs apart from YouTube’s own previews of the videos.
 
 ## Files
 
@@ -37,7 +40,7 @@ This is an unofficial profile compiled from public sources. It is not affiliated
 | --- | --- |
 | `index.html` | The page. Both languages are in the markup; CSS hides the one not selected. |
 | `assets/style.css` | All styles. Colour tokens at the top, light and dark themes. |
-| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind), shot map (land data embedded as compact bit grids), video players, phone menu, sharing, scroll reveals, replay diagram, career playhead, section highlighting. |
+| `assets/main.js` | Language switch, viewfinder (focus pull, playback, rewind, background lights), shot map (land data embedded as compact bit grids), scroll reveals, replay diagram, frame-rate demo, video players, phone menu, sharing, career playhead, section highlighting. |
 | `assets/favicon.svg` | Tab icon. |
 | `404.html` | "No signal" page with broadcast colour bars, shown for any address that doesn't exist. |
 | `vercel.json` | Security headers for the Vercel deployment. |

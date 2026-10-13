@@ -169,7 +169,7 @@
           <span>25p</span>
           <span>200 fps</span>
           <span>1/250</span>
-          <span>RF</span>
+          <span>RF 6</span>
           <span class="focus" id="focus-readout">Focus 4.1 m</span>
         </div>
         <div class="speed">
@@ -245,6 +245,38 @@
         <div><dt class="label"><span class="t" lang="en">Race day</span><span class="t" lang="fr">Jour de course</span></dt><dd><span class="t" lang="en">16 to 18 hours</span><span class="t" lang="fr">16 à 18 heures</span></dd></div>
         <div><dt class="label"><span class="t" lang="en">Sleep</span><span class="t" lang="fr">Sommeil</span></dt><dd><span class="t" lang="en">Under four hours a night, by his own count</span><span class="t" lang="fr">Moins de quatre heures par nuit, selon lui</span></dd></div>
       </dl>
+    </div>
+
+    <div class="fps">
+      <div class="subhead">
+        <h3><span class="t" lang="en">Why 200 frames a second</span><span class="t" lang="fr">Pourquoi 200 images par seconde</span></h3>
+        <span class="label muted"><span class="t" lang="en">One pass, two cameras, both played at 25p</span><span class="t" lang="fr">Un passage, deux caméras, diffusées en 25p</span></span>
+      </div>
+      <p class="muted t" lang="en" style="max-width:62ch">Television plays 25 frames a second. Slow an ordinary 25 fps shot down eight times and every frame has to stay on screen eight times as long, so the car jumps. Shot at 200 frames a second, there is a fresh frame for every one on air, and the slow motion stays smooth.</p>
+      <p class="muted t" lang="fr" style="max-width:62ch">La télévision diffuse 25 images par seconde. Ralentissez huit fois un plan ordinaire à 25 images/s et chaque image doit rester huit fois plus longtemps à l’écran&nbsp;: la voiture saute. Filmé à 200 images/s, il y a une image nouvelle pour chaque image diffusée, et le ralenti reste fluide.</p>
+      <div class="fps-stage">
+        <figure class="fps-panel">
+          <div class="fps-screen" data-fps="25">
+            <canvas aria-hidden="true"></canvas>
+            <div class="fps-osd label" aria-hidden="true"><span class="fps-rate">25 fps</span><span class="fps-frame">01 / 18</span></div>
+          </div>
+          <figcaption class="label"><span class="t" lang="en">An ordinary camera: 25 frames a second</span><span class="t" lang="fr">Une caméra ordinaire&nbsp;: 25 images/s</span></figcaption>
+        </figure>
+        <figure class="fps-panel">
+          <div class="fps-screen" data-fps="200">
+            <canvas aria-hidden="true"></canvas>
+            <div class="fps-osd label" aria-hidden="true"><span class="fps-rate">200 fps</span><span class="fps-frame">001 / 142</span></div>
+          </div>
+          <figcaption class="label"><span class="t" lang="en">His ARRI Amira: 200 frames a second</span><span class="t" lang="fr">Son ARRI Amira&nbsp;: 200 images/s</span></figcaption>
+        </figure>
+      </div>
+      <div class="fps-bar">
+        <div class="switch" role="group" aria-label="Playback / Lecture">
+          <button type="button" data-fps-speed="8" aria-pressed="true"><span class="t" lang="en">8× slow</span><span class="t" lang="fr">Ralenti ×8</span></button>
+          <button type="button" data-fps-speed="1" aria-pressed="false"><span class="t" lang="en">Real time</span><span class="t" lang="fr">Temps réel</span></button>
+        </div>
+        <p class="fps-note"><span class="t" lang="en">Slowed 8×: the 25 fps clip shows each frame eight times and the car jumps. The 200 fps clip glides.</span><span class="t" lang="fr">Ralenti ×8&nbsp;: le plan à 25 i/s montre chaque image huit fois et la voiture saute. Celui à 200 i/s glisse.</span></p>
+      </div>
     </div>
 
     <div class="pipeline">
@@ -952,8 +984,8 @@
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="t" lang="en">An unofficial profile compiled from public interviews and articles, October 2026. Not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. No photographs are used.</p>
-    <p class="t" lang="fr">Portrait non officiel, établi à partir d’entretiens et d’articles publics, octobre 2026. Sans lien avec Jean-Michel Tibi, la Formule 1 ou la Formula One Management. Aucune photographie n’est utilisée.</p>
+    <p class="t" lang="en">An unofficial profile compiled from public interviews and articles, October 2026. Not affiliated with Jean-Michel Tibi, Formula 1 or Formula One Management. No photographs are used, apart from YouTube’s own previews of the videos.</p>
+    <p class="t" lang="fr">Portrait non officiel, établi à partir d’entretiens et d’articles publics, octobre 2026. Sans lien avec Jean-Michel Tibi, la Formule 1 ou la Formula One Management. Aucune photographie n’est utilisée, hormis les aperçus des vidéos fournis par YouTube.</p>
     <div class="foot-side">
       <div class="share-wrap">
         <button type="button" class="share label" id="share"><span aria-hidden="true">↗</span> <span class="t" lang="en">Share this page</span><span class="t" lang="fr">Partager cette page</span></button>
