@@ -66,8 +66,8 @@
     tc.textContent = pad(1 + Math.floor(f / 90000) % 23) + ":" + pad(Math.floor(f / 1500) % 60) + ":" + pad(Math.floor(f / 25) % 60) + ":" + pad(f % 25);
   }
   function isRewinding(now) { return now < rewindUntil; }
-  function setRecLabel(now, rate) {
-    var txt = isRewinding(now) || rate < -0.4 ? "◀◀ Rew" : rate > 1.6 ? "▶▶ FF" : speed === 0 ? "❚❚ Pause" : "Rec";
+  function setRecLabel(now) {
+    var txt = isRewinding(now) ? "◀◀ Rew" : speed === 0 ? "❚❚ Pause" : "Rec";
     if (recLabel && recLabel.textContent !== txt) recLabel.textContent = txt;
   }
 
@@ -147,7 +147,7 @@
     for (var k = 0; k < Math.round(Math.max(7, Math.min(15, W / 80))); k++) bokeh.push(makeBokeh(true));
     placeBox();
   }
-  function draw(blur) {
+  function draw() {
     ctx.clearRect(0, 0, W, H);
     var breathe = 0.72 + focus.y * 0.7;
     for (var b = 0; b < bokeh.length; b++) {
@@ -157,7 +157,7 @@
     }
     ctx.globalAlpha = 1;
     ctx.lineCap = "round";
-    var fy = focus.y * H, depth = H * 0.34, stretch = (speed === 1 ? 1.8 : 1) * (1 + (blur || 0));
+    var fy = focus.y * H, depth = H * 0.34, stretch = speed === 1 ? 1.8 : 1;
     for (var s = 0; s < streaks.length; s++) {
       var st = streaks[s], col = colors[st.c];
       var d = Math.min(1, Math.abs(st.y - fy) / depth);
@@ -216,21 +216,18 @@
     }
   }
 
-  var visible = true, last = performance.now(), jog = 0;
+  var visible = true, last = performance.now();
   function loop(now) {
     var dt = Math.min(64, now - last);
     last = now;
     var rewinding = isRewinding(now);
-    var base = rewinding ? -3 : speed === 0 ? 0 : 1 / speed;
-    /* the scroll wheel works as a jog wheel: scroll fast and the tape fast-forwards or rewinds */
-    jog += (clamp(velocity() * 5, -8, 8) - jog) * Math.min(1, dt / 90);
-    var rate = base + (Math.abs(jog) > 0.02 ? jog : 0);
+    var rate = rewinding ? -3 : speed === 0 ? 0 : 1 / speed;
     frames = Math.max(0, frames + (dt / 1000) * 25 * rate);
     if (visible) {
       showTimecode();
-      setRecLabel(now, rate);
+      setRecLabel(now);
     }
-    if (!focus.hover && base !== 0) {
+    if (!focus.hover && rate !== 0) {
       /* idle: the focus puller racks slowly between two depths */
       focus.ty = HOME_Y + Math.sin(now / 2800) * 0.14;
       focus.tx = HOME_X;
@@ -240,7 +237,7 @@
     if (visible) {
       placeBox();
       showFocus();
-      if (ctx) { step(dt, rate); draw(Math.min(Math.abs(jog) * 0.22, 1.4)); }
+      if (ctx) { step(dt, rate); draw(); }
     }
     requestAnimationFrame(loop);
   }
@@ -404,7 +401,6 @@
   function jumpTo(key) {
     var cards = cardsFor(key);
     if (!cards.length) return;
-    if (!cards[0].offsetParent) expandShots(false);
     cards[0].setAttribute("tabindex", "-1");
     cards[0].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
     cards[0].focus({ preventScroll: true });
@@ -416,31 +412,6 @@
   function setHot(key, on) {
     var pin = pinsByPlace[key];
     if (pin) pin.classList.toggle("is-hot", on);
-  }
-
-  /* Shot list: the first rows show; the rest open on request */
-  var shotGrid = $(".shots"), moreBtn = null;
-  function expandShots(focusNew) {
-    if (!shotGrid || !shotGrid.classList.contains("is-collapsed")) return;
-    var hidden = $$(".shot", shotGrid).filter(function (c) { return !c.offsetParent; });
-    shotGrid.classList.remove("is-collapsed");
-    if (moreBtn) { moreBtn.setAttribute("aria-expanded", "true"); moreBtn.hidden = true; }
-    if (focusNew && hidden[0]) {
-      hidden[0].setAttribute("tabindex", "-1");
-      hidden[0].focus({ preventScroll: true });
-    }
-  }
-  if (shotGrid) {
-    var shotCount = $$(".shot", shotGrid).length;
-    shotGrid.classList.add("is-collapsed");
-    moreBtn = document.createElement("button");
-    moreBtn.type = "button";
-    moreBtn.className = "more label";
-    moreBtn.setAttribute("aria-expanded", "false");
-    moreBtn.setAttribute("aria-controls", "shot-list");
-    moreBtn.innerHTML = '<span aria-hidden="true">+</span> ' + both("Show all " + shotCount + " moments", "Afficher les " + shotCount + " moments");
-    moreBtn.addEventListener("click", function () { expandShots(true); });
-    shotGrid.parentNode.insertBefore(moreBtn, shotGrid.nextSibling);
   }
 
   var atlas = $(".atlas");
@@ -546,25 +517,7 @@
 
       if (!reduce && hasIO) {
         var atlasIO = new IntersectionObserver(function (entries) {
-          if (!entries[0].isIntersecting) return;
-          atlas.classList.add("is-in");
-          atlasIO.disconnect();
-          setTimeout(function () {
-            /* once the route is drawn, a signal keeps travelling along it */
-            [["signal-glow", 2.4], ["signal", 0.9]].forEach(function (c) {
-              var dot = document.createElementNS(svgNS, "circle");
-              dot.setAttribute("class", c[0]);
-              dot.setAttribute("r", c[1]);
-              var m = document.createElementNS(svgNS, "animateMotion");
-              m.setAttribute("dur", "18s");
-              m.setAttribute("begin", "indefinite");
-              m.setAttribute("repeatCount", "indefinite");
-              m.setAttribute("path", d);
-              dot.appendChild(m);
-              svg.appendChild(dot);
-              if (m.beginElement) m.beginElement();
-            });
-          }, 5400);
+          if (entries[0].isIntersecting) { atlas.classList.add("is-in"); atlasIO.disconnect(); }
         }, { threshold: 0.3 });
         atlasIO.observe(atlas);
       }
@@ -614,37 +567,6 @@
     });
   }
 
-  /* figures spin like a frame counter as their line plays in, then settle */
-  var READOUT = ".spec dd, .facts dd, .odds-meta .label, .credits .yr, .report-row .yr, .callsheet .when, .shot .yr";
-  function spin(el, delay) {
-    var nodes = [], walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
-    while (walker.nextNode()) if (/\d/.test(walker.currentNode.nodeValue)) nodes.push({ n: walker.currentNode, v: walker.currentNode.nodeValue });
-    if (!nodes.length) return;
-    setTimeout(function () {
-      var start = performance.now();
-      function tick(now) {
-        var t = (now - start) / 650;
-        nodes.forEach(function (o) {
-          if (t >= 1) { o.n.nodeValue = o.v; return; }
-          var out = "", seen = 0, total = (o.v.match(/\d/g) || []).length;
-          for (var i = 0; i < o.v.length; i++) {
-            var ch = o.v.charAt(i);
-            out += /\d/.test(ch) && t <= (++seen) / (total + 1) ? String(Math.floor(Math.random() * 10)) : ch;
-          }
-          o.n.nodeValue = out;
-        });
-        if (t < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }, delay);
-  }
-  function play(el, delay) {
-    el.style.setProperty("--d", delay + "ms");
-    el.classList.remove("rv-wait");
-    el.classList.add("is-in");
-    (el.matches(READOUT) ? [el] : $$(READOUT, el)).forEach(function (r) { spin(r, delay + 150); });
-  }
-
   var STILL = "#top, #memory";
   if (!reduce && hasIO) {
     var targets = [];
@@ -659,14 +581,11 @@
     tag(".section-head h2", "rf");
     tag([
       ".section-head .intro", ".prose > p", ".aside-quote", ".hazard", ".odds", ".spec > div",
-      ".callsheet > li", ".refusals > li", ".credits > li", ".chips > li", ".plain > li",
+      ".callsheet > li", ".shot", ".refusals > li", ".credits > li", ".chips > li", ".plain > li",
       ".facts > div", ".media > li", ".faq > div", ".sources li", ".book-body h3", ".links a", ".note",
-      ".pipeline ol > li", ".feature", ".fps-stage", ".subhead", ".pull figcaption", ".atlas figcaption", ".pitlane",
-      ".site-foot .wrap > p", ".foot-side"
+      ".pipeline ol > li", ".feature", ".fps-stage", ".subhead", ".pull figcaption", ".atlas figcaption"
     ].join(","), "rv");
     tag(".report-row[role=listitem]", "wipe");
-    tag(".shot", "card");
-    tag(".trust", "widen");
     $$(".pull blockquote, .trust blockquote").forEach(function (q) { if (!q.closest(STILL)) splitWords(q); });
     tag(".pull blockquote, .trust blockquote", "slowmo");
     tag(".cover", "");
@@ -674,8 +593,7 @@
     /* only content below the fold waits; what is already in view stays put */
     var fold = window.innerHeight;
     targets = targets.filter(function (el) {
-      var folded = !el.offsetParent && el.classList.contains("shot");
-      if (!folded && el.getBoundingClientRect().top < fold) return false;
+      if (el.getBoundingClientRect().top < fold) return false;
       el.classList.add("rv-wait");
       return true;
     });
@@ -699,15 +617,20 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(frameHeads);
 
     reveal = new IntersectionObserver(function (entries) {
-      var n = 0;
+      var vh = window.innerHeight, fast = Math.abs(velocity()) > 2.2, n = 0;
       entries
         .filter(function (e) { return e.isIntersecting; })
         .sort(function (a, b) { return (a.boundingClientRect.top - b.boundingClientRect.top) || (a.boundingClientRect.left - b.boundingClientRect.left); })
         .forEach(function (e) {
-          reveal.unobserve(e.target);
-          play(e.target, Math.min(n++, 6) * 90);
+          var el = e.target, r = e.boundingClientRect;
+          reveal.unobserve(el);
+          var quick = fast || r.top < vh * 0.7;
+          el.style.setProperty("--d", quick ? "0ms" : Math.min(n++, 5) * 70 + "ms");
+          if (quick) el.classList.add("rv-fast");
+          el.classList.remove("rv-wait");
+          el.classList.add("is-in");
         });
-    }, { rootMargin: "0px 0px -4% 0px" });
+    }, { rootMargin: "0px 0px -2% 0px" });
     targets.forEach(function (el) { reveal.observe(el); });
   }
 
@@ -1099,49 +1022,23 @@
   var playhead = $(".playhead");
   var rows = report ? $$(".report-row[role=listitem]", report) : [];
   var liveRow = null, ticking = false;
-  var heroSec = $("#top");
-  var reportTc = $("#report-tc"), reportTcBox = reportTc ? reportTc.parentElement : null;
-  var shotCards = shotGrid ? $$(".shot", shotGrid) : [], airCard = null;
-  function shown(el) {
-    if (!el) return "";
-    var t = $('.t[lang="' + (root.getAttribute("data-lang") === "fr" ? "fr" : "en") + '"]', el);
-    return (t || el).textContent.replace(/\s+/g, " ").trim();
-  }
-  function labelLive() {
-    if (!reportTc || !liveRow) return;
-    var where = shown($(".where", liveRow));
-    reportTc.textContent = shown($(".yr", liveRow)) + (where ? " · " + where : "");
-  }
-  langHooks.push(labelLive);
 
   function onScrollFrame() {
     ticking = false;
     var vh = window.innerHeight, y = window.scrollY, range = root.scrollHeight - vh;
-    /* on a fast scroll, what is about to arrive starts playing just before it does,
-       so it comes into view already in motion instead of blank */
+    /* a fast scroll outruns any animation: show what is about to arrive before it does */
     var sweep = [], v = Math.abs(velocity());
-    if (pending.length && v > 1.6) {
-      var ahead = clamp(v * 220, 150, vh * 0.75), miss = 0;
+    if (pending.length && v > 2.2) {
+      var ahead = clamp(v * 350, 500, 2600), miss = 0;
       for (var j = 0; j < pending.length; j++) {
         var el = pending[j];
-        if (!el.classList.contains("rv-wait") || !el.offsetParent) continue;
+        if (!el.classList.contains("rv-wait")) continue;
         var er = el.getBoundingClientRect();
-        if (er.top < vh + ahead && er.bottom > 0) { sweep.push(el); miss = 0; }
+        if (er.top < vh + ahead && er.bottom > -ahead) { sweep.push(el); miss = 0; }
         else if (er.top >= vh + ahead && ++miss > 6) break;
       }
     }
-    var hr = !reduce && heroSec && vf ? heroSec.getBoundingClientRect() : null, vfH = vf ? vf.offsetHeight : 1;
-    /* one story card is on air: the row crossing mid-screen, cut left to right as you scroll */
-    var onAir = null, sg = shotGrid ? shotGrid.getBoundingClientRect() : null, mid = vh * 0.5;
-    if (sg && sg.top < mid && sg.bottom > mid) {
-      var airRow = [];
-      for (var c = 0; c < shotCards.length; c++) {
-        if (!shotCards[c].offsetParent) continue;
-        var cb = shotCards[c].getBoundingClientRect();
-        if (cb.top <= mid && cb.bottom > mid) airRow.push({ el: shotCards[c], top: cb.top, h: cb.height });
-      }
-      if (airRow.length) onAir = airRow[clamp(Math.floor((mid - airRow[0].top) / (airRow[0].h || 1) * airRow.length), 0, airRow.length - 1)].el;
-    }
+    var hr = !reduce && vf ? vf.getBoundingClientRect() : null;
     var rr = report && playhead ? report.getBoundingClientRect() : null;
     var line = vh * 0.5, live = null, inReport = rr && rr.top < vh && rr.bottom > 0;
     if (inReport && line >= rr.top && line < rr.bottom) {
@@ -1152,57 +1049,26 @@
     }
 
     if (sweep.length) {
-      sweep.forEach(function (el, k) {
+      sweep.forEach(function (el) {
         if (reveal) reveal.unobserve(el);
-        play(el, Math.min(k, 4) * 60);
+        el.classList.remove("rv-wait");
+        el.classList.add("is-in", "rv-instant");
       });
       pending = pending.filter(function (el) { return el.classList.contains("rv-wait"); });
     }
     if (bar) bar.style.transform = "scaleX(" + (range > 0 ? clamp(y / range, 0, 1) : 0).toFixed(4) + ")";
-    if (hr && hr.top + vfH > 0) {
-      /* leaving the hero: the copy drifts, the footage zooms, the camera dollies out */
-      var hp = clamp(-hr.top / vfH, 0, 1);
+    if (hr && hr.bottom > 0) {
+      var hp = clamp(-hr.top / hr.height, 0, 1);
       if (heroCopy) heroCopy.style.transform = hp ? "translate3d(0," + (hp * 36).toFixed(1) + "px,0)" : "";
       if (cv) cv.style.transform = hp ? "scale(" + (1 + hp * 0.12).toFixed(3) + ")" : "";
-      vf.style.transform = hp ? "scale(" + (1 - hp * 0.07).toFixed(4) + ")" : "";
-      vf.style.borderRadius = hp ? (6 + hp * 22).toFixed(1) + "px" : "";
     }
     if (inReport) playhead.style.height = clamp(line - rr.top, 0, rr.height).toFixed(1) + "px";
     if (live !== liveRow) {
       if (liveRow) liveRow.classList.remove("is-live");
       if (live) live.classList.add("is-live");
       liveRow = live;
-      labelLive();
-      if (reportTcBox) reportTcBox.classList.toggle("is-on", !!live);
-    }
-    if (onAir !== airCard) {
-      if (airCard) airCard.classList.remove("is-air");
-      if (onAir) onAir.classList.add("is-air");
-      airCard = onAir;
     }
   }
-
-  /* chapter marks on the reading bar, placed where each section takes over */
-  var progress = $(".progress"), marks = {};
-  function buildMarks() {
-    if (!progress) return;
-    $$("i", progress).forEach(function (m) { m.remove(); });
-    marks = {};
-    var range = root.scrollHeight - window.innerHeight;
-    if (range <= 0) return;
-    $$("main > section[id]").forEach(function (sec) {
-      if (sec.id === "top") return;
-      var m = document.createElement("i");
-      m.style.left = (clamp((sec.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.5) / range, 0, 1) * 100).toFixed(2) + "%";
-      progress.appendChild(m);
-      marks[sec.id] = m;
-    });
-    if (currentId && marks[currentId]) marks[currentId].classList.add("is-current");
-  }
-  var markTimer = 0;
-  function scheduleMarks() { clearTimeout(markTimer); markTimer = setTimeout(buildMarks, 150); }
-  if ("ResizeObserver" in window) new ResizeObserver(scheduleMarks).observe($("main") || document.body);
-  else window.addEventListener("resize", scheduleMarks);
   function onScroll() {
     var now = performance.now(), y = window.scrollY, dt = now - lastT;
     /* after a pause there is no speed to go on, but a big jump is a fast scroll */
@@ -1253,8 +1119,6 @@
       }
     }
     placeInk();
-    $$(".progress i.is-current").forEach(function (m) { m.classList.remove("is-current"); });
-    if (id && marks[id]) marks[id].classList.add("is-current");
     if (item) item.classList.add("is-current");
     if (menuNow) menuNow.innerHTML = item ? item.innerHTML : menuDefault;
   }
@@ -1271,48 +1135,6 @@
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
     $$("main > section[id]").forEach(function (sec) { spy.observe(sec); });
-  }
-
-  /* =====================================================================
-     Toggles: the highlight slides to the pressed button
-     ===================================================================== */
-  var switches = $$(".switch");
-  function placeSwitch(sw) {
-    var ink2 = sw._ink, on = $('button[aria-pressed="true"]', sw);
-    if (!ink2 || !on || !on.offsetWidth) return;
-    ink2.style.setProperty("--sx", on.offsetLeft + "px");
-    ink2.style.setProperty("--sw", on.offsetWidth + "px");
-    ink2.classList.add("is-on");
-  }
-  switches.forEach(function (sw) {
-    sw._ink = document.createElement("span");
-    sw._ink.className = "switch-ink";
-    sw._ink.setAttribute("aria-hidden", "true");
-    sw.insertBefore(sw._ink, sw.firstChild);
-    sw.addEventListener("click", function () { requestAnimationFrame(function () { placeSwitch(sw); }); });
-    placeSwitch(sw);
-  });
-  if (switches.length) {
-    root.classList.add("has-switch-ink");
-    var placeAll = function () { switches.forEach(placeSwitch); };
-    langHooks.push(placeAll);
-    window.addEventListener("resize", placeAll);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeAll);
-  }
-
-  /* Story cards lean toward the pointer, like a print picked up off the desk */
-  if (finePointer && !reduce) {
-    $$(".shot").forEach(function (card) {
-      card.addEventListener("pointermove", function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty("--ry", (((e.clientX - r.left) / r.width - 0.5) * 8).toFixed(2) + "deg");
-        card.style.setProperty("--rx", ((0.5 - (e.clientY - r.top) / r.height) * 6).toFixed(2) + "deg");
-      });
-      card.addEventListener("pointerleave", function () {
-        card.style.setProperty("--rx", "0deg");
-        card.style.setProperty("--ry", "0deg");
-      });
-    });
   }
 
   setLang(root.getAttribute("data-lang") === "fr" ? "fr" : "en", false);
