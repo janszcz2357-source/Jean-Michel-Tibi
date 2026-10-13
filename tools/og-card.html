@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OG card</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap">
+<style>
+  /* Renders assets/og-image.png (1200x630). Run: node tools/render-og.js */
+  :root { --screen: #0E1113; --ink: #EEF0EE; --muted: #9AA4AA; --frame: #F0B23A; --rec: #FF4A3D; --rule: #2A3135; }
+  html, body { margin: 0; width: 1200px; height: 630px; background: var(--screen); color: var(--ink); overflow: hidden; }
+  .card { position: relative; width: 1200px; height: 630px; box-sizing: border-box; padding: 64px 72px; display: grid; align-content: space-between; }
+  .c { position: absolute; width: 44px; height: 44px; border: 0 solid var(--frame); }
+  .tl { top: 24px; left: 24px; border-top-width: 3px; border-left-width: 3px; }
+  .tr { top: 24px; right: 24px; border-top-width: 3px; border-right-width: 3px; }
+  .bl { bottom: 24px; left: 24px; border-bottom-width: 3px; border-left-width: 3px; }
+  .br { bottom: 24px; right: 24px; border-bottom-width: 3px; border-right-width: 3px; }
+  .osd { font: 500 20px/1 "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; gap: 32px; }
+  .osd b { color: var(--rec); font-weight: 500; display: inline-flex; align-items: center; gap: 12px; }
+  .osd b::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: var(--rec); }
+  .osd span.tc { color: var(--ink); }
+  .eyebrow { font: 500 22px/1 "IBM Plex Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--frame); margin: 0 0 22px; }
+  h1 { margin: 0; font-family: "Archivo", sans-serif; font-weight: 820; font-stretch: 125%; font-size: 118px; line-height: .9; text-transform: uppercase; letter-spacing: -.015em; }
+  p.sub { margin: 26px 0 0; font: italic 400 34px/1.2 "Newsreader", Georgia, serif; color: #D9DDDA; }
+  .streak { position: absolute; height: 2px; border-radius: 2px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+    <span class="streak" style="top:150px; right:60px; width:420px; background:linear-gradient(90deg,transparent,rgba(240,178,58,.5))"></span>
+    <span class="streak" style="top:205px; right:180px; width:260px; background:linear-gradient(90deg,transparent,rgba(238,240,238,.35))"></span>
+    <span class="streak" style="top:250px; right:90px; width:340px; background:linear-gradient(90deg,transparent,rgba(255,74,61,.45))"></span>
+    <div class="osd"><b>Rec</b><span>TC <span class="tc">01:34:00:00</span></span><span>25p</span><span>200 fps</span><span>1/250</span></div>
+    <div>
+      <p class="eyebrow">Formula 1 cameraman · Director of photography</p>
+      <h1>Jean-Michel<br>Tibi</h1>
+      <p class="sub">The Legend behind the lens. Inside every F1 garage since 1997.</p>
+    </div>
+  </div>
+</body>
+</html>
